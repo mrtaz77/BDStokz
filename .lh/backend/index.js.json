@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 17,
+            "activePatchIndex": 19,
             "patches": [
                 {
                     "date": 1691086966449,
@@ -76,6 +76,14 @@
                 {
                     "date": 1691087195355,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,10 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/database').connect();\r\n+\r\n+const port = process.env.PORT || 3000;\r\n+\r\n+app.listen(port,()=>{\r\n+    console.log('Server active on port $\r\n+});\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087328389,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,10 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/db').connect();\r\n+\r\n+const port = process.env.PORT || 3000;\r\n+\r\n+app.listen(port,()=>{\r\n+    console.log('Server active on port ${port}');\r\n+});\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087336734,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,10 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/stocdb').connect();\r\n+\r\n+const port = process.env.PORT || 3000;\r\n+\r\n+app.listen(port,()=>{\r\n+    console.log('Server active on port ${port}');\r\n+});\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1691086966449,

@@ -1,7 +1,7 @@
 var app =  require('./app');
 
 require('dotenv').config();
-require('config/database').connect();
+require('config/stockDb').connect();
 
 const port = process.env.PORT || 3000;
 

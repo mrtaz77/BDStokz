@@ -1,0 +1,130 @@
+{
+    "sourceFile": "backend/config/stockDb.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 28,
+            "patches": [
+                {
+                    "date": 1691087370670,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1691087378216,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,1 @@\n+var orca\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087384522,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,1 @@\n+var oracleDb = \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087391826,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,1 @@\n+var oracleDb = require('oracledb');\r\n"
+                },
+                {
+                    "date": 1691087397974,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,3 @@\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087576812,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,3 @@\n+\r\n+var oracleDb = require('oracledb');\r\n+\r\n"
+                },
+                {
+                    "date": 1691087726439,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,4 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect\r\n"
+                },
+                {
+                    "date": 1691087731517,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,4 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async()\r\n"
+                },
+                {
+                    "date": 1691087738881,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,6 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    \r\n+}\r\n"
+                },
+                {
+                    "date": 1691087744149,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,6 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracle\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087750733,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,7 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.connect();\r\n+    \r\n+}\r\n"
+                },
+                {
+                    "date": 1691087757793,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,6 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool();\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087765686,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,8 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user \r\n+    });\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087771240,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,8 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.NODE_ENV !== 'production\r\n+    });\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087778636,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,8 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER\r\n+    });\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087792696,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,9 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER,\r\n+        password: process.env.DB_PASS\r\n+    });\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087800667,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,10 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER,\r\n+        password: process.env.DB_PASSWORD,\r\n+        conn\r\n+    });\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087806895,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,10 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER,\r\n+        password: process.env.DB_PASSWORD,\r\n+        connectString : process.env.DB_CONNECT_STRING\r\n+    });\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087814301,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,92 +4,8 @@\n module.exports.connect = async() => {\r\n     await oracleDb.createPool({\r\n         user: process.env.DB_USER,\r\n         password: process.env.DB_PASSWORD,\r\n-        connectString : process.env.DB_CONNECT_STRING\r\n+        connectString : process.env.DB_CONNECT_STRING,\r\n+        poolM\r\n     });\r\n }\r\n-// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports.connect = async() => {\r\n-    await oracleDb.createPool({\r\n-        user: process.env.DB_USER,\r\n-        password: process.env.DB_PASSWORD,\r\n-        conn\r\n-    });\r\n-}\r\n-// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports.connect = async() => {\r\n-    await oracleDb.createPool({\r\n-        user: process.env.DB_USER,\r\n-        password: process.env.DB_PASS\r\n-    });\r\n-}\r\n-// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports.connect = async() => {\r\n-    await oracleDb.createPool({\r\n-        user: process.env.DB_USER\r\n-    });\r\n-}\r\n-// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports.connect = async() => {\r\n-    await oracleDb.createPool({\r\n-        user: process.env.NODE_ENV !== 'production\r\n-    });\r\n-}\r\n-// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports.connect = async() => {\r\n-    await oracleDb.createPool({\r\n-        user \r\n-    });\r\n-}\r\n-// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports.connect = async() => {\r\n-    await oracleDb.createPool();\r\n-}\r\n-// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports.connect = async() => {\r\n-    await oracleDb.connect();\r\n-    \r\n-}\r\n-// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports.connect = async() => {\r\n-    await oracle\r\n-}\r\n-// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports.connect = async() => {\r\n-    \r\n-}\r\n-// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports.connect = async()\r\n-// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports.connect\r\n-\r\n-var oracleDb = require('oracledb');\r\n-\r\n-var oracleDb = require('oracledb');\r\n-\r\n-module.exports\n-var oracleDb = require('oracledb');\r\n\\ No newline at end of file\n-var oracleDb = \n-var orca\n"
+                },
+                {
+                    "date": 1691087861604,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,11 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER,\r\n+        password: process.env.DB_PASSWORD,\r\n+        connectString : process.env.DB_CONNECT_STRING,\r\n+        poolMin\r\n+    });\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087867466,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,11 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER,\r\n+        password: process.env.DB_PASSWORD,\r\n+        connectString : process.env.DB_CONNECT_STRING,\r\n+        poolMin: 15\r\n+    });\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087874524,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,12 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER,\r\n+        password: process.env.DB_PASSWORD,\r\n+        connectString : process.env.DB_CONNECT_STRING,\r\n+        poolMin: 15,\r\n+        poolMax: 20\r\n+    });\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087883115,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,13 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER,\r\n+        password: process.env.DB_PASSWORD,\r\n+        connectString : process.env.DB_CONNECT_STRING,\r\n+        poolMin: 15,\r\n+        poolMax: 20,\r\n+        poolIncrement : 0\r\n+    });\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087898096,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,14 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER,\r\n+        password: process.env.DB_PASSWORD,\r\n+        connectString : process.env.DB_CONNECT_STRING,\r\n+        poolMin: 15,\r\n+        poolMax: 20,\r\n+        poolIncrement : 0\r\n+    });\r\n+    \r\n+}\r\n"
+                },
+                {
+                    "date": 1691087905167,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,15 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER,\r\n+        password: process.env.DB_PASSWORD,\r\n+        connectString : process.env.DB_CONNECT_STRING,\r\n+        poolMin: 15,\r\n+        poolMax: 20,\r\n+        poolIncrement : 0\r\n+    });\r\n+\r\n+    oracleDb.autoCommit();\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087910646,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,16 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER,\r\n+        password: process.env.DB_PASSWORD,\r\n+        connectString : process.env.DB_CONNECT_STRING,\r\n+        poolMin: 15,\r\n+        poolMax: 20,\r\n+        poolIncrement : 0\r\n+    });\r\n+\r\n+    oracleDb.autoCommit = true;\r\n+    oracleDb.autoCommit\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087918687,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,16 @@\n+// node-oracledb add-on for Node.js powers high performance Oracle Database applications\r\n+var oracleDb = require('oracledb');\r\n+\r\n+module.exports.connect = async() => {\r\n+    await oracleDb.createPool({\r\n+        user: process.env.DB_USER,\r\n+        password: process.env.DB_PASSWORD,\r\n+        connectString : process.env.DB_CONNECT_STRING,\r\n+        poolMin: 15,\r\n+        poolMax: 20,\r\n+        poolIncrement : 0\r\n+    });\r\n+\r\n+    oracleDb.autoCommit = true;\r\n+    oracleDb.outFormat = oracle;\r\n+}\r\n"
+                },
+                {
+                    "date": 1691087926898,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,6 +11,6 @@\n         poolIncrement : 0\r\n     });\r\n \r\n     oracleDb.autoCommit = true;\r\n-    oracleDb.outFormat = oracledb;\r\n+    oracleDb.outFormat = oracleDb;\r\n }\r\n"
+                },
+                {
+                    "date": 1691087933442,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,6 +11,6 @@\n         poolIncrement : 0\r\n     });\r\n \r\n     oracleDb.autoCommit = true;\r\n-    oracleDb.outFormat = oracleDb.OBJ;\r\n+    oracleDb.outFormat = oracleDb.OBJect;\r\n }\r\n"
+                }
+            ],
+            "date": 1691087370670,
+            "name": "Commit-0",
+            "content": ""
+        }
+    ]
+}
