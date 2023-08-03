@@ -1,5 +1,5 @@
 const express = require('express');
-const app = express();
+var app = express();
 var cors = require('cors');
 
 //set up template engine

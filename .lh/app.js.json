@@ -1,0 +1,18 @@
+{
+    "sourceFile": "app.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1687932633327,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1687932633327,
+            "name": "Commit-0",
+            "content": "const express = require('express');\r\nvar app = express();\r\nvar cors = require('cors');\r\n\r\n//set up template engine\r\napp.set('view engine','ejs')\r\napp.use(cors());\r\napp.use(express.json());\r\n\r\n// static files\r\napp.use('/assets',express.static('./public/assets'))\r\n\r\n\r\n//listen to port\r\napp.listen(3000, () => console.log(\"App is listening on port 3000\"));"
+        }
+    ]
+}
