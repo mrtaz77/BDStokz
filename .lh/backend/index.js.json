@@ -1,0 +1,86 @@
+{
+    "sourceFile": "backend/index.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 17,
+            "patches": [
+                {
+                    "date": 1691086966449,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1691087062394,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,1 +1,1 @@\n-const\n\\ No newline at end of file\n+const app \n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087068776,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,1 @@\n+const app =  requirements\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087076941,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,1 @@\n+var app =  requirements\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087083885,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,1 @@\n+var app =  require('')\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087089423,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,1 @@\n+var app =  require('./app');\r\n"
+                },
+                {
+                    "date": 1691087094705,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,3 @@\n+var app =  require('./app');\r\n+\r\n+require\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087103740,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,3 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv')\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087113547,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,4 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+req\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087119329,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,4 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config').config\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087131017,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,4 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/database').conne\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087144053,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,6 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/database').connect();\r\n+\r\n+const port = process.env.\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087149490,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,7 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/database').connect();\r\n+\r\n+const port = process.env.PORT || 3000;\r\n+\r\n"
+                },
+                {
+                    "date": 1691087157854,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,8 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/database').connect();\r\n+\r\n+const port = process.env.PORT || 3000;\r\n+\r\n+app.;instanceof()\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087163322,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,8 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/database').connect();\r\n+\r\n+const port = process.env.PORT || 3000;\r\n+\r\n+app.listen(port);\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087173910,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,8 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/database').connect();\r\n+\r\n+const port = process.env.PORT || 3000;\r\n+\r\n+app.listen(port,()=>);\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087187619,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,10 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/database').connect();\r\n+\r\n+const port = process.env.PORT || 3000;\r\n+\r\n+app.listen(port,()=>{\r\n+    console.log('Server active on port\r\n+});\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691087195355,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,10 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/database').connect();\r\n+\r\n+const port = process.env.PORT || 3000;\r\n+\r\n+app.listen(port,()=>{\r\n+    console.log('Server active on port $\r\n+});\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1691086966449,
+            "name": "Commit-0",
+            "content": "const"
+        }
+    ]
+}
