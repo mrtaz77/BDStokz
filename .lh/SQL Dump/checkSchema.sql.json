@@ -1,0 +1,18 @@
+{
+    "sourceFile": "SQL Dump/checkSchema.sql",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1691828693800,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1691828693800,
+            "name": "Commit-0",
+            "content": "SELECT\r\n\ttable_name,\r\n\tcolumn_name,\r\n\tdata_type,\r\n\tDATA_LENGTH \r\nFROM\r\n\tall_tab_columns \r\nWHERE\r\n\towner = 'C##STOCKDB' \r\nORDER BY\r\n\tTABLE_NAME,\r\n\tCOLUMN_NAME;\r\n\r\nSELECT\r\n\tCOUNT( DISTINCT TABLE_NAME ) \r\nFROM\r\n\tall_tab_columns \r\nWHERE\r\n\towner = 'C##STOCKDB';\r\n\r\n\r\nSELECT\r\n\ttable_name,\r\n\tcolumn_name,\r\n\tdata_type,\r\n\tDATA_LENGTH \r\nFROM\r\n\tall_tab_columns \r\nWHERE\r\n\towner = 'C##STOCKDB' \r\nORDER BY\r\n\tTABLE_NAME,\r\n\tCOLUMN_NAME;\r\n\r\nSELECT\r\n\tCOUNT( DISTINCT TABLE_NAME ) NUM_TABLES\r\nFROM\r\n\tall_tab_columns \r\nWHERE\r\n\towner = 'C##STOCKDB'\r\nORDER BY\r\n\tTABLE_NAME;\r\n\t\r\n\t\r\nSELECT\r\n\ttable_name,\r\n\tconstraint_name,\r\n\tconstraint_type \r\nFROM\r\n\tall_constraints \r\nWHERE\r\n\towner = 'C##STOCKDB' \r\n\tAND TABLE_NAME IN ( SELECT DISTINCT table_name FROM all_tab_columns WHERE owner = 'C##STOCKDB' ) \r\n\tAND constraint_name NOT LIKE '%SYS%'\r\nORDER BY\r\n\tTABLE_NAME,\r\n\tCONSTRAINT_NAME;\r\n\t\r\n\r\nSELECT\r\n\ttable_name,\r\n\tnum_rows \r\nFROM\r\n\tall_tables \r\nWHERE\r\n\towner = 'C##STOCKDB' \r\nORDER BY\r\n\tTABLE_NAME;\r\n\r\n\r\n\r\n\r\n\r\n"
+        }
+    ]
+}

@@ -1,11 +1,11 @@
-// node-oracledb add-on for Node.js powers high performance Oracle Database applications
+// node-oracleDb add-on for Node.js powers high performance Oracle Database applications
 var oracleDb = require('oracledb');
 
 module.exports.connect = async() => {
     await oracleDb.createPool({
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        connectString : process.env.DB_CONNECT_STRING,
+        user: 'C##STOCKDB',
+        password: '13579',
+        connectString : 'localhost:1521/ORCL',
         poolMin: 1,
         poolMax: 100,
         poolIncrement : 5,
@@ -15,6 +15,23 @@ module.exports.connect = async() => {
     oracleDb.outFormat = oracleDb.OBJECT;
 
     console.log('config/stockDb: Successfully connected to oracle database')
+
+    const checkSchema =`SELECT DISTINCT
+                            table_name, COUNT(column_name) FIELD_COUNT
+                        FROM all_tab_columns 
+                        WHERE owner = \'C##STOCKDB\' 
+                        GROUP BY table_name
+                        ORDER BY table_name`;
+    const con = await oracleDb.getConnection();
+
+    con.execute(checkSchema,[],(e,r) => {
+        if(e){
+            console.error(e);
+        }
+        else{
+            console.log(r.rows);
+        }
+    });
 };
 
 module.exports.getConnection = async () => {

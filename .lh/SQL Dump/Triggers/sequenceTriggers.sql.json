@@ -1,0 +1,18 @@
+{
+    "sourceFile": "SQL Dump/Triggers/sequenceTriggers.sql",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1691741994545,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1691741994545,
+            "name": "Commit-0",
+            "content": "CREATE OR REPLACE TRIGGER user_id_trigger\r\nBEFORE INSERT ON \"USER\"\r\nFOR EACH ROW\r\nBEGIN\r\n    :NEW.USER_ID := user_id_seq.NEXTVAL;\r\nEND;\r\n/"
+        }
+    ]
+}

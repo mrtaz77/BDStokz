@@ -1,0 +1,18 @@
+{
+    "sourceFile": "SQL Dump/Triggers/referCount.sql",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1691741970674,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1691741970674,
+            "name": "Commit-0",
+            "content": "CREATE OR REPLACE TRIGGER update_refer_count\r\nAFTER INSERT OR DELETE ON CUSTOMER\r\nFOR EACH ROW\r\nBEGIN\r\n  UPDATE CUSTOMER SET REFER_COUNT = (SELECT COUNT(*) FROM CUSTOMER WHERE REFERER_ID = :NEW.USER_ID) WHERE USER_ID = :NEW.USER_ID;\r\nEND;\r\n/"
+        }
+    ]
+}

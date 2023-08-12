@@ -12,7 +12,6 @@ app.options('*',cors());
 app.use(express.json());
 
 // static files
-app.use('/api',require('./route/api'))
-
+// app.use('/api',require('./route/api'))
 
 module.exports = app;

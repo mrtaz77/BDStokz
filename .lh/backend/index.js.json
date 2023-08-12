@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 19,
+            "activePatchIndex": 29,
             "patches": [
                 {
                     "date": 1691086966449,
@@ -84,6 +84,46 @@
                 {
                     "date": 1691087336734,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,10 @@\n+var app =  require('./app');\r\n+\r\n+require('dotenv').config();\r\n+require('config/stocdb').connect();\r\n+\r\n+const port = process.env.PORT || 3000;\r\n+\r\n+app.listen(port,()=>{\r\n+    console.log('Server active on port ${port}');\r\n+});\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691088979938,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,100 +1,10 @@\n var app =  require('./app');\r\n \r\n-require('dotenv').config();\r\n-require('config/stocdb').connect();\r\n+require('.env').config();\r\n+require('config/stockDb').connect();\r\n \r\n const port = process.env.PORT || 3000;\r\n \r\n app.listen(port,()=>{\r\n     console.log('Server active on port ${port}');\r\n-});\n-var app =  require('./app');\r\n-\r\n-require('dotenv').config();\r\n-require('config/db').connect();\r\n-\r\n-const port = process.env.PORT || 3000;\r\n-\r\n-app.listen(port,()=>{\r\n-    console.log('Server active on port ${port}');\r\n-});\n-var app =  require('./app');\r\n-\r\n-require('dotenv').config();\r\n-require('config/database').connect();\r\n-\r\n-const port = process.env.PORT || 3000;\r\n-\r\n-app.listen(port,()=>{\r\n-    console.log('Server active on port $\r\n-});\n-var app =  require('./app');\r\n-\r\n-require('dotenv').config();\r\n-require('config/database').connect();\r\n-\r\n-const port = process.env.PORT || 3000;\r\n-\r\n-app.listen(port,()=>{\r\n-    console.log('Server active on port\r\n-});\n-var app =  require('./app');\r\n-\r\n-require('dotenv').config();\r\n-require('config/database').connect();\r\n-\r\n-const port = process.env.PORT || 3000;\r\n-\r\n-app.listen(port,()=>);\n-var app =  require('./app');\r\n-\r\n-require('dotenv').config();\r\n-require('config/database').connect();\r\n-\r\n-const port = process.env.PORT || 3000;\r\n-\r\n-app.listen(port);\n-var app =  require('./app');\r\n-\r\n-require('dotenv').config();\r\n-require('config/database').connect();\r\n-\r\n-const port = process.env.PORT || 3000;\r\n-\r\n-app.;instanceof()\n-var app =  require('./app');\r\n-\r\n-require('dotenv').config();\r\n-require('config/database').connect();\r\n-\r\n-const port = process.env.PORT || 3000;\r\n-\r\n-var app =  require('./app');\r\n-\r\n-require('dotenv').config();\r\n-require('config/database').connect();\r\n-\r\n-const port = process.env.\n-var app =  require('./app');\r\n-\r\n-require('dotenv').config();\r\n-require('config/database').conne\n-var app =  require('./app');\r\n-\r\n-require('dotenv').config();\r\n-require('config').config\n-var app =  require('./app');\r\n-\r\n-require('dotenv').config();\r\n-req\n-var app =  require('./app');\r\n-\r\n-require('dotenv')\n-var app =  require('./app');\r\n-\r\n-require\n-var app =  require('./app');\r\n-var app =  require('')\n-var app =  requirements\n\\ No newline at end of file\n-const app =  requirements\n-const app \n+});\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691088985038,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,10 @@\n+var app =  require('./app');\r\n+\r\n+require('./env').config();\r\n+require('config/stockDb').connect();\r\n+\r\n+const port = process.env.PORT || 3000;\r\n+\r\n+app.listen(port,()=>{\r\n+    console.log('Server active on port ${port}');\r\n+});\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691089013710,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,20 +1,10 @@\n var app =  require('./app');\r\n \r\n-require('./env').config();\r\n+require('./dotenv').config();\r\n require('config/stockDb').connect();\r\n \r\n const port = process.env.PORT || 3000;\r\n \r\n app.listen(port,()=>{\r\n     console.log('Server active on port ${port}');\r\n-});\n-var app =  require('./app');\r\n-\r\n-require('.env').config();\r\n-require('config/stockDb').connect();\r\n-\r\n-const port = process.env.PORT || 3000;\r\n-\r\n-app.listen(port,()=>{\r\n-    console.log('Server active on port ${port}');\r\n });\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691089487479,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n var app =  require('./app');\r\n \r\n-require('./dotenv').config();\r\n+require('dotenv').config();\r\n require('config/stockDb').connect();\r\n \r\n const port = process.env.PORT || 3000;\r\n \r\n"
+                },
+                {
+                    "date": 1691089561077,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,6 @@\n var app =  require('./app');\r\n \r\n-require('dotenv').config();\r\n require('config/stockDb').connect();\r\n \r\n const port = process.env.PORT || 3000;\r\n \r\n"
+                },
+                {
+                    "date": 1691089779568,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n var app =  require('./app');\r\n \r\n-require('config/stockDb').connect();\r\n+require('./config/stockDb').connect();\r\n \r\n const port = process.env.PORT || 3000;\r\n \r\n app.listen(port,()=>{\r\n"
+                },
+                {
+                    "date": 1691091270145,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n var app =  require('./app');\r\n \r\n require('./config/stockDb').connect();\r\n \r\n-const port = process.env.PORT || 3000;\r\n+const port =  3000;\r\n \r\n app.listen(port,()=>{\r\n     console.log('Server active on port ${port}');\r\n });\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691091276258,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,9 @@\n+var app =  require('./app');\r\n+\r\n+require('./config/stockDb').connect();\r\n+\r\n+const port = 3000;\r\n+\r\n+app.listen(port,()=>{\r\n+    console.log('Server active on port {port}');\r\n+});\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691091302228,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,14 +5,5 @@\n const port = 3000;\r\n \r\n app.listen(port,()=>{\r\n     console.log('Server active on port {port}');\r\n-});\n-var app =  require('./app');\r\n-\r\n-require('./config/stockDb').connect();\r\n-\r\n-const port =  3000;\r\n-\r\n-app.listen(port,()=>{\r\n-    console.log('Server active on port ${port}');\r\n });\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691091343316,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,6 +4,6 @@\n \r\n const port = 3000;\r\n \r\n app.listen(port,()=>{\r\n-    console.log('Server active on port {port}');\r\n+    console.log('Server active on port');\r\n });\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1691086966449,

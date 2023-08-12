@@ -1,0 +1,18 @@
+{
+    "sourceFile": "SQL Dump/Triggers/checkBackup.sql",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1691741941891,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1691741941891,
+            "name": "Commit-0",
+            "content": "-- \"BACKUP STOCK\" constraint using pl sql trigger \r\nCREATE OR REPLACE TRIGGER checkBackupConstraint\r\nBEFORE INSERT OR UPDATE ON \"BACKUP STOCK\"\r\nFOR EACH ROW\r\nDECLARE\r\n    v_stock_count NUMBER;\r\nBEGIN\r\n    SELECT COUNT(*) INTO v_stock_count\r\n    FROM STOCK\r\n    WHERE SYMBOL = :NEW.STOCK;\r\n\r\n    IF v_stock_count = 0 THEN\r\n        RAISE_APPLICATION_ERROR(-20001, 'Stock symbol does not exist in STOCK table');\r\n    END IF;\r\nEND;\r\n/"
+        }
+    ]
+}
