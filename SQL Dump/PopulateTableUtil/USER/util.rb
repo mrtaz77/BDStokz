@@ -13,3 +13,5 @@ clean_string = ->(string) {
     string.downcase.gsub(/[^a-z0-9]/, '')
   end
 }
+
+concat(clean_string.call(field('NAME')),trim_before_at.call(this))

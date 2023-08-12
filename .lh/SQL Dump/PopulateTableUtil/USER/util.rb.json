@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 4,
             "patches": [
                 {
                     "date": 1691830425644,
@@ -16,6 +16,14 @@
                 {
                     "date": 1691835468178,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,2 +1,15 @@\n concat(\"STANDARD_HASH('\",base64(this),\"','SHA512')\")\r\n-concat(\"TO_DATE('\",this,\"','YYYY-MM-DD')\")\n\\ No newline at end of file\n+concat(\"TO_DATE('\",this,\"','YYYY-MM-DD')\")\r\n+\r\n+trim_before_at = ->(string) { \"@\" + string.split('@').last }\r\n+\r\n+clean_string = ->(string) {\r\n+  words = string.split\r\n+  if words.length >= 2\r\n+    first_word = words[0].downcase.gsub(/[^a-z0-9]/, '')\r\n+    second_word = words[1].downcase.gsub(/[^a-z0-9]/, '')\r\n+    \"#{first_word}#{second_word}\"\r\n+  else\r\n+    string.downcase.gsub(/[^a-z0-9]/, '')\r\n+  end\r\n+}\r\n"
+                },
+                {
+                    "date": 1691836932545,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,4 +12,6 @@\n   else\r\n     string.downcase.gsub(/[^a-z0-9]/, '')\r\n   end\r\n }\r\n+\r\n+concat(clean_string.call(name),trim_before_at(this))\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691837047432,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,6 +12,5 @@\n   else\r\n     string.downcase.gsub(/[^a-z0-9]/, '')\r\n   end\r\n }\r\n-\r\n-concat(clean_string.call(name),trim_before_at(this))\n\\ No newline at end of file\n+concat(clean_string.call(field('NAME')),trim_before_at.call(this))\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1691830425644,
