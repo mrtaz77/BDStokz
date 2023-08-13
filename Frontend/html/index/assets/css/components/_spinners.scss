@@ -1,0 +1,27 @@
+//
+// Spinners
+// 
+
+
+.spinner-border{
+  &.spinner-border-custom-1{
+    border: 5px double currentColor;
+    border-right-color: transparent;
+  }
+  &.spinner-border-custom-2{
+    border: 5px dotted currentColor;
+    border-right-color: transparent;
+  }
+  &.spinner-border-custom-3{
+    border: 5px groove currentColor;
+    border-right-color: transparent;
+  }
+  &.spinner-border-custom-4{
+    border: 5px dashed currentColor;
+    border-right-color: transparent;
+  }
+  &.spinner-border-custom-5{
+    border: 5px outset currentColor;
+    border-right-color: transparent;
+  }  
+}

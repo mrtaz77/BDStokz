@@ -1,0 +1,143 @@
+/* =============
+   General
+============= */
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body{
+  margin: 0;
+  overflow-x: hidden !important;
+  font-size: $font-size-base;
+  background-color: $body-bg;
+  color: $body-color;
+  letter-spacing: 0.1px;
+  line-height: 1.5;
+  position: relative;
+}
+
+.row>*{
+  position: relative;
+}
+
+.h1,.h2,.h3,.h4,.h5,.h6,
+h1,h2,h3,h4,h5,h6 {
+  color: $gray-700;
+  margin: 10px 0;
+}
+
+
+h1 {
+  line-height: 43px;
+}
+
+h2 {
+  line-height: 35px;
+}
+
+h3 {
+  line-height: 30px;
+}
+
+h4 {
+  line-height: 22px;
+}
+
+a {
+  font-family: $font-primary;
+  color: $gray-700;
+  text-decoration: none;
+  &:hover,&:active,&:focus {
+    outline: 0;
+    text-decoration: none;
+  }
+}
+
+hr{
+  background-color: $border;
+  opacity: 1;
+}
+
+.o-1{
+  opacity: 0.08;
+}
+
+p {
+  line-height: 1.6;
+  font-family: $font-secondary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+}
+
+.card-bg{
+  background-color: $card-bg;
+}
+
+* {
+  outline: none !important;
+}
+mark {
+  color: inherit;
+  padding: 0;
+  background: 0 0;
+  background-image: linear-gradient(120deg ,rgba($warning,.4) 0,rgba($warning,.4) 100%);
+  background-repeat: no-repeat;
+  background-position: 0 80%;
+  position: relative;
+  background-size: 100% .3em;
+}
+.fw-semibold{
+  font-weight: $font-weight-semibold !important;
+}
+
+.nav{
+  &.nav-pills{
+    background-color: $light-alt;
+  }
+}
+
+.media {
+  display: flex;
+  align-items: flex-start;
+}
+.media-body {
+  flex: 1;
+}
+
+
+.divider-custom{
+  display: block;
+  text-align: center;
+  overflow: hidden;
+  margin: 1rem 0;
+  .divider-text {
+    position: relative;
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 6px;
+    color: $dark;
+    border: 1px dashed $border;
+    border-radius: 30px;
+    font-family: $font-secondary;
+    &:after {
+      left: 100%;
+    }
+    &:before {
+      right: 100%;
+    }  
+  }
+  .divider-text:after, 
+  .divider-text:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    border-top: 1px dashed $border;
+  }
+}
+
+.ti-spin {
+  animation: 2s linear infinite spinner-border;
+}

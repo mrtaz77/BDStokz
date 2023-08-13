@@ -1,0 +1,237 @@
+/*
+Template Name: Metrica - Admin & Dashboard Template
+Author: Mannatthemes
+File: Topbar
+*/
+
+
+.topbar {
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 999;
+ }
+ 
+ .navbar-custom {
+   background: $header-light-bg;
+   min-height: $header-height;
+   position: relative;
+   border-bottom: 1px solid $border;
+   margin-left: $sidebar-width;
+   .nav-link {
+       padding: 0;
+       color: $header-item-color;
+       margin: 0 8px;
+       &.nav-icon {
+           width: 32px;
+           height: 32px;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           border-radius: 50%;
+           background-color: $header-icon-bg;
+           i{
+               font-size: 18px;
+               padding-bottom: 2px;
+               color: $header-icon-color;
+           }
+       }
+   }
+   .dropdown-toggle {
+       &:after {
+           content: initial;
+       }
+   }
+     .topbar-nav {
+         height: $header-height;
+         display: flex;
+         align-items: center;
+         li {
+             float: left;        
+             &.show {
+                 .nav-link {
+                     background-color: lighten($header-light-bg, 3%);
+                     color: $body-color;
+                 }
+             }
+             &:last-child{
+                 margin-right: 8px;
+             }
+             &:first-child{
+                 margin-left: 8px;
+             }
+         }
+     }
+ }
+ 
+ .button-menu-mobile {
+   border: none;
+   color: $header-icon-color !important;
+   width: 60px;
+   background-color: transparent;
+   cursor: pointer;
+ }
+ 
+ .nav-user {
+   .nav-user-name {
+       vertical-align: middle;
+   }
+ }
+ 
+ /* Notification */
+ 
+ .notification-list {
+   .notification-menu{
+     max-height: 220px;
+     margin-left: 0;
+   } 
+   
+   
+ }
+ .alert-badge::after{
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: 5px;
+    right: 15px;
+    border: 2px solid $header-light-bg;
+    border-radius: 50%;
+    background-color: $danger;
+}
+.order-badge{
+    &:after{
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        top: 5px;
+        border: 2px solid $header-light-bg;
+        border-radius: 50%;
+        background-color: transparent;
+    }
+    &.pending{
+        &:after{
+            background-color: $danger; 
+        }
+    }
+    &.successfull{
+        &:after{
+            background-color: $success; 
+        } 
+    }
+}
+ // Search
+ 
+ .app-search {
+     position: relative;
+     margin: 0;
+     form {
+         position: relative;
+         z-index: 1; 
+         .form-control,
+         .form-control:focus{
+             border: 1px solid $header-search-border-color;
+             font-size: 13px;
+             height: 34px;
+             color: $header-search-color;
+             background: $header-search-bg;
+             box-shadow: none;
+             border: none;
+             width: 300px;
+             border-radius: 30px;
+             padding-left: 38px;
+         } 
+         button {
+             position: absolute;
+             width: 30px;
+             height: 30px;
+             left: 12px;
+             top: 50%;
+             transform: translateY(-50%);
+             border: none;
+             text-align: center;
+             background-color: transparent;
+             color: $header-search-icon-color; 
+             i{
+                 display: flex;
+             }
+             &:focus {
+                 outline: none; 
+             }
+         }
+     }
+     
+        
+     .input.form-control::-webkit-input-placeholder {
+         color: $header-search-placeholder-color;
+     }
+     
+     input.form-control:-moz-placeholder {
+         color: $header-search-placeholder-color;
+     }
+     
+     input.form-control::-moz-placeholder {
+         color: $header-search-placeholder-color;
+     }
+     
+     input.form-control:-ms-input-placeholder {
+         color: $header-search-placeholder-color;
+     }
+ } 
+ 
+ 
+ 
+ @media (min-width: 1439.98px) {
+    .topbar,
+    .page-title-box{
+        padding: 0 100px;
+    }
+ }
+ 
+ @media (max-width: 1316.98px) {
+     .topbar{
+         position: fixed;
+     }
+     .page-wrapper {
+         .page-content{
+             margin-top: $header-height;
+         }
+     }
+ }
+ 
+ @media (max-width: 1024px) {
+   .topbar {
+       .app-search {
+           .form-control,
+           .form-control:focus{
+               width: 230px;
+           }  
+       }
+   }   
+ }
+ 
+ @media (max-width: 768px) and (max-width: 1023.98px){
+   .app-search{
+       display: none;
+   }
+ }
+ 
+ @media (max-width: 767px){
+   .app-search,
+   .hidden-sm {
+       display: none;
+   }
+ }
+ 
+ @media (max-width: 375px){
+   
+   .page-title-box {
+       .breadcrumb{
+           display: none;
+       }
+   }
+ }
+ 
+ 

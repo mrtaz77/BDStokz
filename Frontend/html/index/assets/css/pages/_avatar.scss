@@ -1,0 +1,54 @@
+// 
+// _avatar.scss
+// 
+.avatar-box{
+  position: relative;
+  display: inline-block;
+  .avatar-title {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    color: $gray-100;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.avatar-md{
+    height: 36px;
+    width: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 18px;
+    display: inline-block;
+}
+.img-group{
+    .avatar-badge{
+      position: absolute;
+      right: 1px;
+      width: 8px;
+      height: 8px;
+      border-radius: 8px;
+      box-shadow: 0 0 0 2px $card-bg;
+      z-index: 2;
+    }
+    
+    .user-avatar {
+      position: relative;
+      display: inline-block;
+      &:focus,
+      &:hover{
+        z-index: 2;
+      }
+      .online {
+        background: $success;
+      }
+      .offline{
+        background: $gray-400;
+      }
+      img{
+        box-shadow: 0 0 0 2px $gray-100;
+      }
+    }
+  }
+  

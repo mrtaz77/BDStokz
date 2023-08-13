@@ -1,0 +1,25 @@
+// 
+// _dropdown.scss
+// 
+
+.dropdown-menu{
+  box-shadow: 0 3px 12px rgba($drop-shadow-color,.3);
+  margin: 0;
+  .dropdown-item:hover, 
+  .dropdown-item:focus{
+    background-color: $gray-100;
+    color: $gray-900;
+  }
+}
+.dropdown-lg{
+  width: $dropdown-lg-width;
+}
+.dropdown-xl{
+  min-width: 42rem;
+}
+.dropstart .dropdown-toggle::before,
+.dropend .dropdown-toggle::after,
+.dropup .dropdown-toggle::after,
+.dropdown-toggle::after{
+  display: none;
+}

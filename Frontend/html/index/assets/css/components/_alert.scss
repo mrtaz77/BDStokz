@@ -1,0 +1,78 @@
+// 
+// _alert.scss
+// 
+
+a.badge:hover{
+  color: $white;
+}
+.alert {
+  position: relative;
+  border: 0;
+
+  &.custom-alert{
+    overflow: hidden;
+    &:after{
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+    @each $color, $value in $theme-colors {
+      &.custom-alert-#{$color}{
+        &:after{
+          background-color: $value;
+        }
+      }
+    }
+  }
+}
+
+.b-round{
+  border-radius: 40px;
+}
+.alert {
+  position: relative;
+  border: 0;
+  &.icon-custom-alert{
+    display: flex;
+    padding: 5px 18px;
+  }
+  .alert-icon{
+    font-size: 21px;
+    margin-right: 8px;
+  }
+  .alert-text{
+    flex-grow: 1;
+    align-self: center;
+  }
+  .alert-close {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .alert-link {
+    font-weight: 600;
+  }
+
+  &.alert-light{
+    color: $dark;
+    background-color: $light;
+  }
+  
+  @each $color, $value in $theme-colors {
+    &.alert-outline-#{$color} {
+      border:1px solid $value;
+      background-color: transparent;
+      color: $value !important;
+      
+    }
+    &.alert-soft-success{
+      border:none;
+      background-color: lighten($value, 45%);
+      color: $value;
+    }
+  }
+}
