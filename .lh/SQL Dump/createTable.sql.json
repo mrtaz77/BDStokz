@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 3,
+            "activePatchIndex": 4,
             "patches": [
                 {
                     "date": 1691828704966,
@@ -20,6 +20,10 @@
                 {
                     "date": 1691828848647,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,9 +49,8 @@\n     CONSTRAINT CHK_USER_TYPE CHECK(\"TYPE\" IN ('Admin','Corp','Broker','Customer')),\r\n     CONSTRAINT CHK_REG_DATE CHECK(REG_DATE > TO_DATE('1-1-2015','DD-MM-YYYY'))\r\n );\r\n \r\n-\r\n CREATE TABLE USER_CONTACT (\r\n     USER_ID INTEGER NOT NULL,\r\n     CONTACT VARCHAR ( 20 ) NOT NULL,\r\n     CONSTRAINT PK_USER_CONTACT PRIMARY KEY ( USER_ID, CONTACT ),\r\n@@ -268,7 +267,12 @@\n     CONSTRAINT FK_OWNS_PORTFOLIO FOREIGN KEY(USER_ID, SECTOR) REFERENCES PORTFOLIO(USER_ID, SECTOR) ON DELETE CASCADE,\r\n     CONSTRAINT FK_OWNS_STOCK FOREIGN KEY(SYMBOL) REFERENCES STOCK(SYMBOL) ON DELETE SET NULL\r\n );\r\n \r\n+ALTER TABLE EMPLOYEE\r\n+ADD CONSTRAINT CHK_SALARY_RANGE CHECK (SALARY BETWEEN 10000.00 AND 1000000.00);\r\n \r\n+ALTER TABLE USER_CONTACT\r\n+ADD CONSTRAINT UK_USER_CONTACT UNIQUE (CONTACT);\r\n \r\n-\r\n+ALTER TABLE EMP_CONTACT\r\n+ADD CONSTRAINT UK_EMP_CONTACT UNIQUE (CONTACT);\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1691897463055,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -274,5 +274,20 @@\n ALTER TABLE USER_CONTACT\r\n ADD CONSTRAINT UK_USER_CONTACT UNIQUE (CONTACT);\r\n \r\n ALTER TABLE EMP_CONTACT\r\n-ADD CONSTRAINT UK_EMP_CONTACT UNIQUE (CONTACT);\n\\ No newline at end of file\n+ADD CONSTRAINT UK_EMP_CONTACT UNIQUE (CONTACT);\r\n+\r\n+ALTER TABLE \"USER\" \r\n+DROP CONSTRAINT CHK_REG_DATE;\r\n+\r\n+ALTER TABLE \"USER\" \r\n+ADD CONSTRAINT CHK_REG_DATE CHECK(REG_DATE >= TO_DATE('2015-01-01', 'YYYY-MM-DD'));\r\n+\r\n+ALTER TABLE \"USER\"\r\n+MODIFY CITY VARCHAR2(50);\r\n+\r\n+ALTER TABLE \"USER\"\r\n+DROP CONSTRAINT CHK_USER_EMAIL_FORMAT;\r\n+\r\n+ALTER TABLE \"USER\"\r\n+ADD CONSTRAINT CHK_USER_EMAIL_FORMAT  CHECK (REGEXP_LIKE(EMAIL, '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'));\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1691828704966,
