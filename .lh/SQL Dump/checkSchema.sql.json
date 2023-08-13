@@ -3,11 +3,23 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 3,
             "patches": [
                 {
                     "date": 1691828693800,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1691899577598,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -67,7 +67,11 @@\n ORDER BY\r\n \tTABLE_NAME;\r\n \r\n \r\n+-- user check \r\n+SELECT \"TYPE\",MIN(USER_ID),MAX(USER_ID) FROM \"USER\" GROUP BY \"TYPE\";\r\n+SELECT COUNT(*) FROM \"USER\" GROUP BY \"TYPE\";\r\n+SELECT USER_ID,NAME FROM \"USER\" WHERE \"TYPE\" = 'Corp' ORDER BY USER_ID;\r\n \r\n \r\n \r\n"
+                },
+                {
+                    "date": 1691908848943,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,29 +11,8 @@\n \tTABLE_NAME,\r\n \tCOLUMN_NAME;\r\n \r\n SELECT\r\n-\tCOUNT( DISTINCT TABLE_NAME ) \r\n-FROM\r\n-\tall_tab_columns \r\n-WHERE\r\n-\towner = 'C##STOCKDB';\r\n-\r\n-\r\n-SELECT\r\n-\ttable_name,\r\n-\tcolumn_name,\r\n-\tdata_type,\r\n-\tDATA_LENGTH \r\n-FROM\r\n-\tall_tab_columns \r\n-WHERE\r\n-\towner = 'C##STOCKDB' \r\n-ORDER BY\r\n-\tTABLE_NAME,\r\n-\tCOLUMN_NAME;\r\n-\r\n-SELECT\r\n \tCOUNT( DISTINCT TABLE_NAME ) NUM_TABLES\r\n FROM\r\n \tall_tab_columns \r\n WHERE\r\n@@ -67,11 +46,14 @@\n ORDER BY\r\n \tTABLE_NAME;\r\n \r\n \r\n--- user check \r\n+\r\n+-- USER CHECK\r\n SELECT \"TYPE\",MIN(USER_ID),MAX(USER_ID) FROM \"USER\" GROUP BY \"TYPE\";\r\n SELECT COUNT(*) FROM \"USER\" GROUP BY \"TYPE\";\r\n SELECT USER_ID,NAME FROM \"USER\" WHERE \"TYPE\" = 'Corp' ORDER BY USER_ID;\r\n \r\n+SELECT NAME,STREET_NO||' '||STREET_NAME,ZIP FROM \"USER\" WHERE \"TYPE\" = 'Admin';\r\n \r\n-\r\n+-- EMPLOYEE CHECK\r\n+SELECT * FROM EMPLOYEE;\r\n"
+                },
+                {
+                    "date": 1691921081739,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,22 +33,29 @@\n \tAND constraint_name NOT LIKE '%SYS%'\r\n ORDER BY\r\n \tTABLE_NAME,\r\n \tCONSTRAINT_NAME;\r\n-\t\r\n \r\n-SELECT\r\n-\ttable_name,\r\n-\tnum_rows \r\n-FROM\r\n-\tall_tables \r\n-WHERE\r\n-\towner = 'C##STOCKDB' \r\n-ORDER BY\r\n-\tTABLE_NAME;\r\n+-- viewing table rows\r\n \r\n+DECLARE\r\n+    v_table_name VARCHAR2(30);\r\n+    v_row_count  NUMBER;\r\n+BEGIN\r\n+    FOR tab IN (SELECT table_name FROM all_tables WHERE owner = 'C##STOCKDB') LOOP\r\n+        v_table_name := tab.table_name;\r\n+        \r\n+        EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM C##STOCKDB.\"' || v_table_name || '\"' INTO v_row_count;\r\n+        \r\n+        DBMS_OUTPUT.PUT_LINE('Table ' || v_table_name || ': ' || v_row_count || ' rows');\r\n+    END LOOP;\r\n+END;\r\n+/\r\n \r\n \r\n+\r\n+\r\n+\r\n -- USER CHECK\r\n SELECT \"TYPE\",MIN(USER_ID),MAX(USER_ID) FROM \"USER\" GROUP BY \"TYPE\";\r\n SELECT COUNT(*) FROM \"USER\" GROUP BY \"TYPE\";\r\n SELECT USER_ID,NAME FROM \"USER\" WHERE \"TYPE\" = 'Corp' ORDER BY USER_ID;\r\n@@ -56,4 +63,16 @@\n SELECT NAME,STREET_NO||' '||STREET_NAME,ZIP FROM \"USER\" WHERE \"TYPE\" = 'Admin';\r\n \r\n -- EMPLOYEE CHECK\r\n SELECT * FROM EMPLOYEE;\r\n+SELECT\r\n+\tUSER_ID,\r\n+\tEMPLOYEE_ID \r\n+FROM\r\n+\t\"USER\",\r\n+\tEMPLOYEE \r\n+WHERE\r\n+\t\"USER\".NAME = EMPLOYEE.FIRST_NAME || ' ' || EMPLOYEE.LAST_NAME \r\n+\tOR \"USER\".NAME = EMPLOYEE.FIRST_NAME || EMPLOYEE.LAST_NAME\r\n+ORDER BY USER_ID;\r\n+\r\n+-- \n\\ No newline at end of file\n"
                 }
             ],
             "date": 1691828693800,
