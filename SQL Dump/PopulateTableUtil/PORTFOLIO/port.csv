@@ -1,0 +1,948 @@
+USER_ID,SECTOR
+16070,Healthcare
+16090,Telecommunication
+16110,Energy
+16120,Retail
+16120,Transportation
+16130,Technology
+16130,Transportation
+16160,Financial
+16160,Healthcare
+16190,Financial
+16190,Telecommunication
+16210,Healthcare
+16210,Utilities
+16220,Energy
+16230,Energy
+16230,Retail
+16260,Healthcare
+16270,Transportation
+16270,Utilities
+16280,Healthcare
+16280,Transportation
+16290,Energy
+16300,Technology
+16350,Real Estate
+16350,Telecommunication
+16360,Technology
+16370,Retail
+16390,Financial
+16400,Consumer Goods
+16400,Real Estate
+16400,Telecommunication
+16420,Technology
+16420,Transportation
+16430,Consumer Goods
+16430,Real Estate
+16450,Consumer Goods
+16470,Technology
+16470,Utilities
+16480,Financial
+16500,Technology
+16510,Telecommunication
+16520,Financial
+16520,Retail
+16550,Consumer Goods
+16550,Retail
+16550,Telecommunication
+16560,Healthcare
+16560,Transportation
+16570,Telecommunication
+16570,Utilities
+16600,Financial
+16610,Technology
+16630,Energy
+16640,Consumer Goods
+16640,Telecommunication
+16660,Telecommunication
+16670,Retail
+16680,Real Estate
+16680,Technology
+16710,Healthcare
+16730,Financial
+16730,Technology
+16740,Consumer Goods
+16740,Financial
+16740,Technology
+16760,Energy
+16760,Technology
+16770,Real Estate
+16770,Transportation
+16790,Energy
+16800,Utilities
+16810,Retail
+16810,Transportation
+16830,Technology
+16830,Utilities
+16850,Energy
+16860,Consumer Goods
+16860,Healthcare
+16880,Utilities
+16910,Energy
+16930,Technology
+16930,Telecommunication
+16930,Utilities
+16940,Consumer Goods
+16940,Financial
+16950,Technology
+16980,Consumer Goods
+16980,Retail
+17000,Energy
+17020,Transportation
+17030,Financial
+17030,Telecommunication
+17040,Transportation
+17040,Utilities
+17060,Retail
+17080,Energy
+17080,Financial
+17080,Healthcare
+17080,Telecommunication
+17090,Real Estate
+17090,Utilities
+17100,Real Estate
+17110,Real Estate
+17120,Consumer Goods
+17120,Healthcare
+17130,Transportation
+17170,Energy
+17190,Retail
+17200,Retail
+17200,Technology
+17200,Telecommunication
+17210,Financial
+17240,Financial
+17250,Telecommunication
+17270,Utilities
+17280,Consumer Goods
+17300,Transportation
+17310,Financial
+17310,Technology
+17320,Retail
+17350,Utilities
+17360,Transportation
+17370,Telecommunication
+17380,Utilities
+17400,Real Estate
+17400,Retail
+17410,Financial
+17410,Telecommunication
+17420,Financial
+17430,Retail
+17440,Telecommunication
+17450,Real Estate
+17460,Telecommunication
+17480,Utilities
+17490,Retail
+17500,Utilities
+17510,Telecommunication
+17540,Energy
+17560,Utilities
+17570,Technology
+17570,Transportation
+17580,Healthcare
+17590,Healthcare
+17610,Healthcare
+17620,Healthcare
+17620,Utilities
+17640,Consumer Goods
+17650,Utilities
+17660,Energy
+17670,Healthcare
+17690,Technology
+17700,Technology
+17720,Consumer Goods
+17720,Retail
+17720,Telecommunication
+17740,Utilities
+17750,Consumer Goods
+17750,Telecommunication
+17760,Consumer Goods
+17760,Financial
+17770,Technology
+17780,Real Estate
+17780,Transportation
+17790,Retail
+17800,Healthcare
+17810,Telecommunication
+17820,Consumer Goods
+17830,Financial
+17830,Healthcare
+17840,Consumer Goods
+17850,Retail
+17870,Technology
+17880,Financial
+17880,Telecommunication
+17890,Healthcare
+17890,Telecommunication
+17900,Telecommunication
+17920,Consumer Goods
+17920,Real Estate
+17920,Technology
+17940,Real Estate
+17950,Real Estate
+17970,Telecommunication
+17970,Utilities
+17980,Retail
+18020,Technology
+18020,Telecommunication
+18030,Financial
+18030,Retail
+18030,Technology
+18050,Transportation
+18070,Real Estate
+18080,Energy
+18090,Healthcare
+18090,Technology
+18140,Consumer Goods
+18150,Consumer Goods
+18150,Energy
+18180,Technology
+18190,Transportation
+18200,Real Estate
+18210,Consumer Goods
+18220,Consumer Goods
+18220,Energy
+18230,Transportation
+18240,Telecommunication
+18250,Technology
+18300,Financial
+18320,Technology
+18320,Transportation
+18340,Healthcare
+18340,Real Estate
+18340,Utilities
+18350,Consumer Goods
+18350,Healthcare
+18360,Retail
+18370,Telecommunication
+18380,Energy
+18380,Technology
+18390,Financial
+18410,Transportation
+18410,Utilities
+18430,Utilities
+18440,Consumer Goods
+18450,Energy
+18450,Transportation
+18460,Technology
+18460,Transportation
+18470,Healthcare
+18480,Healthcare
+18480,Telecommunication
+18490,Consumer Goods
+18490,Financial
+18490,Transportation
+18500,Technology
+18500,Telecommunication
+18510,Healthcare
+18510,Retail
+18520,Retail
+18560,Technology
+18560,Telecommunication
+18560,Transportation
+18570,Energy
+18580,Technology
+18590,Consumer Goods
+18590,Utilities
+18610,Energy
+18620,Healthcare
+18630,Consumer Goods
+18630,Retail
+18630,Transportation
+18640,Utilities
+18650,Energy
+18660,Consumer Goods
+18680,Retail
+18700,Consumer Goods
+18700,Healthcare
+18720,Technology
+18740,Consumer Goods
+18740,Telecommunication
+18750,Energy
+18750,Telecommunication
+18750,Utilities
+18780,Financial
+18780,Real Estate
+18790,Healthcare
+18790,Utilities
+18800,Healthcare
+18810,Healthcare
+18840,Technology
+18850,Energy
+18850,Financial
+18860,Technology
+18870,Telecommunication
+18880,Utilities
+18900,Financial
+18900,Technology
+18900,Telecommunication
+18920,Energy
+18920,Retail
+18920,Telecommunication
+18930,Healthcare
+18940,Retail
+18950,Transportation
+18960,Energy
+18960,Healthcare
+18960,Telecommunication
+18980,Energy
+18990,Consumer Goods
+19000,Real Estate
+19030,Transportation
+19040,Healthcare
+19040,Real Estate
+19040,Transportation
+19050,Financial
+19050,Utilities
+19060,Consumer Goods
+19060,Retail
+19070,Transportation
+19080,Energy
+19080,Telecommunication
+19090,Utilities
+19100,Healthcare
+19110,Retail
+19120,Consumer Goods
+19130,Financial
+19150,Consumer Goods
+19170,Consumer Goods
+19170,Real Estate
+19190,Retail
+19200,Real Estate
+19210,Energy
+19210,Transportation
+19240,Energy
+19240,Healthcare
+19260,Energy
+19280,Retail
+19280,Technology
+19300,Healthcare
+19300,Retail
+19330,Technology
+19340,Retail
+19340,Technology
+19360,Technology
+19360,Telecommunication
+19380,Telecommunication
+19390,Consumer Goods
+19390,Healthcare
+19400,Real Estate
+19410,Retail
+19420,Retail
+19420,Telecommunication
+19450,Real Estate
+19460,Energy
+19460,Financial
+19480,Financial
+19480,Telecommunication
+19490,Consumer Goods
+19500,Energy
+19510,Healthcare
+19510,Real Estate
+19510,Telecommunication
+19520,Healthcare
+19530,Utilities
+19550,Energy
+19560,Technology
+19570,Consumer Goods
+19570,Transportation
+19580,Real Estate
+19590,Telecommunication
+19600,Financial
+19600,Transportation
+19600,Utilities
+19610,Energy
+19610,Utilities
+19620,Transportation
+19630,Retail
+19640,Technology
+19650,Financial
+19650,Transportation
+19670,Real Estate
+19680,Real Estate
+19690,Telecommunication
+19690,Transportation
+19700,Energy
+19720,Transportation
+19750,Financial
+19760,Retail
+19760,Technology
+19780,Energy
+19810,Consumer Goods
+19820,Energy
+19830,Financial
+19840,Consumer Goods
+19840,Real Estate
+19850,Energy
+19850,Financial
+19860,Retail
+19880,Healthcare
+19880,Retail
+19900,Technology
+19920,Consumer Goods
+19920,Energy
+19920,Retail
+19930,Retail
+19930,Technology
+19950,Consumer Goods
+20000,Financial
+20010,Retail
+20020,Transportation
+20020,Utilities
+20030,Energy
+20050,Real Estate
+20070,Transportation
+20070,Utilities
+20090,Telecommunication
+20100,Healthcare
+20100,Retail
+20110,Consumer Goods
+20110,Financial
+20140,Healthcare
+20150,Real Estate
+20160,Consumer Goods
+20160,Retail
+20170,Transportation
+20180,Financial
+20180,Transportation
+20190,Transportation
+20200,Healthcare
+20210,Financial
+20220,Energy
+20230,Energy
+20240,Real Estate
+20240,Transportation
+20260,Real Estate
+20260,Utilities
+20270,Transportation
+20280,Healthcare
+20280,Technology
+20300,Healthcare
+20310,Telecommunication
+20320,Energy
+20330,Utilities
+20350,Real Estate
+20350,Transportation
+20370,Financial
+20410,Healthcare
+20430,Energy
+20430,Telecommunication
+20440,Telecommunication
+20450,Telecommunication
+20470,Telecommunication
+20480,Consumer Goods
+20480,Financial
+20480,Technology
+20490,Healthcare
+20490,Transportation
+20490,Utilities
+20500,Telecommunication
+20530,Real Estate
+20560,Energy
+20560,Healthcare
+20560,Utilities
+20570,Transportation
+20600,Telecommunication
+20620,Healthcare
+20640,Consumer Goods
+20650,Retail
+20670,Real Estate
+20670,Telecommunication
+20680,Real Estate
+20700,Real Estate
+20710,Consumer Goods
+20730,Healthcare
+20730,Retail
+20750,Healthcare
+20760,Consumer Goods
+20780,Retail
+20800,Retail
+20800,Transportation
+20810,Retail
+20810,Technology
+20810,Telecommunication
+20820,Consumer Goods
+20840,Transportation
+20860,Real Estate
+20870,Transportation
+20890,Financial
+20890,Telecommunication
+20890,Transportation
+20900,Energy
+20900,Technology
+20920,Consumer Goods
+20940,Consumer Goods
+20940,Financial
+20980,Financial
+20990,Healthcare
+21020,Transportation
+21030,Financial
+21040,Financial
+21070,Utilities
+21080,Energy
+21080,Technology
+21100,Utilities
+21130,Financial
+21170,Retail
+21170,Technology
+21200,Healthcare
+21210,Consumer Goods
+21230,Consumer Goods
+21240,Energy
+21240,Financial
+21240,Telecommunication
+21250,Financial
+21280,Healthcare
+21280,Retail
+21290,Energy
+21310,Transportation
+21320,Telecommunication
+21340,Healthcare
+21350,Financial
+21350,Real Estate
+21370,Energy
+21370,Retail
+21380,Consumer Goods
+21390,Telecommunication
+21400,Retail
+21410,Consumer Goods
+21410,Financial
+21410,Retail
+21420,Consumer Goods
+21440,Technology
+21460,Retail
+21480,Consumer Goods
+21480,Utilities
+21500,Financial
+21500,Technology
+21530,Healthcare
+21550,Real Estate
+21550,Transportation
+21560,Healthcare
+21570,Healthcare
+21580,Real Estate
+21580,Retail
+21580,Transportation
+21610,Transportation
+21620,Energy
+21620,Transportation
+21630,Retail
+21630,Telecommunication
+21640,Energy
+21640,Transportation
+21650,Real Estate
+21660,Consumer Goods
+21660,Energy
+21660,Financial
+21660,Healthcare
+21670,Telecommunication
+21690,Utilities
+21700,Consumer Goods
+21720,Telecommunication
+21740,Retail
+21760,Energy
+21760,Technology
+21770,Consumer Goods
+21770,Energy
+21770,Financial
+21770,Utilities
+21790,Energy
+21820,Telecommunication
+21830,Financial
+21840,Consumer Goods
+21840,Financial
+21860,Consumer Goods
+21870,Transportation
+21880,Healthcare
+21900,Utilities
+21920,Retail
+21920,Utilities
+21940,Consumer Goods
+21940,Healthcare
+21940,Technology
+21960,Healthcare
+21980,Energy
+21990,Real Estate
+21990,Transportation
+22000,Energy
+22040,Transportation
+22060,Energy
+22060,Utilities
+22070,Transportation
+22080,Retail
+22100,Retail
+22110,Transportation
+22120,Real Estate
+22120,Transportation
+22130,Telecommunication
+22130,Utilities
+22160,Energy
+22170,Healthcare
+22180,Real Estate
+22190,Retail
+22200,Energy
+22210,Retail
+22220,Energy
+22240,Consumer Goods
+22250,Technology
+22270,Technology
+22280,Retail
+22310,Transportation
+22320,Energy
+22350,Energy
+22350,Transportation
+22370,Consumer Goods
+22370,Utilities
+22390,Financial
+22390,Telecommunication
+22400,Real Estate
+22400,Utilities
+22430,Transportation
+22470,Transportation
+22500,Real Estate
+22510,Retail
+22530,Consumer Goods
+22530,Financial
+22560,Energy
+22560,Retail
+22570,Utilities
+22580,Consumer Goods
+22580,Financial
+22590,Retail
+22610,Transportation
+22620,Technology
+22640,Real Estate
+22660,Retail
+22660,Telecommunication
+22670,Real Estate
+22670,Technology
+22700,Energy
+22710,Consumer Goods
+22740,Retail
+22750,Consumer Goods
+22770,Telecommunication
+22830,Telecommunication
+22840,Energy
+22840,Telecommunication
+22860,Energy
+22870,Real Estate
+22890,Energy
+22910,Healthcare
+22920,Financial
+22920,Retail
+22930,Energy
+22960,Consumer Goods
+22960,Healthcare
+22970,Energy
+22970,Telecommunication
+22970,Utilities
+22980,Consumer Goods
+22980,Healthcare
+22980,Utilities
+23000,Retail
+23000,Telecommunication
+23020,Energy
+23040,Energy
+23040,Retail
+23050,Real Estate
+23050,Retail
+23050,Telecommunication
+23070,Transportation
+23110,Retail
+23120,Financial
+23120,Healthcare
+23130,Technology
+23130,Utilities
+23150,Retail
+23170,Financial
+23170,Technology
+23170,Telecommunication
+23190,Transportation
+23190,Utilities
+23210,Transportation
+23230,Consumer Goods
+23240,Consumer Goods
+23240,Real Estate
+23270,Healthcare
+23270,Technology
+23280,Telecommunication
+23300,Consumer Goods
+23320,Consumer Goods
+23330,Healthcare
+23340,Financial
+23340,Real Estate
+23350,Transportation
+23360,Telecommunication
+23380,Transportation
+23390,Technology
+23390,Telecommunication
+23400,Financial
+23420,Consumer Goods
+23430,Telecommunication
+23440,Real Estate
+23440,Retail
+23440,Transportation
+23450,Healthcare
+23460,Energy
+23460,Financial
+23490,Transportation
+23520,Utilities
+23540,Financial
+23560,Retail
+23570,Real Estate
+23570,Technology
+23580,Healthcare
+23590,Retail
+23600,Retail
+23610,Healthcare
+23640,Technology
+23650,Financial
+23650,Technology
+23670,Transportation
+23680,Healthcare
+23680,Transportation
+23700,Real Estate
+23710,Financial
+23710,Healthcare
+23720,Consumer Goods
+23720,Healthcare
+23740,Energy
+23740,Technology
+23740,Transportation
+23750,Healthcare
+23760,Utilities
+23770,Consumer Goods
+23780,Utilities
+23800,Financial
+23800,Technology
+23810,Real Estate
+23830,Telecommunication
+23840,Energy
+23850,Technology
+23850,Telecommunication
+23870,Consumer Goods
+23880,Consumer Goods
+23880,Utilities
+23890,Energy
+23890,Healthcare
+23930,Real Estate
+23960,Energy
+23970,Consumer Goods
+23990,Telecommunication
+24020,Consumer Goods
+24020,Retail
+24040,Retail
+24050,Consumer Goods
+24050,Utilities
+24060,Technology
+24070,Financial
+24070,Technology
+24080,Financial
+24080,Retail
+24090,Real Estate
+24110,Telecommunication
+24110,Transportation
+24130,Healthcare
+24130,Technology
+24150,Healthcare
+24170,Financial
+24180,Retail
+24190,Consumer Goods
+24190,Healthcare
+24200,Transportation
+24220,Telecommunication
+24240,Financial
+24250,Retail
+24260,Technology
+24270,Real Estate
+24270,Utilities
+24300,Technology
+24310,Telecommunication
+24330,Telecommunication
+24330,Utilities
+24350,Consumer Goods
+24370,Utilities
+24380,Real Estate
+24400,Financial
+24410,Energy
+24410,Financial
+24410,Technology
+24440,Energy
+24440,Technology
+24450,Transportation
+24460,Technology
+24460,Utilities
+24470,Consumer Goods
+24480,Financial
+24490,Retail
+24520,Healthcare
+24520,Transportation
+24530,Consumer Goods
+24540,Retail
+24560,Retail
+24570,Consumer Goods
+24570,Retail
+24580,Telecommunication
+24590,Telecommunication
+24600,Real Estate
+24610,Consumer Goods
+24610,Transportation
+24640,Energy
+24650,Retail
+24650,Telecommunication
+24670,Consumer Goods
+24670,Retail
+24670,Technology
+24680,Consumer Goods
+24700,Financial
+24700,Technology
+24720,Real Estate
+24750,Consumer Goods
+24750,Energy
+24750,Healthcare
+24760,Technology
+24780,Energy
+24780,Healthcare
+24780,Retail
+24790,Financial
+24790,Retail
+24800,Retail
+24810,Healthcare
+24830,Healthcare
+24830,Technology
+24840,Healthcare
+24840,Utilities
+24850,Consumer Goods
+24870,Transportation
+24890,Telecommunication
+24900,Healthcare
+24910,Consumer Goods
+24910,Retail
+24920,Financial
+24920,Technology
+24940,Financial
+24950,Technology
+24970,Consumer Goods
+24980,Telecommunication
+24980,Transportation
+25000,Energy
+25030,Technology
+25070,Telecommunication
+25080,Retail
+25080,Technology
+25080,Telecommunication
+25100,Energy
+25110,Utilities
+25130,Financial
+25140,Energy
+25140,Financial
+25160,Healthcare
+25170,Retail
+25170,Telecommunication
+25180,Financial
+25180,Healthcare
+25180,Real Estate
+25180,Telecommunication
+25190,Retail
+25200,Utilities
+25220,Consumer Goods
+25230,Healthcare
+25230,Technology
+25240,Energy
+25240,Telecommunication
+25280,Consumer Goods
+25290,Transportation
+25300,Technology
+25310,Financial
+25310,Retail
+25310,Telecommunication
+25320,Healthcare
+25320,Real Estate
+25320,Technology
+25330,Retail
+25340,Consumer Goods
+25340,Utilities
+25350,Transportation
+25360,Consumer Goods
+25360,Energy
+25360,Technology
+25370,Real Estate
+25380,Retail
+25380,Utilities
+25390,Real Estate
+25400,Energy
+25400,Technology
+25400,Telecommunication
+25420,Consumer Goods
+25420,Financial
+25420,Transportation
+25430,Utilities
+25440,Consumer Goods
+25440,Healthcare
+25450,Financial
+25470,Telecommunication
+25470,Transportation
+25490,Real Estate
+25490,Telecommunication
+25510,Telecommunication
+25540,Retail
+25560,Consumer Goods
+25560,Transportation
+25570,Energy
+25570,Retail
+25570,Utilities
+25590,Healthcare
+25600,Healthcare
+25600,Real Estate
+25600,Retail
+25620,Healthcare
+25620,Retail
+25620,Transportation
+25620,Utilities
+25630,Energy
+25630,Real Estate
+25640,Technology
+25650,Financial
+25660,Energy
+25670,Consumer Goods
+25670,Healthcare
+25680,Utilities
+25690,Consumer Goods
+25690,Healthcare
+25700,Transportation
+25730,Real Estate
+25730,Transportation
+25730,Utilities
+25740,Consumer Goods
+25740,Energy
+25750,Financial
+25760,Financial
+25770,Telecommunication
+25780,Consumer Goods
+25780,Transportation
+25810,Financial
+25810,Retail
+25820,Healthcare
+25830,Healthcare
+25830,Utilities
+25860,Technology
+25870,Consumer Goods
+25880,Technology
+25880,Utilities
+25930,Energy
+25930,Financial
+25930,Healthcare
+25930,Real Estate
+25940,Consumer Goods
+25960,Telecommunication
+25960,Utilities
+25970,Healthcare
+25970,Telecommunication
+25970,Transportation
+25980,Consumer Goods
+25980,Financial
+25990,Technology
+26010,Healthcare
+26020,Energy
+26040,Telecommunication
