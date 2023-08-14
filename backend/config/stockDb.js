@@ -17,8 +17,10 @@ module.exports.connect = async() => {
     console.log('config/stockDb: Successfully connected to oracle database')
 
     const checkSchema =`SELECT DISTINCT
-                            table_name, COUNT(column_name) FIELD_COUNT
-                        FROM all_tab_columns 
+                            ATC.table_name, 
+                            COUNT(ATC.column_name) FIELD_COUNT ,
+                            (SELECT num_rows FROM all_tables AT where AT.table_name = ATC.table_name) num_rows
+                        FROM all_tab_columns ATC
                         WHERE owner = \'C##STOCKDB\' 
                         GROUP BY table_name
                         ORDER BY table_name`;

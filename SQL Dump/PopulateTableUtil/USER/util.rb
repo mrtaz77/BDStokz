@@ -15,3 +15,11 @@ clean_string = ->(string) {
 }
 
 concat(clean_string.call(field('NAME')),trim_before_at.call(this))
+
+# Manager id gen using row number 
+if (this > 0) and (this < 11)
+  120
+elsif this > 1
+  random(1, 9) * 10 + 100
+end
+
