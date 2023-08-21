@@ -6,7 +6,8 @@ const getData = async (payload) => {
     const sql = `
     SELECT SYMBOL,LTP 
     FROM STOCK
-    ORDER BY LTP
+    WHERE LTP > 980
+    ORDER BY LTP DESC
     `;
 
     const binds = {}
@@ -17,10 +18,6 @@ const getData = async (payload) => {
             console.log(`No stocks found`);
             return null;
         }
-        // const jsonData = result.rows.map(row => {
-        //     const [company, stockPrice] = row;
-        //     return { company, stockPrice };
-        // });
         return result.rows;
     }catch(err){
         console.error(`Found error: ${err} while searching for stocks...`);
