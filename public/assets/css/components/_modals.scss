@@ -1,0 +1,106 @@
+//
+// Modals
+// 
+.modal-demo {
+  background-color: $card-bg;
+  width: 600px;
+  border-radius: 4px;
+  display: none;
+  position: relative;
+  .close {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      color: $gray-200;
+    }
+}
+
+.modal-content{
+  background-color: $modal-body-bg;
+  .modal-header{
+    background-color: $light;
+    .modal-title{
+      color: $dark;
+      align-self: center;
+      font-weight: 500;
+      margin-top: 0;
+      font-family: $font-secondary;
+      font-size: 14px;
+    }
+  }
+  .modal-footer{
+    border-top: 1px solid $gray-300;
+    >*{
+      margin: 0 0 0 0.25rem;
+    }
+  }
+  .modal-body p,h4{
+    color: $gray-600;
+  }
+  .modal-title.custom-title{
+    color: lighten($gray-500, 80%);
+  }
+}
+
+#custom-modal{
+  .close{
+    color: $gray-800;
+  }
+}
+.custom-modal-title {
+  padding: 15px 25px 15px 25px;
+  line-height: 22px;
+  font-size: 18px;
+  background-color: $gray-200;
+  color: $gray-800;
+  text-align: left;
+  margin: 0px;
+}
+
+.custom-modal-text {
+  padding: 20px;
+  color: $gray-500;
+}
+
+.custombox-modal-flash .close, 
+.custombox-modal-rotatedown .close {
+  top: 20px;
+  z-index: 9999;
+
+}
+
+#session-timeout-dialog .modal-header {
+  display: inline-block;
+}
+
+.modal{
+  &.modal-rightbar{
+    position: fixed;
+    margin: auto;   
+    right: 0;
+    left: auto;
+    height: 100%;
+    padding-right: 0 !important;
+    .modal-content {
+      height: 100vh;
+      overflow-y: auto;
+      border: none;
+      border-radius: 0;
+    }  
+    .modal-body {
+      padding: 15px;
+      overflow-x: hidden;
+    } 
+  }
+  &.modal-rightbar{
+    .modal-dialog {
+      width: 320px;
+      right: -320px;
+      margin: 0 0 0 auto;
+    }
+    &.show .modal-dialog {
+      right: 0;  
+      transition: left 0.3s ease, right 0.3s ease;  
+    }
+  }
+}

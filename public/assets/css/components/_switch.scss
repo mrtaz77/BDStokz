@@ -1,0 +1,14 @@
+//
+// Switch
+// 
+
+
+@each $color, $value in $theme-colors {
+  .form-switch-#{$color} {
+    .form-check-input:checked{
+      background-color: $value;
+      border-color: $value;
+    }
+  }
+}
+

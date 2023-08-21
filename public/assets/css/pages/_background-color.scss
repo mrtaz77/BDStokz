@@ -1,0 +1,47 @@
+//
+// Background-color
+// 
+.bg-black{
+  background-color: $black !important;
+  color: $white;
+}
+.bg-card{
+  background-color: $card-bg !important;
+}
+
+.bg-light-alt{
+  background-color:  $light-alt !important;
+}
+// bg-soft
+@each $color, $value in $theme-colors {
+  .bg-soft-#{$color} {
+    background-color: rgba($value, 0.08) !important;
+    color: $value !important;
+    &:hover{
+    background-color: $value !important;
+    color: $white !important;
+    }
+    &.not-hover:hover{
+      background-color: rgba($value, 0.08) !important;
+      color: $value !important;
+    }
+  }
+  
+  .icon-dual-#{$color}{
+    color: $value;
+    fill: rgba($value,.25);
+  }
+
+  .shadow-#{$color}{
+    box-shadow: 0 6px 20px 0 rgba($value, .5) !important
+  }
+}
+
+
+// Icon
+
+.icon-dual-2 {
+  color: $gray-600;
+  fill: rgba($gray-600,.25);
+}
+

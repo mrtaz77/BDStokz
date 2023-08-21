@@ -18,7 +18,7 @@ const getData = async (payload) => {
             console.log(`No stocks found`);
             return null;
         }
-        return result.rows;
+        return result.rows.slice(0,5);
     }catch(err){
         console.error(`Found error: ${err} while searching for stocks...`);
     }
