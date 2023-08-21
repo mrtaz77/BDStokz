@@ -1,13 +1,6 @@
 const express = require('express');
-const router = require('express-promise-router')();
 const morgan = require('morgan');
 const cors = require('cors') ;
-
-
-
-
-
-
 
 const app = express();
 
@@ -22,6 +15,8 @@ app.use(cors(
 ));
 app.use(express.json());
 
+// using routes and linking them to routers 
+// app.use('/api/login',require('./route/login'));
+app.use('/api/data', require('./route/data'));
 
-
-module.exports = {app};
+module.exports = app;

@@ -35,6 +35,7 @@ async function execute(sql,binds) {
     try{
         conn = await oracledb.getConnection();
         results = await conn.execute(sql,binds);
+        return results;
     }catch(err){
         console.error(`Error executing SQL: ${err.message}.\nSQL: ${sql}`);
         throw err;
