@@ -500,7 +500,7 @@
                                             //     });
                                             async function fetchDataAndPopulateTable() {
             try {
-                const response = await fetch('http://localhost:3000/api/data'); // Change the URL to your backend API endpoint
+                const response = await fetch('http://localhost:3000/stock'); // Change the URL to your backend API endpoint
                 const data = await response.json();
 
                 const tableBody = document.getElementById("data-table-body");

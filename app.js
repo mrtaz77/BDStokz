@@ -16,7 +16,9 @@ app.use(cors(
 app.use(express.json());
 
 // using routes and linking them to routers 
-app.use('/api/login',require('./route/login'));
-app.use('/api/data', require('./route/data'));
+app.use('/login',require('./route/login'));
+app.use('/stock', require('./route/stock'));
+app.use('/activity', require('./route/activity'));
+
 
 module.exports = app;

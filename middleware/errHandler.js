@@ -11,4 +11,12 @@ const errHandler = (err, req, res, next) => {
     })
 }
 
-module.exports = errHandler;
+function notFound(req, res, next){
+    // create and send error to next middleware -> errorhandler
+    const error = new Error(`not found - ${req.originalUrl}`);
+    res.status(404);
+    next(error);
+}
+
+
+module.exports = {errHandler, notFound};
