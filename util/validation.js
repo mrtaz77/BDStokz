@@ -8,5 +8,9 @@ const validateNid = (nid) => (NID_REGEX.test(nid));
 
 const validateContact = (contact) => (CONTACT_REGEX.test(contact));
 
-module.exports = {validateEmail, validateNid, validateContact};
+module.exports = {
+    validateEmail, 
+    validateNid, 
+    validateContact
+};
 

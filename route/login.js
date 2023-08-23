@@ -1,37 +1,69 @@
-const router = require('express-promise-router')();
-const getToken = require('../controller/login');
-const {body, validationResult} = require('express-validator');
-const {UNAUTHORIZED,INTERNAL_SERVER_ERROR} = require('../controller/HttpStatus')
+const express = require('express');
+const loginController = require('../controller/login');
+const router = express.Router({mergeParams: true});
+const authUtils = require('./authUtil');
 
-
-router.post('/',[
-    body('name').notEmpty(),
-    body('pwd').notEmpty()
-], async (req, res) => {
-    console.log(req.body);
-    const result = validationResult(req);
-
-    if(result.isEmpty() === false) {
-        return res.send({errors: result.array()});
+router.get('/', (req,res) => {
+    if(req.user === null){
+        const errors = [];
+        // 
+        return res.render('userLayout.ejs',{
+            title: 'Login',
+            page : ['userLogin'],
+            user: null,
+            form: {
+                name: "",
+                password: ""
+            },
+            errors : errors
+        });
+        // 
+    }else {
+        console.log(`${req.user.name} logged`);
+        res.redirect('/user');
     }
+});
 
-    try {
-        const { user, accessToken } = await getToken(req.body);
-    
-        if (accessToken === null) {
-            res.status(UNAUTHORIZED).json({ message: 'Unauthorized' });
+router.post('/', async (req, res) => {
+    if (req.user == null){
+        let results, errors = [];
+        // get login info for handle (id, handle, password)
+        results = await loginController.getUserLoginInfoByName(req.body.name);
+        console.log(`Got results in login router`);
+
+        if(results.length === 0){
+            errors.push(`No such user found`);
+        }
+        else{
+            const flag = await loginController.chkCreds(req.body.name,req.body.password);
+            if (flag == 1337){
+                console.log(`${req.body.name} logged in successfully...`);
+                await authUtils.loginUser(res,req.body.name);
+            }else {
+                errors.push(`Invalid login`);
+            }
+        }   
+
+        if (errors.length == 0) {
+            console.log(`Back to login`);
+            res.redirect('/user');
         } else {
-            console.log(accessToken, user);
-            res.json({
-                token: accessToken,
-                user: user
+            res.render('userLayout.ejs', {
+                title: 'Login',
+                page: ['userLogin'],
+                user: null,
+                errors: errors,
+                form: {
+                    name: req.body.name,
+                    password: req.body.password
+                }
             });
         }
-    } catch (error) {
-        console.error(`An error occurred during authentication: ${error}`);
-        res.status(INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+
+    }else {
+        res.redirect('/user');
     }
-}
-)
+
+});
 
 module.exports = router;

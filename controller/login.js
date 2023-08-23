@@ -1,38 +1,58 @@
-const oracledb = require('oracledb');
 const db = require('../config/database.js');
+const oracledb = require('oracledb'); 
 
-const jwt = require('jsonwebtoken');
-const {getUserByName} = require('./user.js');
-
-const getToken = async (payload) => {
-    console.log(`Getting token: ${JSON.stringify(payload)} from login.js...`);
-
+const getUserLoginInfoByName = async (name) => {
     const sql = `
-    BEGIN 
-        :checkCreds := CHK_CREDS(:name, :pwd);
+        SELECT 
+            USER_ID,
+            NAME,
+            EMAIL,
+            "TYPE"
+        FROM "USER"
+        WHERE NAME = :name
+    `;
+
+    const binds = {
+        name : name
+    }
+
+    try{
+        const result = await db.execute(sql,binds);
+        if(result.rows.length==0){
+            console.log(`No such user ${name} found`);
+            return null;
+        }
+        console.log(result.rows);
+        return result.rows;
+    }catch(err){
+        console.error(`Found error: ${err} while searching for user ${name}...`);
+    }
+}
+
+const chkCreds = async (name,password) => {
+    console.log(name);
+    const sql = `
+    BEGIN
+        :result := CHK_CREDS_NAME(:name, :password);
     END;
     `;
 
-    binds = {
-        name : payload.name,
-        pwd : payload.pwd,
-        checkCreds : {type: oracledb.NUMBER, dir: oracledb.BIND_OUT}
-    }
+    const binds = {
+        result : { dir: oracledb.BIND_OUT, type: oracledb.NUMBER},
+        name: name,
+        password: password
+    };
 
     const result = await db.execute(sql, binds);
-    console.log(result)
-    const checkCreds = result.outBinds.checkCreds;
-    console.log(checkCreds);
 
-    if(checkCreds === -404){
-        console.log(`username or password invalid`);
-        return null;
-    }
+    const returnedValue = result.outBinds.result;
 
-    const user = await getUserByName({ name : payload.name });
-
-    const accessToken = jwt.sign({name: payload.name, user_id: user.user_id}, process.env.JWT_SECRET);
-    return {user,accessToken};
+    console.log(`Got ${returnedValue} in login `);
+    return returnedValue;
 }
 
-module.exports = getToken;
+
+module.exports = {
+    getUserLoginInfoByName,
+    chkCreds
+};

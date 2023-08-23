@@ -25,4 +25,28 @@ const getAllStockSymbol = async (payload) => {
     }
 }
 
-module.exports = {getAllStockSymbol};
+const getAllStockDataBySymbol = async (payload) => {
+    const symbol = payload.symbol;
+    const sql = `
+        SELECT *
+        FROM STOCK 
+        WHERE SYMBOL = :symbol
+    `;
+
+    const binds = {
+        symbol: symbol
+    }
+    
+    try {
+        const result = (await db.execute(sql,binds)).rows;
+        if(result.length === 0){
+            console.log(`Stock ${symbol} not found...`);
+            return null;
+        }
+        return result[0];
+    }catch(err) {
+        console.log(err);
+    }
+}
+
+module.exports = {getAllStockSymbol,getAllStockDataBySymbol};
