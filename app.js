@@ -15,7 +15,7 @@ app.use(cors(
         origin: '*',
         methods: "GET,POST,PUT,DELETE, PATCH",
         credentials: true,
-        maxAge: 36000,
+        maxAge: 900000,
     }
 ));
 app.use(express.json());
