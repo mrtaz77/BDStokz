@@ -47,7 +47,10 @@ router.post('/', async (req, res) => {
         // if any error, redirect to login page but with form information, else redirect to homepage
         if (errors.length == 0) {
             console.log(`No error found , continuing to dashboard...`);
+            // console.log(`/user/${results[0].TYPE}`);
             res.json(results);
+            
+            // res.redirect(`/user/${results[0].TYPE}`);
         } else {
             res.render('userLayout.ejs', {
                 title: 'Login',

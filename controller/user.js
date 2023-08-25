@@ -159,7 +159,7 @@ const createUser = async (payload) => {
         // console.log(`type ${payload.type}`);
         errors.push(`Unknown user type ${payload.type}`);
     }
-    console.log(payload.contact)
+    // console.log(payload.contact)
 
     for (const contactElement of payload.contact){
         let resultByContact = await getUserByContact(contactElement);
@@ -168,7 +168,6 @@ const createUser = async (payload) => {
         }
 
         if(!validations.validateContact(contactElement)){
-            console.log(`Contact ${contactElement} ${validations.validateContact(contactElement)}`);
             errors.push(`Contact invalid`);
         }
     }
@@ -289,21 +288,9 @@ async function createCustomer (payload) {
         }
         const pwdHash = await getPwdHash(payload.pwd);
 
-        const date = new Date();
-
-        // getting current date
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        console.log(`${day}-${month}-${year}`);
-
-        // This arrangement can be altered based on how we want the date's format to appear.
-        let dateInfo = `TO_DATE('${day}-${month}-${year}','DD-MM-YYYY')`;
-        console.log(dateInfo);
-
         const userSql=`
-        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP, REG_DATE) values(
-            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip, ${dateInfo}
+        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP) values(
+            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip
         )
         `;
 
@@ -370,21 +357,9 @@ async function createBroker (payload) {
 
         const pwdHash = await getPwdHash(payload.pwd);
 
-        const date = new Date();
-
-        // getting current date
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        console.log(`${day}-${month}-${year}`);
-
-        // This arrangement can be altered based on how we want the date's format to appear.
-        let dateInfo = `TO_DATE('${day}-${month}-${year}','DD-MM-YYYY')`;
-        console.log(dateInfo);
-
         const userSql=`
-        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP, REG_DATE) values(
-            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip, ${dateInfo}
+        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP) values(
+            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip
         )
         `;
 
@@ -452,21 +427,9 @@ async function createCorp (payload) {
 
         const pwdHash = await getPwdHash(payload.pwd);
 
-        const date = new Date();
-
-        // getting current date
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        console.log(`${day}-${month}-${year}`);
-
-        // This arrangement can be altered based on how we want the date's format to appear.
-        let dateInfo = `TO_DATE('${day}-${month}-${year}','DD-MM-YYYY')`;
-        console.log(dateInfo);
-
         const userSql=`
-        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP, REG_DATE) values(
-            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip, ${dateInfo}
+        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP) values(
+            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip
         )
         `;
 
