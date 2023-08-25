@@ -1,4 +1,5 @@
 const oracledb = require("oracledb");
+oracledb.autoCommit = true;
 
 // database init
 async function init() {
@@ -12,7 +13,6 @@ async function init() {
         poolIncrement: 1
     });    
 
-    oracledb.autoCommit = true;
     oracledb.outFormat = oracledb.OBJECT;
 
     console.log('DB connected...');

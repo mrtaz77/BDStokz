@@ -64,39 +64,38 @@ const getTopLoserGainer = async(payload) => {
     }
     const sql = `
         SELECT
-        O1.SYMBOL,
-        ( SELECT NAME FROM "USER" WHERE S.CORP_ID = USER_ID ) CORPORATION,
-        O1.LATEST_PRICE,
-        S.LTP,
-        S.LTP - O1.LATEST_PRICE CHANGE,
-        ROUND( ( S.LTP - O1.LATEST_PRICE ) / O1.LATEST_PRICE * 100, 4 ) "CHANGE%",
-        (
-        SELECT
-            SUM( O4.LATEST_QUANTITY ) 
+            O1.SYMBOL,
+            ( SELECT NAME FROM "USER" WHERE S.CORP_ID = USER_ID ) CORPORATION,
+            O1.LATEST_PRICE,
+            S.LTP,
+            S.LTP - O1.LATEST_PRICE CHANGE,
+            ROUND( ( S.LTP - O1.LATEST_PRICE ) / O1.LATEST_PRICE * 100, 4 ) "CHANGE%",
+            (
+            SELECT
+                SUM( O4.LATEST_QUANTITY ) 
+            FROM
+                "ORDER" O4 
+            WHERE
+                O4.SYMBOL = O1.SYMBOL 
+                AND TRUNC( O4.TRANSACTION_TIME ) = TRUNC( O1.TRANSACTION_TIME ) 
+            ) VOLUME 
         FROM
-            "ORDER" O4 
+            "ORDER" O1
+            JOIN STOCK S ON O1.SYMBOL = S.SYMBOL 
         WHERE
-            O4.SYMBOL = O1.SYMBOL 
-            AND TRUNC( O4.TRANSACTION_TIME ) = TRUNC( O1.TRANSACTION_TIME ) 
-        ) VOLUME 
-    FROM
-        "ORDER" O1
-        JOIN STOCK S ON O1.SYMBOL = S.SYMBOL 
-    WHERE
-        TRUNC( O1.TRANSACTION_TIME ) >= ALL ( SELECT TRUNC( O2.TRANSACTION_TIME ) FROM "ORDER" O2 WHERE O2.SYMBOL = O1.SYMBOL ) 
-        AND TO_TIMESTAMP( TO_CHAR( TRANSACTION_TIME, 'HH24-MI-SS' ), 'HH24-MI-SS' ) <= ALL (
-        SELECT
-            TO_TIMESTAMP( TO_CHAR( O3.TRANSACTION_TIME, 'HH24-MI-SS' ), 'HH24-MI-SS' ) 
-        FROM
-            "ORDER" O3 
-        WHERE
-            O3.SYMBOL = O1.SYMBOL 
-            AND TRUNC( O3.TRANSACTION_TIME ) = TRUNC( O1.TRANSACTION_TIME ) 
-        ) 
-    ORDER BY
-        "CHANGE%" ${sort} FETCH FIRST 5 ROWS ONLY
+            TRUNC( O1.TRANSACTION_TIME ) >= ALL ( SELECT TRUNC( O2.TRANSACTION_TIME ) FROM "ORDER" O2 WHERE O2.SYMBOL = O1.SYMBOL ) 
+            AND TO_TIMESTAMP( TO_CHAR( TRANSACTION_TIME, 'HH24-MI-SS' ), 'HH24-MI-SS' ) <= ALL (
+            SELECT
+                TO_TIMESTAMP( TO_CHAR( O3.TRANSACTION_TIME, 'HH24-MI-SS' ), 'HH24-MI-SS' ) 
+            FROM
+                "ORDER" O3 
+            WHERE
+                O3.SYMBOL = O1.SYMBOL 
+                AND TRUNC( O3.TRANSACTION_TIME ) = TRUNC( O1.TRANSACTION_TIME ) 
+            ) 
+        ORDER BY
+            "CHANGE%" ${sort} FETCH FIRST 5 ROWS ONLY
     `;
-    console.log(sql);
     
     try {
         const result = (await db.execute(sql,{})).rows;

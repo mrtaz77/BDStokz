@@ -998,3 +998,4 @@ insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COU
 insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP, REG_DATE) values ('Avrom Stennes', STANDARD_HASH('dVkyLkdJV040KkU2bTc=','SHA512'), 'astennesrp@archive.org', 'Customer', null, null, 'Tangshan', 'China', 5225, TO_DATE('2022-02-27','YYYY-MM-DD'));
 insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP, REG_DATE) values ('Kylynn Gurnett', STANDARD_HASH('alczJ29hZktOYQ==','SHA512'), 'kgurnettrq@sogou.com', 'Customer', '6', 'Kipling', 'Pashiya', 'Russia', 2014, TO_DATE('2021-06-02','YYYY-MM-DD'));
 insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP, REG_DATE) values ('Piotr Asee', STANDARD_HASH('ZFQ0XzQzMHtxeXU5fA==','SHA512'), 'paseerr@slideshare.net', 'Customer', '6', 'Bartillon', 'Zarrīn Shahr', 'Iran', 9794, TO_DATE('2016-06-19','YYYY-MM-DD'));
+

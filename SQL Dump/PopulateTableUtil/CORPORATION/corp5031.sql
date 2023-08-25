@@ -498,3 +498,6 @@ insert into CORPORATION (CORP_ID, CORP_REG_NO, SECTOR) values (6030, '91092', 'T
 insert into CORPORATION (CORP_ID, CORP_REG_NO, SECTOR) values (6040, '08969', 'Technology');
 insert into CORPORATION (CORP_ID, CORP_REG_NO, SECTOR) values (6050, '98467', 'Real Estate');
 insert into CORPORATION (CORP_ID, CORP_REG_NO, SECTOR) values (6060, '77699', 'Transportation');
+insert into CORPORATION (CORP_ID, CORP_REG_NO, SECTOR) values (46080, '91032', 'Consumer Goods');
+insert into CORPORATION (CORP_ID, CORP_REG_NO, SECTOR) values (46100, '57369', 'Technology');
+insert into CORPORATION (CORP_ID, CORP_REG_NO, SECTOR) values (46120, '39104', 'Consumer Goods');

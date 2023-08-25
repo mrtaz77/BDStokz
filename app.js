@@ -23,8 +23,10 @@ app.set('view engine', 'ejs');
 
 // using routes and linking them to routers 
 app.use('/login',require('./route/login'));
+app.use('/reg', require('./route/reg'));
 app.use('/stock', require('./route/stock'));
 app.use('/activity', require('./route/activity'));
+
 
 app.use(errHandler.notFound);
 app.use(errHandler.errHandler);

@@ -11,7 +11,7 @@ const loginUser = async (res,name) => {
 
     // set token in cookie
     let options = {
-        maxAge: 900000, 
+        maxAge: 9000000, 
         httpOnly: true
     }
     res.cookie('userSessionToken', token, options);
