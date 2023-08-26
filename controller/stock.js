@@ -124,13 +124,22 @@ const getAnnualAvgPrice = async (payload) => {
     `;
 
     const bindVars = {
-        result: { dir: oracledb.BIND_OUT, type: oracledb.STRING, maxSize: 32767 }
+        result: { dir: oracledb.BIND_OUT, type: oracledb.DB_TYPE_VARCHAR2, maxSize: 32767 }
     };
 
     try{
         const result = await db.execute(plsqlBlock, bindVars);
-        console.log(result.outBinds.result);
-        return result.outBinds.result;
+        const jsonString = result.outBinds.result;
+        console.log('Received JSON string:', jsonString);
+    
+        let jsonObject;
+        try {
+            jsonObject = JSON.parse(jsonString);
+            console.log('Parsed JSON object:', jsonObject);
+        } catch (parseError) {
+            console.error('Error parsing JSON:', parseError);
+        }
+        return jsonObject;
     }catch(err){
         console.log(`Found ${err.message} while getting dsex`);
         return null;
