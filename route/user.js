@@ -5,3 +5,5 @@ router.get('/',(req, res) => {
     console.log(type);
     console.log(req.params);
 });
+
+router.use('/logout',require('./logout'));
