@@ -1,11 +1,16 @@
 const parseStringToList = async (inputString) => {
-    try {
-        const jsonString = inputString.replace(/'/g, '"'); // Replace single quotes with double quotes
-        const jsonArray = JSON.parse(jsonString);
-        return jsonArray;
-    } catch (error) {
-        console.error('Error parsing string:', error);
-        return [];
+    function parseStringToList(inputString) {
+        try {
+            const inputArray = JSON.parse(inputString);
+            const dataArray = inputArray.map(item => {
+                const [timestamp, value] = item; // Destructure the array into timestamp and value
+                return [timestamp, value]; 
+            });
+            return dataArray;
+        } catch (error) {
+            console.error('Error converting to ApexChart data:', error);
+            return [];
+        }
     }
 }
 module.exports = {
