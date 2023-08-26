@@ -7,4 +7,6 @@ router.get('/',async (req, res) => {
     res.json(activities);
 });
 
+router.use('/particapate',require('./particapate'));
+
 module.exports = router;
