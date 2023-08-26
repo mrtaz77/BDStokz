@@ -1,4 +1,5 @@
 const db = require('../config/database.js');
+const oracledb = require('oracledb');
 
 const getAllStockSymbol = async (payload) => {
     console.log(payload);
@@ -94,11 +95,14 @@ const getTopLoserGainer = async(payload) => {
                 AND TRUNC( O3.TRANSACTION_TIME ) = TRUNC( O1.TRANSACTION_TIME ) 
             ) 
         ORDER BY
-            "CHANGE%" ${sort} FETCH FIRST 5 ROWS ONLY
+            "CHANGE%" :sort FETCH FIRST 5 ROWS ONLY
     `;
+    const binds = {
+        sort : sort
+    }
     
     try {
-        const result = (await db.execute(sql,{})).rows;
+        const result = (await db.execute(sql,binds)).rows;
         if(result.length === 0){
             console.log(`Top ${payload.order}ers not found...`);
             return null;
@@ -109,10 +113,34 @@ const getTopLoserGainer = async(payload) => {
     }
 }
 
+const getAnnualAvgPrice = async (payload) => {
+    const plsqlBlock = `
+    DECLARE
+        ANS VARCHAR2(32767);
+    BEGIN 
+        AVG_PRICE_ACROSS_YEAR(ANS);
+        :result := ANS;
+    END;
+    `;
+
+    const bindVars = {
+        result: { dir: oracledb.BIND_OUT, type: oracledb.STRING, maxSize: 32767 }
+    };
+
+    try{
+        const result = await db.execute(plsqlBlock, bindVars);
+        console.log(result.outBinds.result);
+        return result.outBinds.result;
+    }catch(err){
+        console.log(`Found ${err.message} while getting dsex`);
+        return null;
+    }
+}
 
 
 module.exports = {
     getAllStockSymbol,
     getAllStockDataBySymbol,
-    getTopLoserGainer
+    getTopLoserGainer,
+    getAnnualAvgPrice
 };
