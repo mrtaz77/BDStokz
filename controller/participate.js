@@ -76,7 +76,11 @@ const updatePmtStatus = async(payload) => {
             pmt_status : payload.pmtStatus
         };
 
-        await db.execute()
+        await db.execute(sql,binds);
+
+        const result = await getParticipation(payload);
+
+        return result;
 
     }catch(err){
         console.log(`Found error: ${err.message} while updating participation...`);
