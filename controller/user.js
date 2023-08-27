@@ -131,11 +131,11 @@ const createUser = async (payload) => {
     const resultByName  = await getUserByName(payload);
     const resultByEmail = await getUserByEmail(payload);
 
-    if(resultByName > 0){
+    if(resultByName != null){
         errors.push(`Username already in use...`);
     }
 
-    if(resultByEmail > 0){
+    if(resultByEmail != null){
         errors.push(`Email already in use...`);
     }
 
@@ -163,7 +163,7 @@ const createUser = async (payload) => {
 
     for (const contactElement of payload.contact){
         let resultByContact = await getUserByContact(contactElement);
-        if(resultByContact > 0){
+        if(resultByContact != null){
             errors.push(`Contact already in use...`);
         }
 
@@ -340,7 +340,7 @@ async function createCustomer (payload) {
             await db.execute(conSql,conBinds);
         }
         console.log(`After inserting name`);
-        console.log(await getUserByName(payload.name));
+        console.log(await getUserByName(payload));
 
     }catch(err){
         console.log(`Failed to create ${payload} for error ${err}`);
@@ -413,7 +413,6 @@ async function createBroker (payload) {
 }
 
 async function createCorp (payload) {
-    console.log(`Creating ${JSON.stringify(payload)} corporation`);
     try{
         if(await chkRegOfCorp(payload.corpRegNo) !== null){
             console.log(`Reg no ${payload.corpRegNo} already exists`);

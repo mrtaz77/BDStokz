@@ -19,9 +19,9 @@ router.post('/',async(req, res)=>{
     if(req.user == null){
         let errors = [];
         console.log(`In reg router: ${req.body}`);
+        // check if already user exists 
         const result = await userController.createUser(req.body);
-        console.log(result.NAME);
-        if(result == undefined){
+        if(result == null){
             console.log(`Error creating new user...`);
             res.redirect('/');
         }else{  
