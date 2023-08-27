@@ -95,14 +95,12 @@ const getTopLoserGainer = async(payload) => {
                 AND TRUNC( O3.TRANSACTION_TIME ) = TRUNC( O1.TRANSACTION_TIME ) 
             ) 
         ORDER BY
-            "CHANGE%" :sort FETCH FIRST 5 ROWS ONLY
+            "CHANGE%" ${sort} FETCH FIRST 5 ROWS ONLY
     `;
-    const binds = {
-        sort : sort
-    }
+    
     
     try {
-        const result = (await db.execute(sql,binds)).rows;
+        const result = (await db.execute(sql,{})).rows;
         if(result.length === 0){
             console.log(`Top ${payload.order}ers not found...`);
             return null;
