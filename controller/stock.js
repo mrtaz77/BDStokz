@@ -29,9 +29,22 @@ const getAllStockSymbol = async (payload) => {
 const getAllStockDataBySymbol = async (payload) => {
     const symbol = payload.symbol;
     const sql = `
-        SELECT *
-        FROM STOCK 
-        WHERE SYMBOL = :symbol
+    SELECT
+        SYMBOL,
+        (SELECT NAME FROM "USER" WHERE USER_ID = STOCK.CORP_ID) CORP_NAME,
+        SECTOR,
+        UPDATE_TIME,
+        VALUE,
+        PRICE,
+        LTP,
+        AVAILABLE_LOTS,
+        LOT,
+        BLOCKED
+    FROM
+        STOCK LEFT OUTER
+        JOIN CORPORATION ON STOCK.CORP_ID = CORPORATION.CORP_ID 
+    WHERE
+        SYMBOL = :symbol
     `;
 
     const binds = {
