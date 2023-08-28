@@ -4,12 +4,8 @@ const router = express.Router({mergeParams: true});
 const authUtils = require('./authUtil');
 
 router.get('/',(req,res)=>{
-    if(req.user == null){
-        res.redirect('/');
-    }
-    else{
+    if(req.user != null){
         console.log(`${req.user.name} logged`);
-        res.redirect('/user');
     }
 });
 
@@ -23,13 +19,9 @@ router.post('/',async(req, res)=>{
         const result = await userController.createUser(req.body);
         if(result == null){
             console.log(`Error creating new user...`);
-            res.redirect('/');
         }else{  
             await authUtils.loginUser(res,result.NAME);
-            res.redirect('/user');
         }
-    }else{
-        res.redirect('/user');
     }
 });
 

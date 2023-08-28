@@ -7,20 +7,10 @@ router.get('/', (req,res) => {
     if(req.user === null){
         const errors = [];
         // 
-        return res.render('userLayout.ejs',{
-            title: 'Login',
-            page : ['userLogin'],
-            user: null,
-            form: {
-                name: "",
-                password: ""
-            },
-            errors : errors
-        });
+        
         // 
     }else {
         console.log(`${req.user.name} logged`);
-        res.redirect('/user');
     }
 });
 
@@ -51,23 +41,9 @@ router.post('/', async (req, res) => {
             res.json(results);
             
             // res.redirect(`/user/${results[0].TYPE}`);
-        } else {
-            res.render('userLayout.ejs', {
-                title: 'Login',
-                page: ['userLogin'],
-                user: null,
-                errors: errors,
-                form: {
-                    name: req.body.name,
-                    password: req.body.password
-                }
-            });
-        }
+        } 
 
-    }else {
-        res.redirect('/user');
     }
-
 });
 
 
