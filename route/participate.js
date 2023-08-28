@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router({mergeParams: true});
 const partController = require('../controller/participate');
 
-router.post('/',[
+router.patch('/',[
     body('userId').notEmpty().withMessage('userId is required'),
     body('activityId').notEmpty().withMessage('activityId is required'),
     body('pmtStatus').notEmpty().withMessage('pmtStatus is required')
 ],async (req,res,next)=>{
-
     try{
         const result = await partController.getParticipation(req.body);
         if(result == null){

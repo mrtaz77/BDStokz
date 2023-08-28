@@ -27,6 +27,9 @@ app.use('/reg', require('./route/reg'));
 app.use('/stock', require('./route/stock'));
 app.use('/activity', require('./route/activity'));
 
+// For testing purposes only
+app.use('/admin', require('./route/admin'));
+
 
 app.use(errHandler.notFound);
 app.use(errHandler.errHandler);

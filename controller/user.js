@@ -486,6 +486,7 @@ module.exports = {
     getUserByEmail,
     getUserByName,
     getUserByContact,
+    getUserByID,
     createUser,
     createCustomer,
     createBroker,
