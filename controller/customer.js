@@ -1,5 +1,5 @@
-import { execute } from '../config/database.js';
-import { getUserByID } from './user';
+const { execute } = require('../config/database');
+const { getUserById } = require('./user');
 
 const getAllInfoByID = async(id) =>{
     try{
@@ -20,8 +20,8 @@ const getAllInfoByID = async(id) =>{
 
 const getPortfolioInfoByID = async(id) =>{
     try{
-        const type = getUserByID(id).TYPE;
-        console.log(type);
+        const result = await getUserById(id);
+        const type = result.TYPE;
 
         if(type == 'Customer'){
             const sql = `
@@ -39,10 +39,12 @@ const getPortfolioInfoByID = async(id) =>{
                 id: id
             };
 
-            return await execute(sql, binds);
+            const portfoio =  await execute(sql, binds);
+            return portfoio.rows;
 
         }else{
             console.log(`${id} is not a customer`);
+            return null;
         }
 
     }catch(err){
@@ -50,7 +52,7 @@ const getPortfolioInfoByID = async(id) =>{
     }
 }
 
-export default {
+module.exports = {
     getAllInfoByID,
     getPortfolioInfoByID
 }

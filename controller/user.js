@@ -487,6 +487,33 @@ async function createCorp (payload) {
     }
 }
 
+const isPrem = async (id) => {
+    try{
+        let prem;
+        console.log(`id: ${id}`);
+        const plSql = `
+            DECLARE
+                CHK CHAR(1);
+            BEGIN
+                IS_PREM(:ID, CHK);
+                :flag := CHK;
+            END;
+        `;
+        const bindFlag = {
+            ID: id,
+            flag: {
+                dir: oracledb.BIND_OUT,
+                type: oracledb.STRING,
+                maxSize: 1
+            }
+        };
+        prem = await db.execute(plSql, bindFlag);
+        return prem.outBinds.flag;
+    }catch(err){
+        console.log(`Failed to get premium status of ${id} for error ${err}`);
+    }
+}
+
 module.exports = {
     getPwdHash,
     getUserByEmail,
@@ -496,5 +523,6 @@ module.exports = {
     createUser,
     createCustomer,
     createBroker,
-    createCorp
+    createCorp,
+    isPrem
 };

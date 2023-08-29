@@ -29,8 +29,7 @@ app.use('/activity', require('./route/activity'));
 
 // For testing purposes only
 app.use('/admin', require('./route/admin'));
-app.use('/participate', require('./route/participate'));
-
+app.use('/user', require('./route/user'));
 
 app.use(errHandler.notFound);
 app.use(errHandler.errHandler);

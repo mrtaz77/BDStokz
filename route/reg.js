@@ -13,7 +13,6 @@ router.post('/',async(req, res)=>{
     console.log(req.body);
     // check if already logged in
     if(req.user == null){
-        let errors = [];
         console.log(`In reg router: ${req.body}`);
         // check if already user exists 
         const result = await userController.createUser(req.body);

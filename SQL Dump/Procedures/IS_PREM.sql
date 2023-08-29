@@ -14,6 +14,10 @@ BEGIN
 		ELSE 
 			FLAG := 'F';
 		END IF;
+	ELSIF TYP = 'Broker' THEN 
+		FLAG := 'F';
+	ELSIF TYP = 'Corp' THEN 
+		FLAG := 'F';
 	ELSE 
 		FLAG := 'N';
 	END IF;
