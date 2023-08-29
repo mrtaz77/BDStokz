@@ -1,36 +1,28 @@
 const db = require('../config/database.js');
 const userController  = require('./user');    
-const customerController = require('./customer');
+const activityController = require('./activity');
 
 const setParticipation = async  (payload) => {
     try{
         const user = await userController.getUserById(payload.userId);
-        if(user.type == 'Customer'){
-            const getCustomer = await getAllInfoByID(payload.userId);
-            const referCount = getCustomer.REFER_COUNT;
-
-            console.log(`referCount: ${getCustomer.REFER_COUNT} and PMT_STATUS: ${getCustomer.PMT_STATUS}`);
-            if(referCount > 3 && payload.pmtStatus == 'Not paid'){
-                payload.pmtStatus = 'Paid';
-                console.log(payload.pmtStatus);
-            }
+        const activity = await activityController.getActivityById(payload.activityId);
+        if(user == null || activity == null){
+            console.log(`Invalid registration...`);
+            return null;
         }
 
         const sql = `
-        insert into PARTICIPATION (ACTIVITY_ID, USER_ID, PMT_STATUS) values (:activity_id, :user_id, :pmt_status)
+        insert into PARTICIPATION (ACTIVITY_ID, USER_ID) values (:activity_id, :user_id)
         `;
 
         const binds = {
             user_id : payload.userId,
-            activity_id : payload.activityId,
-            pmt_status : payload.pmtStatus
+            activity_id : payload.activityId
         };
         
         await db.execute(sql, binds);
 
-        const result = await getParticipation(payload);
-
-        return result;
+        return await getParticipation(payload);
 
     }catch(err){
         console.log(`Found error: ${err.message} while setting participation...`);
@@ -53,8 +45,10 @@ const getParticipation = async(payload) => {
         };
 
         const results = await db.execute(sql, binds);
+
+        console.log(results.rows);
         
-        return results;
+        return results.rows;
 
     }catch(err){
         console.log(`Found error: ${err.message} while getting participation...`);
@@ -62,36 +56,8 @@ const getParticipation = async(payload) => {
     }
 }
 
-const updatePmtStatus = async(payload) => {
-    try{
-        const sql = `
-        UPDATE participation
-        SET PMT_STATUS = :pmt_status
-        WHERE ACTIVITY_ID = :activity_id AND USER_ID = :user_id
-        `;
-
-        const binds = {
-            user_id : payload.userId,
-            activity_id : payload.activityId,
-            pmt_status : payload.pmtStatus
-        };
-
-        await db.execute(sql,binds);
-
-        const result = await getParticipation(payload);
-
-        return result;
-
-    }catch(err){
-        console.log(`Found error: ${err.message} while updating participation...`);
-        return null;
-    }
-}
-
-
 
 module.exports = {
     setParticipation,
-    getParticipation,
-    updatePmtStatus
+    getParticipation
 }

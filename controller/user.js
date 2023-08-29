@@ -98,11 +98,17 @@ const getUserByContact = async (contact) => {
 
 }
 
-const getUserByID = async (idP) => {
+const getUserById = async (idP) => {
     const id = idP;
     console.log(`Fetching ${idP}...`);
     const sql = `
-    SELECT USER_ID,NAME,EMAIL,"TYPE",(STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,ZIP
+    SELECT 
+        USER_ID,
+        NAME,
+        EMAIL,
+        "TYPE",
+        (STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,
+        ZIP
     FROM "USER"
     WHERE USER_ID = :id
     `;
@@ -273,11 +279,11 @@ const chkRegOfCorp = async (corpRegNo) => {
 async function createCustomer (payload) {
     console.log(`In create customer ${payload}`);
     try{
-        if(payload.refererId !== null && await getUserByID(payload.refererId) == null){
+        if(payload.refererId !== null && await getUserById(payload.refererId) == null){
             console.log(`Customer ${payload.refererId} not registered`);
             return;
         }
-        if(payload.brokerId !== null && await getUserByID(payload.brokerId) == null){
+        if(payload.brokerId !== null && await getUserById(payload.brokerId) == null){
             console.log(`Broker ${payload.brokerId} not registered`);
             return;
         }
@@ -486,7 +492,7 @@ module.exports = {
     getUserByEmail,
     getUserByName,
     getUserByContact,
-    getUserByID,
+    getUserById,
     createUser,
     createCustomer,
     createBroker,

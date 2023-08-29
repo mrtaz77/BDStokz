@@ -2,10 +2,12 @@ const router = require('express-promise-router')();
 const adminController = require('../controller/admin');
 const { body } = require('express-validator');
 
-// router.post('/changePWD',[
+// router.patch('/changePWD',[
 //     body('userId').notEmpty().withMessage('userId is required'),
 //     body('email').notEmpty().withMessage('email is required'),
-// ])
+// ], async(req, res, next) => {
+
+// })
 
 router.patch('/block/:set',[
     body('symbol').notEmpty().withMessage('userId is required'),
