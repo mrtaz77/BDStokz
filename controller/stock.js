@@ -57,7 +57,7 @@ const getAllStockDataBySymbol = async (payload) => {
     
     try {
         const result = (await db.execute(sql,binds)).rows;
-        if(result.length === 0){
+        if(result == null){
             console.log(`Stock ${symbol} not found...`);
             return null;
         }

@@ -1,6 +1,7 @@
 const {execute} = require('../config/database');
 const oracledb = require('oracledb');
 const {getAllStockDataBySymbol} = require('./stock');
+const userController = require('./user');
 
 const getAllCustomerInfo = async (payload) => {
     try{
@@ -34,6 +35,61 @@ const getAllCustomerInfo = async (payload) => {
         return null;
     }
 } 
+
+const updateStock = async (payload) => {
+    try{
+        const adminId = payload.adminId ;
+        const symbol = payload.symbol;
+        const field = payload.field;
+        const newValue = payload.newValue;
+        console.log(payload);
+
+        const admin = await userController.getUserById(adminId);
+
+        if(admin == null || admin.TYPE != 'Admin'){
+            console.log("Not an admin");
+            return null;
+        }
+
+        const stock = await getAllStockDataBySymbol(payload);
+
+        if(stock == null){
+            console.log("Stock not found");
+            return null;
+        }
+
+        // additional check for new stock symbol 
+        if(field == `SYMBOL`){
+            const stock = await getAllStockDataBySymbol({symbol:newValue});
+            if(stock != null){
+                console.log("Stock symbol already present");
+                return null;
+            }
+            payload.symbol = symbol;
+        }
+
+        const sql = `
+        UPDATE STOCK
+        SET ${field} = :newVal
+        WHERE SYMBOL = :symbol
+        `;
+
+        const binds = {
+            symbol: symbol,
+            newVal: newValue
+        };
+
+        await execute(sql, binds);
+
+
+        const newStock = await getAllStockDataBySymbol(payload);
+
+        return newStock;
+    }catch(err){
+        console.log(`Found ${err.message} while updating stock info...`);
+        return null;
+    }
+}
 
 const block = async (set,payload) => {
     const symbol = payload.symbol;
@@ -70,5 +126,6 @@ const block = async (set,payload) => {
 
 module.exports = {
     getAllCustomerInfo,
+    updateStock,
     block
 }
