@@ -128,7 +128,7 @@ const getTopLoserGainer = async(payload) => {
     }
 }
 
-const getAnnualAvgPrice = async (payload) => {
+const getAnnualAvgPrice = async () => {
     const plsqlBlock = `
     DECLARE
         ANS VARCHAR2(32767);

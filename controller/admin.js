@@ -123,9 +123,38 @@ const block = async (set,payload) => {
     }
 }
 
+async function getDailyProfit() {
+    try {
+        const plSql = `
+            DECLARE
+                v_profits VARCHAR2(32767);
+            BEGIN
+                DAILY_PROFIT(v_profits);
+                :profits := v_profits;
+            END;
+        `;
+
+        const bindVariables = {
+            profits: {
+                dir: oracledb.BIND_OUT,
+                type: oracledb.STRING,
+                maxSize: 32767
+            }
+        };
+
+        const result = await execute(plSql, bindVariables);
+        const jsonString = result.outBinds.profits;
+
+        return JSON.parse(jsonString);
+    } catch (error) {
+        console.error('Error in getDailyProfit:', error);
+        throw error;
+    }
+}
 
 module.exports = {
     getAllCustomerInfo,
     updateStock,
-    block
+    block,
+    getDailyProfit
 }

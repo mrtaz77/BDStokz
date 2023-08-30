@@ -51,4 +51,15 @@ router.delete('/deleteUser',[
 ],async (req,res,next)=>{
 });
 
+router.get('/dailyProfit',async (req,res,next) => {
+    try{    
+        const dailyProfit = await adminController.getDailyProfit();
+        console.log(dailyProfit);
+        res.json(dailyProfit);
+    }catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
 module.exports = router;
