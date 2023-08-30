@@ -39,7 +39,11 @@ const getAllStockDataBySymbol = async (payload) => {
         LTP,
         AVAILABLE_LOTS,
         LOT,
-        BLOCKED
+        BLOCKED,
+        OPEN(SYMBOL) OPEN,
+        CLOSE(SYMBOL) CLOSE,
+        HIGH(SYMBOL) HIGH,
+        LOW(SYMBOL) LOW
     FROM
         STOCK LEFT OUTER
         JOIN CORPORATION ON STOCK.CORP_ID = CORPORATION.CORP_ID 
