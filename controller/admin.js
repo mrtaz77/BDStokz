@@ -2,6 +2,7 @@ const {execute} = require('../config/database');
 const oracledb = require('oracledb');
 const {getAllStockDataBySymbol} = require('./stock');
 const userController = require('./user');
+const {chkCreds} = require('./login');
 
 const getAllCustomerInfo = async (payload) => {
     try{
@@ -299,6 +300,56 @@ const addAdmin = async (payload) => {
     }
 };
 
+const deleteUser = async (payload) => {
+    try{
+        let userId = await userController.getUserByName(payload);
+        userId = userId.USER_ID;
+        const adminId = payload.deleterId;
+        const pwd = payload.pwd;
+
+        console.log(userId);
+
+
+        const user = await userController.getUserById(userId);
+
+        if(user === null){
+            console.error('User not found');
+            return 0;
+        }
+
+        const admin = await userController.getUserById(adminId);
+
+        if(admin === null || admin.TYPE != 'Admin'){
+            console.error(`Deleter not an admin`);
+            return 0;
+        }
+
+        const pass = await chkCreds(admin.NAME,pwd);
+
+        if(pass !== 1337){
+            console.error(`Incorrect password`);
+            return 0;
+        }
+
+        const sql = `
+        DELETE FROM "USER"
+        WHERE USER_ID = :userId
+        `;
+
+        const binds = {
+            userId: userId
+        }
+
+        await execute(sql,binds);
+
+        return userController.getUserById(userId);
+
+    }catch (error) {
+        console.error(`While deleting admin got ${error.message}`);
+        return 0;
+    }
+}
+
 
 module.exports = {
     getAllCustomerInfo,
@@ -308,5 +359,6 @@ module.exports = {
     getAllEmployeeNames,
     getAllEmployeeDetailsByFullname,
     getAllUserNameAndType,
-    addAdmin
+    addAdmin,
+    deleteUser
 }

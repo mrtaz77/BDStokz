@@ -19,7 +19,6 @@ router.patch('/updateStock',[
 
         console.log(`Successfully updated ${req.body.field} of ${req.body.symbol} to ${req.body.newValue}`);
         res.json(result);
-        res.json({ message: 'Stock updated successfully' });
 
     }catch (err) {
         console.log(err);
@@ -45,10 +44,22 @@ router.patch('/block/:set',[
 });
 
 router.delete('/deleteUser',[
-    body('userId').notEmpty().withMessage('userId is required'),
+    body('name').notEmpty().withMessage('name to be deleted is required'),
     body('deleterId').notEmpty().withMessage('deleterId is required'),
     body('pwd').notEmpty().withMessage('pwd is required for deleting user')
 ],async (req,res,next)=>{
+    try{
+        const result = await adminController.deleteUser(req.body);
+        if(result === null){
+            return res.status(200).json({ message: 'User deleted successfully'});
+        }
+        else{
+            return res.status(400).json({ message: 'Deletion unsuccessfull' });
+        }
+    }catch (err) {
+        console.log(err);
+        next(err);
+    }
 });
 
 router.get('/dailyProfit',async (req,res,next) => {
