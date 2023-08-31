@@ -65,7 +65,10 @@ router.get('/dailyProfit',async (req,res,next) => {
 router.get('/allEmployees',async (req,res,next)=>{
     try{
         const employeeNames = await adminController.getAllEmployeeNames();   
-        res.json(employeeNames);
+        if(employeeNames == null){
+            return res.status(400).json({ message: 'employees not found' });
+        }
+        else res.json(users);
     }catch (err) {
         console.log(err);
         next(err);
@@ -76,14 +79,26 @@ router.get('/empDetails/:name',async (req,res,next)=>{
     try{
         const empDetails = await adminController.getAllEmployeeDetailsByFullname(req.params.name);
         if(empDetails == null){
-            return res.status(400).json({ message: 'employee not found required' });
+            return res.status(400).json({ message: 'employee not found' });
         }
-        res.json(empDetails);
+        else res.json(empDetails);
     }catch (err) {
         console.log(err);
         next(err);
     }
 });
 
+router.get('/allUsers',async (req,res,next)=>{
+    try{
+        const users = await adminController.getAllUserNameAndType();   
+        if(users == null){
+            return res.status(400).json({ message: 'users not found' });
+        }
+        else res.json(users);
+    }catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
 
 module.exports = router;

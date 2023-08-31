@@ -189,6 +189,25 @@ const getAllEmployeeDetailsByFullname = async(name) => {
     }
 }
 
+const getAllUserNameAndType = async () => {
+    try{
+        const sql = `
+        SELECT 
+            NAME,
+            "TYPE"
+        FROM 
+            "USER"
+        `;
+
+        return await execute(sql,{});
+
+
+    }catch (error) {
+        console.error(`While getting users`);
+        return null;
+    }
+}
+
 
 
 module.exports = {
@@ -197,5 +216,6 @@ module.exports = {
     block,
     getDailyProfit,
     getAllEmployeeNames,
-    getAllEmployeeDetailsByFullname
+    getAllEmployeeDetailsByFullname,
+    getAllUserNameAndType
 }
