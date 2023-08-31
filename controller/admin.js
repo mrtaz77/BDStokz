@@ -197,6 +197,8 @@ const getAllUserNameAndType = async () => {
             "TYPE"
         FROM 
             "USER"
+        ORDER BY
+            USER_ID
         `;
 
         const result = await execute(sql,{});
