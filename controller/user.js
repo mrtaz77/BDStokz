@@ -763,12 +763,92 @@ const updateProfile = async (payload)=>{
 
 const addContact = async (payload)=> {
     try{
+        const userId = payload.userId;
+        const user = await getUserById(userId);
+        const contact = payload.contact;
+
+        if(user == null){
+            console.log(`User not found`);
+            return null;
+        }
+
+        if(!validations.validateContact(contact)){
+            console.log(`Contact in valid`);
+            return null;
+        }
+
+        const resultByContact = await getUserByContact(contact);
+
+        if(resultByContact != null){
+            console.log(`Contact already in use`);
+            return null;
+        }
+
+        const sql = `
+        INSERT INTO USER_CONTACT(USER_ID, CONTACT)
+        values (:user_id, :contact)
+        `;
+
+        const binds = {
+            user_id: userId,
+            contact: contact
+        };
+
+        await db.execute(sql, binds);
+
+        const result = await getUserByContact(contact);
+        return result;
 
     }catch(err){
         console.log(`Found ${err.message} while adding contact of ${payload.userId}...`);
         return null;
     }
 };
+
+const deleteContact = async (payload) => {
+    try{
+        const userId = payload.userId;
+        const contact = payload.contact;
+        const userById = await getUserById(userId);
+        const userByContact = await getUserByContact(contact);
+        let errors = [];
+
+        if(userById == null){
+            errors.push(`Invalid user`);
+        }
+
+        if(userByContact == null){
+            errors.push(`Invalid contact`);
+        }
+
+        if(userId != userByContact.USER_ID){
+            errors.push(`User-Contact mismatch`);
+        }
+
+        if(errors.length > 0){
+            console.log(errors);
+            return null;
+        }
+
+        const sql = `
+        DELETE FROM USER_CONTACT
+        WHERE USER_ID = :user_id AND CONTACT = :contact
+        `;
+
+        const binds = {
+            user_id: userId,
+            contact: contact
+        };
+
+        await db.execute(sql, binds);
+
+        return await getUserByContact(contact);
+
+    }catch(err){
+        console.log(`Found ${err.message} while deleting contact of ${payload.userId}...`);
+        return null;
+    }
+}
 
 module.exports = {
     getPwdHash,
@@ -783,5 +863,7 @@ module.exports = {
     isPrem,
     getProfileByName,
     getContactByName,
-    updateProfile
+    updateProfile,
+    addContact,
+    deleteContact
 };

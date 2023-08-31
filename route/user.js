@@ -116,7 +116,49 @@ router.patch('/updateProfile',[
         console.error(error);
         next(error);
     }
+});
 
+router.delete('/delContact', [
+    body('userId').notEmpty().withMessage('userId is required'),
+    body('contact').notEmpty().withMessage('contact to be deleted is required'),
+], async (req, res, next) => {
+    try {
+        const result = await userController.deleteContact(req.body);
+
+        if (result !== null) {
+            console.log(`Error deleting ${req.body.contact} of user ${req.body.userId}`);
+            return res.status(400).json({ message: 'Error deleting contact' });
+        }
+
+        console.log(`Successfully deleted ${req.body.contact} of user ${req.body.userId}`);
+        res.json({ message: 'Contact deleted successfully' });
+
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+
+router.post('/addContact',[
+    body('userId').notEmpty().withMessage('userId is required'),
+    body('contact').notEmpty().withMessage('contact to be deleted is required'),
+],async(req, res,next) => {
+    try{
+        const result = await userController.addContact(req.body);
+
+        if (result === null) {
+            console.log(`Error updating ${req.body.contact} of user ${req.body.userId}`);
+            return res.status(400).json({ message: 'Error updating user' });
+        }
+
+        console.log(`Successfully updated ${req.body.contact} of user ${req.body.userId}`);
+        res.json({ message: 'User info updated successfully' });
+
+    }catch(error) {
+        console.error(error);
+        next(error);
+    }
 });
 
 router.use('/logout',require('./logout'));

@@ -7,11 +7,13 @@ const cookieParser = require('cookie-parser');
 const errHandler = require('./middleware/errHandler');
 const {auth} = require('./middleware/auth');
 
+
+
+const app = express();
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-
-const app = express();
 
 app.use(morgan('dev'));
 app.use(cors(
