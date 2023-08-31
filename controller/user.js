@@ -1,8 +1,9 @@
 const oracledb = require('oracledb');
 const db = require('../config/database.js');
 const validations = require('../util/validation');
-const {getUserTypeByName} = require('./login.js')
+const {getUserTypeByName} = require('./login')
 const fields = require('../util/fields')
+const {getAllStockDataBySymbol} = require('./stock')
 
 const getPwdHash = async (pwd) => {
     const sql = `
@@ -281,14 +282,18 @@ const chkRegOfCorp = async (corpRegNo) => {
 async function createCustomer (payload) {
     console.log(`In create customer ${payload}`);
     try{
-        if(payload.refererId !== null && await getUserById(payload.refererId) == null){
-            console.log(`Customer ${payload.refererId} not registered`);
-            return;
+        if(payload.refererName !== null){
+            const referer = await getUserByName({name:payload.refererName}) ;
+            if(referer === null){
+                console.log(`Customer ${payload.refererName} not registered`);
+                return;
+            }
+            if(referer.TYPE !== 'Customer'){
+                console.log(`Only a customer can refer site to someone`);
+                return;
+            }
         }
-        if(payload.brokerId !== null && await getUserById(payload.brokerId) == null){
-            console.log(`Broker ${payload.brokerId} not registered`);
-            return;
-        }
+
 
         if(await chkAccountOfCustomer(payload.accountNo) != null){
             console.log(`Account already in use`);
@@ -296,57 +301,46 @@ async function createCustomer (payload) {
         }
         const pwdHash = await getPwdHash(payload.pwd);
 
-        const userSql=`
-        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP) values(
-            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip
-        )
+        const insertPlSql = `
+        BEGIN
+            insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY, COUNTRY, ZIP) values (
+                :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip
+            );
+            
+            insert into CUSTOMER (USER_ID, ACCOUNT_NO, REFERER_ID, BROKER_ID) values (
+                (SELECT USER_ID FROM "USER" WHERE NAME = :name), :accountNo, (SELECT USER_ID FROM "USER" WHERE NAME = :refererName), null
+            );
+            
+            -- Loop for inserting contacts
+            FOR i IN 1 .. :contact_count LOOP
+                insert into USER_CONTACT values (
+                    (SELECT USER_ID FROM "USER" WHERE NAME = :name), :contacts(i)
+                );
+            END LOOP;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+        END;
         `;
 
         const userBinds = {
-            name : payload.name,
-            pwd : pwdHash,
-            email : payload.email,
-            type : payload.type,
-            streetNo : payload.streetNo,
-            streetName : payload.streetName,
-            city : payload.city,
-            country : payload.country,
-            zip : payload.zip
-        }
-        
+            name: payload.name,
+            pwd: pwdHash,
+            email: payload.email,
+            type: payload.type,
+            streetNo: payload.streetNo,
+            streetName: payload.streetName,
+            city: payload.city,
+            country: payload.country,
+            zip: payload.zip,
+            accountNo: payload.accountNo,
+            refererName: payload.refererName,
+            contact_count: payload.contact.length,
+            contacts: payload.contact
+        };
 
-        await db.execute(userSql,userBinds);
+        await db.execute(insertPlSql, userBinds);
 
-        const customerSql = `
-            insert into CUSTOMER (USER_ID, ACCOUNT_NO, REFERER_ID, BROKER_ID) values(
-                (SELECT USER_ID FROM "USER" WHERE NAME = :name),:accountNo,:refererId,:broKerId
-            )
-        `;
-        
-        const customerBinds = {
-            name : payload.name,
-            accountNo : payload.accountNo,
-            refererId : payload.refererId,
-            brokerId : payload.brokerId
-        }
-
-        await db.execute(customerSql,customerBinds);
-
-
-        for (const contactElement of payload.contact){
-            const conSql = `
-            insert into USER_CONTACT values (
-                (SELECT USER_ID FROM "USER" WHERE NAME = :name),:contact
-            )
-            `;
-
-            const conBinds = {
-                name : payload.name,
-                contact : contactElement
-            }
-
-            await db.execute(conSql,conBinds);
-        }
         console.log(`After inserting name`);
         console.log(await getUserByName(payload));
 
@@ -569,23 +563,27 @@ const getProfileByName = async (name) => {
                 LICENSE_NO,
                 COMMISSION_PCT,
                 EXPERTISE,
-                (SELECT COUNT(*) FROM CUSTOMER WHERE BROKER_ID = USER_ID) CUSTOMERS
+                (SELECT COUNT(*) FROM CUSTOMER WHERE BROKER_ID = USER_ID) NUM_OF_CUSTOMERS
             FROM "USER" NATURAL JOIN BROKER
             WHERE NAME = :name
             `;
             break;
         case 'Corp':
             sql = `
-            SELECT 
-                USER_ID
+            SELECT
+                USER_ID,
                 NAME,
+                SYMBOL,
                 EMAIL,
                 "TYPE",
-                (STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,
+                ( STREET_NO || ' ' || STREET_NAME || ', ' || CITY || ', ' || COUNTRY ) ADDRESS,
                 ZIP,
                 CORP_REG_NO,
-                SECTOR
-            FROM "USER" NATURAL JOIN BROKER
+                SECTOR 
+            FROM
+                "USER"
+                JOIN CORPORATION ON ( CORP_ID = USER_ID )
+                NATURAL JOIN STOCK 
             WHERE NAME = :name
             `;
             break;
@@ -726,11 +724,28 @@ const updateProfile = async (payload)=>{
                     errors.push(`Corporation already in use`);
                 }
             }
-            sql = `
-            UPDATE CORPORATION
-            SET ${field} = :newValue
-            WHERE CORP_ID = :userId
-            `;
+            if(field == `SYMBOL`){
+                const stock = getAllStockDataBySymbol({symbol:newValue});
+                if(stock != null){
+                    errors.push(`Symbol already in use`);
+                }
+            }
+
+            switch(field){
+                case `SYMBOL`:
+                    sql = `
+                    UPDATE STOCK 
+                    SET SYMBOL = :newValue
+                    WHERE CORP_ID = :userId
+                    `;
+                    break;
+                default:
+                    sql = `
+                    UPDATE CORPORATION 
+                    SET ${field} = :newValue
+                    WHERE CORP_ID = :userId  
+                    `;
+            }
         }else if(fields.admin.includes(field)){
             sql = `
             UPDATE ADMIN  
