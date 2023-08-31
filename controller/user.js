@@ -359,10 +359,24 @@ async function createBroker (payload) {
 
         const pwdHash = await getPwdHash(payload.pwd);
 
-        const userSql=`
+        const insertplSql=`
+        BEGIN
         insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP) values(
             :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip
-        )
+        );
+        insert into BROKER (USER_ID, LICENSE_NO, COMMISSION_PCT, EXPERTISE) values(
+            (SELECT USER_ID FROM "USER" WHERE NAME = :name),:licenseNo,:commissionPCT,:expertise
+        );
+        -- Loop for inserting contacts
+        FOR i IN 1 .. :contact_count LOOP
+            insert into USER_CONTACT values (
+                (SELECT USER_ID FROM "USER" WHERE NAME = :name), :contacts(i)
+            );
+        END LOOP;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+        END;
         `;
 
         const userBinds = {
@@ -374,40 +388,18 @@ async function createBroker (payload) {
             streetName : payload.streetName,
             city : payload.city,
             country : payload.country,
-            zip : payload.zip
-        }
-
-        await db.execute(userSql,userBinds);
-        
-        const brokerSql = `
-        insert into BROKER (USER_ID, LICENSE_NO, COMMISSION_PCT, EXPERTISE) values(
-            (SELECT USER_ID FROM "USER" WHERE NAME = :name),:licenseNo,:commissionPCT,:expertise
-        )
-        `;
-
-        const brokerBinds = {
-            name : payload.name,
+            zip : payload.zip,
             licenseNo : payload.licenseNo,
             commissionPCT : payload.commissionPCT,
-            expertise : payload.expertise
-        }
+            expertise : payload.expertise,
+            contact_count: payload.contact.length,
+            contacts: payload.contact
+        };
 
-        await db.execute(brokerSql,brokerBinds);
+        await db.execute(insertplSql, userBinds);
 
-        for (const contactElement of payload.contact){
-            const conSql = `
-            insert into USER_CONTACT values (
-                (SELECT USER_ID FROM "USER" WHERE NAME = :name),:contactElement
-            )
-            `;
-
-            const conBinds = {
-                name : payload.name,
-                contactElement : contactElement
-            }
-
-            await db.execute(conSql,conBinds);
-        }
+        console.log(`After inserting name`);
+        console.log(await getUserByName(payload));
 
     }catch(err){
         console.log(`Failed to create ${payload} for error ${err}`);
@@ -428,10 +420,24 @@ async function createCorp (payload) {
 
         const pwdHash = await getPwdHash(payload.pwd);
 
-        const userSql=`
+        const insertplSql=`
+        BEGIN
         insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP) values(
             :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip
-        )
+        );
+        insert into CORPORATION (CORP_ID, CORP_REG_NO, SECTOR) values (
+            (SELECT USER_ID FROM "USER" WHERE NAME = :name),:corpRegNo,:sector
+        );
+        -- Loop for inserting contacts
+        FOR i IN 1 .. :contact_count LOOP
+            insert into USER_CONTACT values (
+                (SELECT USER_ID FROM "USER" WHERE NAME = :name), :contacts(i)
+            );
+        END LOOP;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+        END;
         `;
 
         const userBinds = {
@@ -443,41 +449,17 @@ async function createCorp (payload) {
             streetName : payload.streetName,
             city : payload.city,
             country : payload.country,
-            zip : payload.zip
-        }
-
-        await db.execute(userSql,userBinds);
-
-        const corpSql = `
-        insert into CORPORATION (CORP_ID, CORP_REG_NO, SECTOR) values (
-            (SELECT USER_ID FROM "USER" WHERE NAME = :name),:corpRegNo,:sector
-        )
-        `;
-
-        const corpBinds = {
-            name : payload.name,
+            zip : payload.zip,
             corpRegNo : payload.corpRegNo,
-            sector : payload.sector
-        }
+            sector : payload.sector,
+            contact_count: payload.contact.length,
+            contacts: payload.contact
+        };
 
-        await db.execute(corpSql,corpBinds);
+        await db.execute(insertplSql, userBinds);
 
-        for (const contactElement of payload.contact){
-            const conSql = `
-            insert into USER_CONTACT values (
-                (SELECT USER_ID FROM "USER" WHERE NAME = :name),:contactElement
-            )
-            `;
-
-            const conBinds = {
-                name : payload.name,
-                contactElement : contactElement
-            }
-
-            await db.execute(conSql,conBinds);
-        }
-
-
+        console.log(`After inserting name`);
+        console.log(await getUserByName(payload));
     }catch(err){
         console.log(`Failed to create ${payload} for error ${err}`);
     }
