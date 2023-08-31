@@ -152,9 +152,50 @@ async function getDailyProfit() {
     }
 }
 
+const getAllEmployeeNames = async() =>{
+    try{
+        const sql = `
+        SELECT (FIRST_NAME||' '||LAST_NAME) NAME
+        FROM EMPLOYEE  
+        `;
+
+        const result = await execute(sql,{});
+        return result;
+
+    } catch (error) {
+        console.error(`While getting employees`);
+        return null;
+    }
+}
+
+const getAllEmployeeDetailsByFullname = async(name) => {
+    try{
+        const sql = `
+        SELECT *
+        FROM EMPLOYEE
+        WHERE FIRST_NAME || ' ' || LAST_NAME  = :name   
+        `;
+
+        const bind = {
+            name: name
+        }
+
+        const result = await execute(sql,bind);
+        return result;
+
+    } catch (error) {
+        console.error(`While getting details for ${name}`);
+        return null;
+    }
+}
+
+
+
 module.exports = {
     getAllCustomerInfo,
     updateStock,
     block,
-    getDailyProfit
+    getDailyProfit,
+    getAllEmployeeNames,
+    getAllEmployeeDetailsByFullname
 }

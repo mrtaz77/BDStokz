@@ -38,7 +38,6 @@ router.patch('/block/:set',[
         }else{
             console.log(`${req.body.symbol} status set successfully`);
         }
-        res.json(result);
     }catch (err) {
         console.log(err);
         next(err);
@@ -63,6 +62,28 @@ router.get('/dailyProfit',async (req,res,next) => {
     }
 });
 
+router.get('/allEmployees',async (req,res,next)=>{
+    try{
+        const employeeNames = await adminController.getAllEmployeeNames();   
+        res.json(employeeNames);
+    }catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
+router.get('/empDetails/:name',async (req,res,next)=>{  
+    try{
+        const empDetails = await adminController.getAllEmployeeDetailsByFullname(req.params.name);
+        if(empDetails == null){
+            return res.status(400).json({ message: 'employee not found required' });
+        }
+        res.json(empDetails);
+    }catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
 
 
 module.exports = router;
