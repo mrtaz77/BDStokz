@@ -171,8 +171,22 @@ const getAllEmployeeNames = async() =>{
 const getAllEmployeeDetailsByFullname = async(name) => {
     try{
         const sql = `
-        SELECT * 
-        FROM EMPLOYEE NATURAL JOIN EMP_CONTACT
+        SELECT 
+            EMPLOYEE.EMPLOYEE_ID,
+            EMPLOYEE.FIRST_NAME,
+            EMPLOYEE.LAST_NAME,
+            EMPLOYEE.EMAIL,
+            EMPLOYEE.SEX,
+            EMPLOYEE.NID,
+            EMPLOYEE.DESIGNATION,
+            EMPLOYEE.ADDRESS,
+            EMPLOYEE.ZIP_CODE,
+            EMPLOYEE.SALARY,
+            EMPLOYEE.HIRE_DATE,
+            EMPLOYEE.DOB,
+            EMPLOYEE.MANAGER_ID,
+            EMP_CONTACT.CONTACT AS CONTACT
+        FROM EMPLOYEE LEFT OUTER JOIN EMP_CONTACT ON EMPLOYEE.EMPLOYEE_ID = EMP_CONTACT.EMPLOYEE_ID
         WHERE FIRST_NAME || ' ' || LAST_NAME  = :name   
         `;
 
@@ -181,6 +195,7 @@ const getAllEmployeeDetailsByFullname = async(name) => {
         }
 
         const result = await execute(sql,bind);
+        console.log(result.rows);
         return result.rows;
 
     } catch (error) {

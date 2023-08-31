@@ -134,72 +134,77 @@ const getUserById = async (idP) => {
 
 
 const createUser = async (payload) => {
-    let errors = [];
-    console.log(`In create user ${payload}`);
-    // necessary user table checks
-    const resultByName  = await getUserByName(payload);
-    const resultByEmail = await getUserByEmail(payload);
+    try{
+        let errors = [];
+        console.log(`In create user ${payload}`);
+        // necessary user table checks
+        const resultByName  = await getUserByName(payload);
+        const resultByEmail = await getUserByEmail(payload);
 
-    if(resultByName != null){
-        errors.push(`Username already in use...`);
-    }
-
-    if(resultByEmail != null){
-        errors.push(`Email already in use...`);
-    }
-
-    if(payload.pwd !== payload.confirmPwd){
-        errors.push(`Password confirmation failed`);
-    }
-
-    if(payload.pwd.length < 8){
-        errors.push(`Password must be at least 8 characters long`);
-    }
-
-    if(!validations.validateEmail(payload.email)){
-        errors.push(`Email invalid`);
-    }
-
-    if(payload.city === null || payload.country === null || payload.zip === null){
-        errors.push(`Invalid address info provided`);
-    }
-
-    if(!(payload.type == 'Customer' || payload.type == 'Broker' || payload.type == 'Corp')){
-        // console.log(`type ${payload.type}`);
-        errors.push(`Unknown user type ${payload.type}`);
-    }
-    // console.log(payload.contact)
-
-    for (const contactElement of payload.contact){
-        let resultByContact = await getUserByContact(contactElement);
-        if(resultByContact != null){
-            errors.push(`Contact already in use...`);
+        if(resultByName != null){
+            errors.push(`Username already in use...`);
         }
 
-        if(!validations.validateContact(contactElement)){
-            errors.push(`Contact invalid`);
-        }
-    }
-    console.log(`Error: ${errors}`);
-    if(errors.length > 0){
-        return null;
-    }else{
-        switch(payload.type){
-            case "Customer":
-                await createCustomer(payload);
-                break;
-            case "Broker":
-                await createBroker(payload);
-                break;
-            case "Corp":
-                await createCorp(payload);
-                break;
+        if(resultByEmail != null){
+            errors.push(`Email already in use...`);
         }
 
-        
-        const result = await getUserByName(payload);
-        return result;
-    }
+        if(payload.pwd !== payload.confirmPwd){
+            errors.push(`Password confirmation failed`);
+        }
+
+        if(payload.pwd.length < 8){
+            errors.push(`Password must be at least 8 characters long`);
+        }
+
+        if(!validations.validateEmail(payload.email)){
+            errors.push(`Email invalid`);
+        }
+
+        if(payload.city === null || payload.country === null || payload.zip === null){
+            errors.push(`Invalid address info provided`);
+        }
+
+        if(!(payload.type == 'Customer' || payload.type == 'Broker' || payload.type == 'Corp')){
+            // console.log(`type ${payload.type}`);
+            errors.push(`Unknown user type ${payload.type}`);
+        }
+        // console.log(payload.contact)
+
+        for (const contactElement of payload.contact){
+            let resultByContact = await getUserByContact(contactElement);
+            if(resultByContact != null){
+                errors.push(`Contact already in use...`);
+            }
+
+            if(!validations.validateContact(contactElement)){
+                errors.push(`Contact invalid`);
+            }
+        }
+        console.log(`Error: ${errors}`);
+        if(errors.length > 0){
+            return null;
+        }else{
+            switch(payload.type){
+                case "Customer":
+                    await createCustomer(payload);
+                    break;
+                case "Broker":
+                    await createBroker(payload);
+                    break;
+                case "Corp":
+                    await createCorp(payload);
+                    break;
+            }
+
+            
+            const result = await getUserByName(payload);
+            return result;
+        }
+
+    }catch(err){
+        console.error(`Found error: ${err} while creating user ${payload}`);
+    }   
 }
 
 const chkAccountOfCustomer = async (accountNo) => {

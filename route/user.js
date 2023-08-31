@@ -62,7 +62,8 @@ router.get('/isPremium', async (req, res) => {
 });
 
 router.get('/profile/:name', async (req, res) => {
-    const name = req.params.name;
+    const encodedName = req.params.name;
+    const name = decodeURIComponent(encodedName);
 
     try {
         const userProfile = await userController.getProfileByName(name);
@@ -80,7 +81,9 @@ router.get('/profile/:name', async (req, res) => {
 });
 
 router.get('/contact/:name', async (req, res) => {
-    const name = req.params.name;
+    const encodedName = req.params.name;
+    const name = decodeURIComponent(encodedName);
+
 
     try {
         const userContacts = await userController.getContactByName(name);

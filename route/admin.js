@@ -77,7 +77,11 @@ router.get('/allEmployees',async (req,res,next)=>{
 
 router.get('/empDetails/:name',async (req,res,next)=>{  
     try{
-        const empDetails = await adminController.getAllEmployeeDetailsByFullname(req.params.name);
+        const encodedName = req.params.name;
+        const name = decodeURIComponent(encodedName);
+        console.log(name);
+
+        const empDetails = await adminController.getAllEmployeeDetailsByFullname(name);
         if(empDetails == null){
             return res.status(400).json({ message: 'employee not found' });
         }
