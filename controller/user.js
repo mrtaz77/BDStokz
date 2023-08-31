@@ -761,6 +761,14 @@ const updateProfile = async (payload)=>{
     }
 }
 
+const addContact = async (payload)=> {
+    try{
+
+    }catch(err){
+        console.log(`Found ${err.message} while adding contact of ${payload.userId}...`);
+        return null;
+    }
+};
 
 module.exports = {
     getPwdHash,

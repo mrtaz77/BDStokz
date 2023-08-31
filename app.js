@@ -1,11 +1,15 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors') ;
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const errHandler = require('./middleware/errHandler');
-const auth = require('./middleware/auth');
+const {auth} = require('./middleware/auth');
 
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
 const app = express();
 
@@ -19,7 +23,7 @@ app.use(cors(
     }
 ));
 app.use(express.json());
-app.set('view engine', 'ejs');
+app.use(auth);
 
 // using routes and linking them to routers 
 app.use('/login',require('./route/login'));
