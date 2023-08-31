@@ -171,8 +171,8 @@ const getAllEmployeeNames = async() =>{
 const getAllEmployeeDetailsByFullname = async(name) => {
     try{
         const sql = `
-        SELECT *
-        FROM EMPLOYEE
+        SELECT * 
+        FROM EMPLOYEE NATURAL JOIN EMP_CONTACT
         WHERE FIRST_NAME || ' ' || LAST_NAME  = :name   
         `;
 
