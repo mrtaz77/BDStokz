@@ -160,7 +160,7 @@ const getAllEmployeeNames = async() =>{
         `;
 
         const result = await execute(sql,{});
-        return result;
+        return result.rows;
 
     } catch (error) {
         console.error(`While getting employees`);
@@ -181,7 +181,7 @@ const getAllEmployeeDetailsByFullname = async(name) => {
         }
 
         const result = await execute(sql,bind);
-        return result;
+        return result.rows;
 
     } catch (error) {
         console.error(`While getting details for ${name}`);
@@ -199,8 +199,8 @@ const getAllUserNameAndType = async () => {
             "USER"
         `;
 
-        return await execute(sql,{});
-
+        const result = await execute(sql,{});
+        return result.rows;
 
     }catch (error) {
         console.error(`While getting users`);

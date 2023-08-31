@@ -68,7 +68,7 @@ router.get('/allEmployees',async (req,res,next)=>{
         if(employeeNames == null){
             return res.status(400).json({ message: 'employees not found' });
         }
-        else res.json(users);
+        else res.json(employeeNames);
     }catch (err) {
         console.log(err);
         next(err);
