@@ -146,5 +146,6 @@ const chkCreds = async (name,password) => {
 
 module.exports = {
     getUserLoginInfoByName,
-    chkCreds
+    chkCreds,
+    getUserTypeByName
 };

@@ -1,6 +1,8 @@
 const oracledb = require('oracledb');
 const db = require('../config/database.js');
 const validations = require('../util/validation');
+const {getUserTypeByName} = require('./login.js')
+const fields = require('../util/fields')
 
 const getPwdHash = async (pwd) => {
     const sql = `
@@ -36,10 +38,10 @@ const getUserByEmail = async (payload) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`User ${email} does not exist`);
+            console.log(`Email ${email} does not exist`);
             return null;
         }
-        return result.rows[0];
+        return result.rows;
     }catch(err){
         console.error(`Found error: ${err} while searching id ${email}`);
     }
@@ -514,6 +516,252 @@ const isPrem = async (id) => {
     }
 }
 
+const getProfileByName = async (name) => {
+    const type = await getUserTypeByName(name);
+    if(type == null){
+        console.log(`No such user ${name} found`);
+        return null;
+    }
+    let sql;
+    switch(type){
+        case 'Admin':
+            sql = `
+            SELECT 
+                USER_ID,
+                NAME,
+                EMAIL,
+                "TYPE",
+                (STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,
+                ZIP,
+                (SELECT NAME FROM "USER" WHERE USER_ID = ADDER_ID) ADDER,
+                EMPLOYEE_ID,
+                FUNDS
+            FROM "USER" JOIN ADMIN ON USER_ID = ADMIN_ID
+            WHERE NAME = :name    
+            `;
+            break;
+        case 'Customer':
+            sql = `
+            SELECT 
+                USER_ID,
+                NAME,
+                EMAIL,
+                "TYPE",
+                (STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,
+                ZIP,
+                ACCOUNT_NO,
+                (SELECT NAME FROM "USER" WHERE USER_ID = REFERER_ID) REFERER,
+                REFER_COUNT,
+                (SELECT NAME FROM "USER" WHERE USER_ID = BROKER_ID) BROKER
+            FROM "USER" NATURAL JOIN CUSTOMER
+            WHERE NAME = :name
+            `;
+            break;
+        case 'Broker':
+            sql = `
+            SELECT 
+                USER_ID
+                NAME,
+                EMAIL,
+                "TYPE",
+                (STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,
+                ZIP,
+                LICENSE_NO,
+                COMMISSION_PCT,
+                EXPERTISE,
+                (SELECT COUNT(*) FROM CUSTOMER WHERE BROKER_ID = USER_ID) CUSTOMERS
+            FROM "USER" NATURAL JOIN BROKER
+            WHERE NAME = :name
+            `;
+            break;
+        case 'Corp':
+            sql = `
+            SELECT 
+                USER_ID
+                NAME,
+                EMAIL,
+                "TYPE",
+                (STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,
+                ZIP,
+                CORP_REG_NO,
+                SECTOR
+            FROM "USER" NATURAL JOIN BROKER
+            WHERE NAME = :name
+            `;
+            break;
+        default:
+            sql = ``;
+            break;
+    }
+
+    const binds = {
+        name : name
+    }
+
+    try{
+        const result = await db.execute(sql,binds);
+        if(result.rows.length==0){
+            console.log(`No such user ${name} found`);
+            return null;
+        }
+        console.log(result.rows);
+        return result.rows;
+    }catch(err){
+        console.error(`Found error: ${err} while searching for user ${name}...`);
+    }
+};
+
+const getContactByName = async (name)=>{
+    const sql = `
+    SELECT CONTACT 
+    FROM USER_CONTACT
+    WHERE USER_ID = (SELECT USER_ID FROM "USER" WHERE NAME = :name)
+    `;
+
+    const bind = {
+        name: name
+    }
+
+    try{
+        const result = await db.execute(sql,bind);
+        if(result.rows.length==0){
+            console.log(`No such user ${name} found`);
+            return null;
+        }
+        console.log(result.rows);
+        return result.rows;
+    }catch(err){
+        console.error(`Found error: ${err} while getting contact for user ${name}...`);
+    }
+}
+
+const updateProfile = async (payload)=>{
+    try{
+        const userId = payload.userId;
+        const field = payload.field;
+        const newValue = payload.newValue;
+
+        const user = await getUserById(userId);
+        let errors = [];
+
+        let sql;
+        if(user == null){
+            errors.push(`User does not exist.`);
+        }
+
+        if(fields.user.includes(field)){
+
+            if(field == 'NAME'){
+                const resultByName  = await getUserByName({name:newValue});
+                if(resultByName != null){
+                    errors.push("User name already exists...");
+                }
+            }
+            else if(field == 'EMAIL'){
+                const resultByEmail = await getUserByEmail({email:newValue});
+                if(resultByEmail != null){
+                    errors.push("Email already exists...");
+                }
+                if(!validations.validateEmail(newValue)){
+                    errors.push("Email invalid");
+                }
+            }
+
+            sql = `
+            UPDATE "USER"
+            SET ${field} = :newValue
+            WHERE USER_ID = :userId
+            `;
+
+        }else if(fields.customer.includes(field)){
+            if(field == `ACCOUNT_NO`){
+                const result = await chkAccountOfCustomer(newValue);
+                if(result != null){
+                    errors.push(`Account already exists...`);
+                }
+            }else if(field == `REFERER_ID`){
+                const result = await getUserByName({name:newValue});
+                if(result == null || result[0].TYPE != 'Customer'){
+                    errors.push(`Invalid referer...`);
+                }
+            }else if(field == `BROKER_ID`){
+                const result = await getUserByName({name:newValue});
+                if(result == null || result[0].TYPE != 'Broker'){
+                    errors.push(`Invalid broker...`);
+                }
+            }
+
+            switch(field){
+                case 'ACCOUNT_NO':
+                    sql = `
+                    UPDATE CUSTOMER
+                    SET ACCOUNT_NO = :newValue 
+                    WHERE USER_ID = :userId
+                    `;
+                    break;
+                default:
+                    sql = `
+                    UPDATE CUSTOMER
+                    SET ${field} = (SELECT USER_ID FROM "USER" WHERE NAME = :newValue) 
+                    WHERE USER_ID = :userId
+                    `;
+                    break;
+            }
+        }else if(fields.broker.includes(field)){
+            if(field == `LICENSE_NO`){
+                const result = await chkLicenseOfBroker(newValue);
+                if(result != null){
+                    errors.push(`License already in use`);
+                }
+            }
+            sql = `
+            UPDATE BROKER 
+            SET ${field} = :newValue
+            WHERE BROKER.USER_ID = :userId
+            `;
+        }else if(fields.corporation.includes(field)){
+            if(field == `CORP_REG_NO`){
+                const result  = await chkRegOfCorp(newValue);
+                if(result != null){
+                    errors.push(`Corporation already in use`);
+                }
+            }
+            sql = `
+            UPDATE CORPORATION
+            SET ${field} = :newValue
+            WHERE CORP_ID = :userId
+            `;
+        }else if(fields.admin.includes(field)){
+            sql = `
+            UPDATE ADMIN  
+            SET ${field} = :newValue
+            WHERE ADMIN_ID = :userId
+            `;
+        }
+
+        const binds = {
+            newValue: newValue,
+            userId : userId 
+        }
+        console.log(sql);
+
+        if(errors.length == 0)await db.execute(sql,binds);
+        else{
+            console.log(errors);
+            return null;
+        };
+        const newResultByName =  await getUserById(userId);
+        const profile = await getProfileByName(newResultByName.NAME); 
+        console.log(profile);
+        return profile;
+
+    }catch(err){
+        console.log(`Found ${err.message} while updating profile of ${payload.userId}...`);
+        return null;
+    }
+}
+
+
 module.exports = {
     getPwdHash,
     getUserByEmail,
@@ -524,5 +772,8 @@ module.exports = {
     createCustomer,
     createBroker,
     createCorp,
-    isPrem
+    isPrem,
+    getProfileByName,
+    getContactByName,
+    updateProfile
 };

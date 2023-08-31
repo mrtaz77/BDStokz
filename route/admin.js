@@ -18,6 +18,7 @@ router.patch('/updateStock',[
         }
 
         console.log(`Successfully updated ${req.body.field} of ${req.body.symbol} to ${req.body.newValue}`);
+        res.json(result);
         res.json({ message: 'Stock updated successfully' });
 
     }catch (err) {
@@ -54,7 +55,7 @@ router.delete('/deleteUser',[
 router.get('/dailyProfit',async (req,res,next) => {
     try{    
         const dailyProfit = await adminController.getDailyProfit();
-        console.log(dailyProfit);
+        // console.log(dailyProfit);
         res.json(dailyProfit);
     }catch (err) {
         console.log(err);

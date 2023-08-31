@@ -1,6 +1,7 @@
 const router = require('express-promise-router')();
 const custController =  require('../controller/customer');
 const userController = require('../controller/user');
+
 const { body } = require('express-validator');
 
 
@@ -58,6 +59,64 @@ router.get('/isPremium', async (req, res) => {
         console.log(`Found ${err.message} in while getting premium status..`);
         next(err);
     }
+});
+
+router.get('/profile/:name', async (req, res) => {
+    const name = req.params.name;
+
+    try {
+        const userProfile = await userController.getProfileByName(name);
+
+        if (userProfile === null) {
+            // User not found
+            res.status(404).json({ error: 'User not found' });
+        } else {
+            res.json(userProfile);
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.get('/contact/:name', async (req, res) => {
+    const name = req.params.name;
+
+    try {
+        const userContacts = await userController.getContactByName(name);
+
+        if (userContacts === null) {
+            // User not found
+            res.status(404).json({ error: 'User not found' });
+        } else {
+            res.json(userContacts);
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.patch('/updateProfile',[
+    body('userId').notEmpty().withMessage('userId is required'),
+    body('field').notEmpty().withMessage('field to be updated is required'),
+    body('newValue').notEmpty().withMessage('newValue cannot be empty')
+], async(req, res, next) => {
+    try{
+        const result = await userController.updateProfile(req.body);
+        if (result === null) {
+            console.log(`Error updating ${req.body.field} of user to ${req.body.newValue}`);
+            return res.status(400).json({ message: 'Error updating user' });
+        }
+
+        console.log(`Successfully updated ${req.body.field} of user to ${req.body.newValue}`);
+        res.json({ message: 'User info updated successfully' });
+
+    }catch(error) {
+        console.error(error);
+        next(error);
+    }
+
 });
 
 router.use('/logout',require('./logout'));
