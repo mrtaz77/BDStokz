@@ -105,4 +105,26 @@ router.get('/allUsers',async (req,res,next)=>{
     }
 });
 
+router.post('/addAdmin',[
+    body('adminId').notEmpty().withMessage('adminId is required'),
+    body('empName').notEmpty().withMessage('empName of stock is required')
+],async (req,res,next)=>{
+    try{
+        const result = await adminController.addAdmin(req.body);
+        console.log(result);
+
+        if (result === null) {
+            console.log(`Error updating ${req.body.empName} as admin by ${req.body.adminId}`);
+            return res.status(400).json({ message: 'Error adding admin' });
+        }
+
+        console.log(`Successfully added ${req.body.empName} as admin by ${req.body.adminId}`);
+        res.json(result);
+
+    }catch (err) {
+        console.log(err);
+        next(err);
+    }
+})
+
 module.exports = router;

@@ -195,7 +195,6 @@ const getAllEmployeeDetailsByFullname = async(name) => {
         }
 
         const result = await execute(sql,bind);
-        console.log(result.rows);
         return result.rows;
 
     } catch (error) {
@@ -225,6 +224,80 @@ const getAllUserNameAndType = async () => {
     }
 }
 
+const addAdmin = async (payload) => {
+    try{
+        const adderId = payload.adminId;
+        const empName = payload.empName;
+
+        const empDetails = await getAllEmployeeDetailsByFullname(empName);
+        if(empDetails == null){
+            console.log(`Could not find employee details for ${empName}`);
+            return null;
+        }
+
+        const adder = await userController.getUserById(adderId);
+
+        if(adder == null || adder.TYPE != 'Admin'){
+            console.error(`Adder not an admin`);
+            return null;
+        }
+
+        const existingAdmin = await userController.getUserByName({name:empName});
+
+        if(existingAdmin != null && existingAdmin.TYPE == 'Admin'){
+            console.error('Already an admin');
+            return null;
+        }
+        
+        const pwd = await userController.getPwdHash('bdStockz@dummy');
+
+        const insertPlsql = `
+        BEGIN 
+        INSERT INTO "USER" (NAME,PWD,EMAIL,"TYPE",STREET_NO,STREET_NAME,CITY,COUNTRY,ZIP)
+        values (:name,:pwd,:email,'Admin',20,'Mirpur','Dhaka','Bangladesh',:zip);
+
+        INSERT INTO ADMIN values(
+            (SELECT USER_ID FROM "USER" WHERE NAME = :name),
+            :adderId,
+            (SELECT EMPLOYEE_ID FROM EMPLOYEE WHERE FIRST_NAME ||' '||LAST_NAME = :name),
+            1000
+        );
+        FOR R IN (
+            SELECT CONTACT
+            FROM EMP_CONTACT WHERE
+            EMPLOYEE_ID = (SELECT EMPLOYEE_ID FROM EMPLOYEE WHERE FIRST_NAME ||' '||LAST_NAME = :name)
+        )
+        LOOP 
+            INSERT INTO USER_CONTACT(USER_ID,CONTACT) values(
+            (SELECT USER_ID FROM "USER" WHERE NAME = :name),
+            R.CONTACT
+            );
+        END LOOP;
+        END;
+        `;
+        // console.log(empDetails);
+
+        const binds = {
+            name: empName,
+            pwd: pwd,
+            email : empDetails[0].EMAIL,
+            zip : empDetails[0].ZIP_CODE === null ?1200 : empDetails[0].ZIP_CODE,
+            adderId : adderId
+        };
+
+        // console.log(binds);
+
+        await execute(insertPlsql,binds);
+
+        const newAdmin = await userController.getUserByName({name:empName});
+
+        return newAdmin;
+
+    }catch (error) {
+        console.error(`While adding admin got ${error.message}`);
+        return null;
+    }
+};
 
 
 module.exports = {
@@ -234,5 +307,6 @@ module.exports = {
     getDailyProfit,
     getAllEmployeeNames,
     getAllEmployeeDetailsByFullname,
-    getAllUserNameAndType
+    getAllUserNameAndType,
+    addAdmin
 }
