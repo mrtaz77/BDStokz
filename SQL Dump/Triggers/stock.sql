@@ -1,0 +1,28 @@
+CREATE OR REPLACE TRIGGER update_stock_time
+BEFORE UPDATE ON STOCK
+FOR EACH ROW
+BEGIN
+    :NEW.UPDATE_TIME := CURRENT_TIMESTAMP;
+END;
+/
+
+CREATE OR REPLACE TRIGGER update_corresponding_symbols
+AFTER UPDATE ON STOCK
+FOR EACH ROW
+BEGIN
+    -- Update symbol in BACKUP_STOCK
+    UPDATE "BACKUP STOCK"
+    SET SYMBOL = :new.SYMBOL
+    WHERE SYMBOL = :old.SYMBOL;
+    
+    -- Update symbol in ORDER
+    UPDATE "ORDER"
+    SET SYMBOL = :new.SYMBOL
+    WHERE SYMBOL = :old.SYMBOL;
+    
+    -- Update symbol in OWNS
+    UPDATE OWNS
+    SET SYMBOL = :new.SYMBOL
+    WHERE SYMBOL = :old.SYMBOL;
+END;
+/
