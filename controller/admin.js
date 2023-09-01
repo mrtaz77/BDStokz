@@ -3,6 +3,7 @@ const oracledb = require('oracledb');
 const {getAllStockDataBySymbol} = require('./stock');
 const userController = require('./user');
 const {chkCreds} = require('./login');
+const orderController = require('./order');
 
 const getAllCustomerInfo = async (payload) => {
     try{
@@ -350,35 +351,40 @@ const deleteUser = async (payload) => {
     }
 }
 
-const getAllOrders = async () => {
+const deleteOrderPermanent = async (payload) => {
     try{
+        const adminId = payload.adminId;
+        const orderId = payload.orderId;
+
+        const admin = await userController.getUserById(adminId);
+
+        if(admin === null || admin.TYPE !== 'Admin'){
+            console.error(`Deletion permission denied`);
+            return 0;
+        }
+
+        const status = 'PENDING';
+
         const sql = `
-        SELECT * 
-        FROM "ORDER" 
-        ORDER BY LATEST_UPDATE_TIME DESC
+        DELETE FROM "ORDER"
+        WHERE ORDER_ID = :orderId
+        AND STATUS = :status
         `;
 
-        const result = await execute(sql,{});
+        const binds = {
+            orderId: orderId,
+            status: status
+        };
+    
+        await execute(sql, binds);
 
-        return result.rows;
-
+        return null;
+        
     }catch (error) {
-        console.error(`While getting users`);
+        console.error(`While deleting order ${orderId}`);
         return null;
     }
 }
-
-
-const deleteOrderPermanent = async (payload) => {
-    try{
-
-
-    }catch (error) {
-        console.error(`While deleting order got ${error.message}`);
-        return 0;
-    }
-}
-
 
 module.exports = {
     getAllCustomerInfo,
@@ -390,6 +396,5 @@ module.exports = {
     getAllUserNameAndType,
     addAdmin,
     deleteUser,
-    deleteOrderPermanent,
-    getAllOrders
+    deleteOrderPermanent
 }

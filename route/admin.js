@@ -1,5 +1,6 @@
 const router = require('express-promise-router')();
 const adminController = require('../controller/admin');
+const orderController = require('../controller/order');
 const { body } = require('express-validator');
 
 router.patch('/updateStock',[
@@ -118,7 +119,7 @@ router.get('/allUsers',async (_req,res,next)=>{
 
 router.get('/allOrders',async (_req,res,next)=>{
     try{
-        const orders = await adminController.getAllOrders();   
+        const orders = await orderController.getAllOrders();   
         if(orders == null){
             return res.status(400).json({ message: 'orders not found' });
         }
@@ -135,7 +136,6 @@ router.post('/addAdmin',[
 ],async (req,res,next)=>{
     try{
         const result = await adminController.addAdmin(req.body);
-        console.log(result);
 
         if (result === null) {
             console.log(`Error updating ${req.body.empName} as admin by ${req.body.adminId}`);
@@ -149,7 +149,28 @@ router.post('/addAdmin',[
         console.log(err);
         next(err);
     }
-})
+});
+
+router.delete('/deleteOrder',[
+    body('adminId').notEmpty().withMessage('adminId is required'),
+    body('orderId').notEmpty().withMessage('orderId is required')
+],async (req,res,next) => {
+    try{
+        const result = await adminController.deleteOrderPermanent(req.body);
+
+        if(result === null){
+            return res.status(200).json({ message: 'Order deleted successfully'});
+        }
+        else{
+            return res.status(400).json({ message: 'Deletion unsuccessfull' });
+        }
+
+    }catch (err) {
+        console.log(err);
+        next(err);
+    }
+
+});
 
 
 
