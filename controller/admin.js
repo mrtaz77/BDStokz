@@ -67,7 +67,6 @@ const updateStock = async (payload) => {
                 console.log("Stock symbol already present");
                 return null;
             }
-            payload.symbol = symbol;
         }
 
         const sql = `
@@ -84,7 +83,7 @@ const updateStock = async (payload) => {
         await execute(sql, binds);
 
 
-        const newStock = await getAllStockDataBySymbol(payload);
+        const newStock = await getAllStockDataBySymbol({symbol:newValue});
 
         return newStock;
     }catch(err){

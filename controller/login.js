@@ -95,7 +95,7 @@ const getUserLoginInfoByName = async (name) => {
                 ZIP,
                 CORP_REG_NO,
                 SECTOR
-            FROM "USER" NATURAL JOIN BROKER
+            FROM "USER" NATURAL JOIN CORPORATION
             WHERE NAME = :name
             `;
             break;

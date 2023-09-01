@@ -523,19 +523,22 @@ const getProfileByName = async (name) => {
             break;
         case 'Customer':
             sql = `
-            SELECT 
-                USER_ID,
-                NAME,
-                EMAIL,
-                "TYPE",
-                (STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,
-                ZIP,
-                ACCOUNT_NO,
-                (SELECT NAME FROM "USER" WHERE USER_ID = REFERER_ID) REFERER,
-                REFER_COUNT,
-                (SELECT NAME FROM "USER" WHERE USER_ID = BROKER_ID) BROKER
-            FROM "USER" NATURAL JOIN CUSTOMER
-            WHERE NAME = :name
+            SELECT
+                U.USER_ID,
+                U.NAME,
+                U.EMAIL,
+                U."TYPE",
+                ( U.STREET_NO || ' ' || U.STREET_NAME || ', ' || U.CITY || ', ' || U.COUNTRY ) ADDRESS,
+                U.ZIP,
+                C.ACCOUNT_NO,
+                ( SELECT NAME FROM "USER" WHERE USER_ID = C.REFERER_ID ) REFERER,
+                C.REFER_COUNT,
+                ( SELECT NAME FROM "USER" WHERE USER_ID = C.BROKER_ID ) BROKER 
+            FROM
+                "USER" U
+                LEFT OUTER JOIN CUSTOMER C ON U.USER_ID = C.USER_ID 
+            WHERE
+                U.NAME = :name
             `;
             break;
         case 'Broker':
@@ -550,7 +553,7 @@ const getProfileByName = async (name) => {
                 LICENSE_NO,
                 COMMISSION_PCT,
                 EXPERTISE,
-                (SELECT COUNT(*) FROM CUSTOMER WHERE BROKER_ID = USER_ID) NUM_OF_CUSTOMERS
+                NVL((SELECT COUNT(*) FROM CUSTOMER WHERE BROKER_ID = USER_ID),0) NUM_OF_CUSTOMERS
             FROM "USER" NATURAL JOIN BROKER
             WHERE NAME = :name
             `;
@@ -570,8 +573,9 @@ const getProfileByName = async (name) => {
             FROM
                 "USER"
                 JOIN CORPORATION ON ( CORP_ID = USER_ID )
-                NATURAL JOIN STOCK 
-            WHERE NAME = :name
+                LEFT OUTER JOIN STOCK ON CORPORATION.CORP_ID = STOCK.CORP_ID
+            WHERE
+                NAME = :name
             `;
             break;
         default:
@@ -585,7 +589,7 @@ const getProfileByName = async (name) => {
 
     try{
         const result = await db.execute(sql,binds);
-        if(result.rows.length==0){
+        if(result.rows.length === 0){
             console.log(`No such user ${name} found`);
             return null;
         }

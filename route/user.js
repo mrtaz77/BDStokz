@@ -34,7 +34,6 @@ router.get('/portfolio',async (req, res,next) => {
 router.get('/isPremium', async (req, res) => {
     try{
         const userId = req.query.userId; // Use req.query to get query parameters
-        console.log(userId);
 
         if (!userId) {
             return res.status(400).json({ message: 'userId is required' });
@@ -64,7 +63,6 @@ router.get('/isPremium', async (req, res) => {
 router.get('/profile/:name', async (req, res) => {
     const encodedName = req.params.name;
     const name = decodeURIComponent(encodedName);
-
     try {
         const userProfile = await userController.getProfileByName(name);
 
