@@ -350,6 +350,25 @@ const deleteUser = async (payload) => {
     }
 }
 
+const getAllOrders = async () => {
+    try{
+        const sql = `
+        SELECT * 
+        FROM "ORDER" 
+        ORDER BY LATEST_UPDATE_TIME DESC
+        `;
+
+        const result = await execute(sql,{});
+
+        return result.rows;
+
+    }catch (error) {
+        console.error(`While getting users`);
+        return null;
+    }
+}
+
+
 const deleteOrderPermanent = async (payload) => {
     try{
 
@@ -371,5 +390,6 @@ module.exports = {
     getAllUserNameAndType,
     addAdmin,
     deleteUser,
-    deleteOrderByIdPermanent
+    deleteOrderPermanent,
+    getAllOrders
 }

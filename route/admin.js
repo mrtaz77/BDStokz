@@ -103,13 +103,26 @@ router.get('/empDetails/:name',async (req,res,next)=>{
     }
 });
 
-router.get('/allUsers',async (req,res,next)=>{
+router.get('/allUsers',async (_req,res,next)=>{
     try{
         const users = await adminController.getAllUserNameAndType();   
         if(users == null){
             return res.status(400).json({ message: 'users not found' });
         }
         else res.json(users);
+    }catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
+router.get('/allOrders',async (_req,res,next)=>{
+    try{
+        const orders = await adminController.getAllOrders();   
+        if(orders == null){
+            return res.status(400).json({ message: 'orders not found' });
+        }
+        else res.json(orders);
     }catch (err) {
         console.log(err);
         next(err);
@@ -137,5 +150,9 @@ router.post('/addAdmin',[
         next(err);
     }
 })
+
+
+
+
 
 module.exports = router;
