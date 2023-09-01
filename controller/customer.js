@@ -52,7 +52,56 @@ const getPortfolioInfoByID = async(id) =>{
     }
 }
 
+const createPortfolio = async (payload) => {
+    try{
+        const userId = payload.userId;
+        const sector = payload.sector;
+
+        const user = await getUserById(userId);
+
+        if(user === null || user.TYPE !== 'Customer'){
+            console.error(`User ${userId} is not a customer`);
+            return null;
+        }
+
+        const portfolios = await getPortfolioInfoByID(userId);
+
+        let found = false;
+
+        for (const portfolio of portfolios) {
+            if (portfolio.userId === userId && portfolio.sector === sector) {
+                found = true;
+                break;
+            }
+        }
+
+        if(found){
+            console.error(`Portfolio already exists`);
+            return null;
+        }
+
+
+        const sql = `
+        INSERT INTO PORTFOLIO (USER_ID,SECTOR)
+        values (:user_id, :sector)
+        `;
+
+        const binds = {
+            user_id: userId,
+            sector: sector
+        };
+
+        await execute(sql, binds);
+
+        return await getPortfolioInfoByID(userId);
+    }catch(err){
+        console.log(`Found error: ${err.message} while getting portfoio of ${id}`);
+        return null;
+    }
+}
+
 module.exports = {
     getAllInfoByID,
-    getPortfolioInfoByID
+    getPortfolioInfoByID,
+    createPortfolio
 }
