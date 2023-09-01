@@ -626,14 +626,18 @@ const updateProfile = async (payload)=>{
         const field = payload.field;
         const newValue = payload.newValue;
 
-        if(newValue === null){
-            errors.push(`New value cannot be null`);
-        }
+        
 
         const user = await getUserById(userId);
         let errors = [];
 
         let sql;
+
+        if(newValue === null){
+            errors.push(`New value cannot be null`);
+        }
+
+
         if(user == null){
             errors.push(`User does not exist.`);
         }
