@@ -342,10 +342,20 @@ const deleteUser = async (payload) => {
 
         await execute(sql,binds);
 
-        return userController.getUserById(userId);
+        return await userController.getUserById(userId);
 
     }catch (error) {
         console.error(`While deleting admin got ${error.message}`);
+        return 0;
+    }
+}
+
+const deleteOrderPermanent = async (payload) => {
+    try{
+
+
+    }catch (error) {
+        console.error(`While deleting order got ${error.message}`);
         return 0;
     }
 }
@@ -360,5 +370,6 @@ module.exports = {
     getAllEmployeeDetailsByFullname,
     getAllUserNameAndType,
     addAdmin,
-    deleteUser
+    deleteUser,
+    deleteOrderByIdPermanent
 }
