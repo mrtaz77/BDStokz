@@ -1,0 +1,504 @@
+USER_ID,NAME,STOCK_SYMBOL
+1050,B. Riley Financial,RILEY
+1060,Fenix Parts,FENIX
+1070,Calgon Carbon Corporation,CALGO
+1080,Dycom Industries,DYCOM
+1090,FTI Consulting,FTI
+1100,Marlin Business Services Corp.,MARLI
+1110,HomeTown Bankshares Corporation,HOMET
+1120,Poage Bankshares,POAGE
+1130,RE/MAX Holdings,RE/MA
+1140,Electronic Arts Inc.,ELECT
+1150,Loxo Oncology,LOXO
+1160,Neurotrope,NEURO
+1170,Rollins,ROLLI
+1180,Algonquin Power & Utilities Corp.,ALGON
+1190,United States Cellular Corporation,UNITE
+1200,Federal Agricultural Mortgage Corporation,FEDER
+1210,PIMCO Dynamic Income Fund,PIMCO
+1220,PennantPark Floating Rate Capital Ltd.,PENNA
+1230,First Trust CEF Income Opportunity ETF,FIRST
+1240,Western Asset Managed Municipals Fund,WESTE
+1250,OFG Bancorp,OFG
+1260,Sonoma Pharmaceuticals,SONOM
+1270,Pain Therapeutics,PAIN
+1280,Annaly Capital Management Inc,ANNAL
+1290,F.N.B. Corporation,F.N.B
+1300,Cardiovascular Systems,CARDI
+1310,Analog Devices,ANALO
+1320,Capitala Finance Corp.,CAPIT
+1330,Diversicare Healthcare Services Inc.,DIVER
+1340,Guaranty Federal Bancshares,GUARA
+1350,U.S. Bancorp,U.S.
+1360,Dynegy Inc.,DYNEG
+1370,Alere Inc.,ALERE
+1380,Westmoreland Coal Company,WESTM
+1390,Invesco Trust  for Investment Grade New York Municipal,INVES
+1400,CHS Inc,CHS
+1410,VelocityShares Daily 2x VIX Short-Term ETN,VELOC
+1420,PowerShares S&P SmallCap Information Technology Portfolio,POWER
+1430,Valeant Pharmaceuticals International,VALEA
+1440,LaSalle Hotel Properties,LASAL
+1450,Twenty-First Century Fox,TWENT
+1460,Hess Corporation,HESS
+1470,International Game Technology,INTER
+1480,Alpine Global Premier Properties Fund,ALPIN
+1490,M/I Homes,M/I
+1500,Long Island Iced Tea Corp.,LONG
+1510,ZIOPHARM Oncology Inc,ZIOPH
+1520,FARO Technologies,FARO
+1530,Westlake Chemical Corporation,WESTL
+1540,Natural Grocers by Vitamin Cottage,NATUR
+1550,VALE S.A.,VALE
+1560,ATA Inc.,ATA
+1570,Alexandria Real Estate Equities,ALEXA
+1580,CPFL Energia S.A.,CPFL
+1590,VelocityShares Daily 2x VIX Medium-Term ETN,VELOC
+1600,Westinghouse Air Brake Technologies Corporation,WESTI
+1610,Emergent Biosolutions,EMERG
+1620,Winmark Corporation,WINMA
+1630,Huntington Bancshares Incorporated,HUNTI
+1640,Mylan N.V.,MYLAN
+1650,Pitney Bowes Inc.,PITNE
+1660,Arbor Realty Trust,ARBOR
+1670,Global X SuperDividend Alternatives ETF,GLOBA
+1680,Steel Partners Holdings LP,STEEL
+1690,BioLineRx Ltd.,BIOLI
+1700,Rite Aid Corporation,RITE
+1710,Blackrock Global,BLACK
+1720,Vanguard Russell 1000 Value ETF,VANGU
+1730,First Defiance Financial Corp.,FIRST
+1740,Morgan Stanley,MORGA
+1750,Ares Capital Corporation,ARES
+1760,Sysco Corporation,SYSCO
+1770,LightInTheBox Holding Co.,LIGHT
+1780,Bitauto Holdings Limited,BITAU
+1790,Uniti Group Inc.,UNITI
+1800,Insperity,INSPE
+1810,Legg Mason Global Infrastructure ETF,LEGG
+1820,Clifton Bancorp Inc.,CLIFT
+1830,North European Oil Royality Trust,NORTH
+1840,Mesa Laboratories,MESA
+1850,CRA International,CRA
+1860,Aqua Metals,AQUA
+1870,Care.com,CARE.
+1880,First Trust Nasdaq Retail ETF,FIRST
+1890,National Commerce Corporation,NATIO
+1900,Jounce Therapeutics,JOUNC
+1910,NorthWestern Corporation,NORTH
+1920,PowerShares S&P SmallCap Health Care Portfolio,POWER
+1930,BB&T Corporation,BB&T
+1940,First Hawaiian,FIRST
+1950,Cara Therapeutics,CARA
+1960,Nuveen Select Tax Free Income Portfolio III,NUVEE
+1970,OM Asset Management plc,ASSET
+1980,Customers Bancorp,CUSTO
+1990,TerraForm Global,TERRA
+2000,SCYNEXIS,SCYNE
+2010,Discover Financial Services,DISCO
+2020,Neptune Technologies & Bioresources Inc,NEPTU
+2030,Revolution Lighting Technologies,REVOL
+2040,New Residential Investment Corp.,NEW
+2050,Great Southern Bancorp,GREAT
+2060,DST Systems,DST
+2070,Park Electrochemical Corporation,PARK
+2080,Dynagas LNG Partners LP,DYNAG
+2090,Digital Realty Trust,DIGIT
+2100,Granite Real Estate Inc.,GRANI
+2110,Turtle Beach Corporation,TURTL
+2120,PAVmed Inc.,PAVME
+2130,Blackrock MuniHoldings California Quality Fund,BLACK
+2140,M&T Bank Corporation,M&T
+2150,First Trust Intermediate Duration Preferred & Income Fund,FIRST
+2160,Plains Group Holdings,PLAIN
+2170,Aoxin Tianli Group,AOXIN
+2180,Churchill Downs,CHURC
+2190,Exelixis,EXELI
+2200,Bio-Rad Laboratories,BIO-R
+2210,BB&T Corporation,BB&T
+2220,Host Hotels & Resorts,HOST
+2230,Eaton Vance Senior Income Trust,EATON
+2240,Marine Products Corporation,MARIN
+2250,Zoe's Kitchen,ZOE'S
+2260,Kayne Anderson Energy Total Return Fund,KAYNE
+2270,Banner Corporation,BANNE
+2280,Biostage,BIOST
+2290,HSBC Holdings plc,HSBC
+2300,Sterling Bancorp,STERL
+2310,Popular,POPUL
+2320,Charter Financial Corp.,CHART
+2330,MakeMyTrip Limited,MAKEM
+2340,Hallador Energy Company,HALLA
+2350,Silver Spring Networks,SILVE
+2360,Nuveen Multi-Market Income Fund,NUVEE
+2370,Southwest Bancorp,SOUTH
+2380,General Electric Company,GENER
+2390,StoneCastle Financial Corp,STONE
+2400,Match Group,MATCH
+2410,ChinaCache International Holdings Ltd.,CHINA
+2420,Urstadt Biddle Properties Inc.,URSTA
+2430,Northern Trust Corporation,NORTH
+2440,First Data Corporation,FIRST
+2450,Bank Mutual Corporation,BANK
+2460,Accuray Incorporated,ACCUR
+2470,Chesapeake Utilities Corporation,CHESA
+2480,Engility Holdings,ENGIL
+2490,Bank of America Corporation,BANK
+2500,Booz Allen Hamilton Holding Corporation,BOOZ
+2510,North European Oil Royality Trust,NORTH
+2520,Veritex Holdings,VERIT
+2530,Encore Wire Corporation,ENCOR
+2540,Under Armour,UNDER
+2550,Littelfuse,LITTE
+2560,Goldman Sachs Group,GOLDM
+2570,Two Harbors Investments Corp,TWO
+2580,First Trust Specialty Finance and Financial Opportunities Fund,FIRST
+2590,Cytosorbents Corporation,CYTOS
+2600,Poage Bankshares,POAGE
+2610,Cree,CREE
+2620,FlexShares Real Assets Allocation Index Fund,FLEXS
+2630,Union Bankshares,UNION
+2640,Hamilton Bancorp,HAMIL
+2650,Fidus Investment Corporation,FIDUS
+2660,Dreyfus Municipal Bond Infrastructure Fund,DREYF
+2670,Continental Building Products,CONTI
+2680,CareDx,CARED
+2690,Grupo Aeroportuario del Centro Norte S.A.B. de C.V.,GRUPO
+2700,Ashford Hospitality Trust Inc,ASHFO
+2710,Seaspan Corporation,SEASP
+2720,Royal Bank Scotland plc (The),ROYAL
+2730,ChinaNet Online Holdings,CHINA
+2740,Titan International,TITAN
+2750,Vishay Intertechnology,VISHA
+2760,American Renal Associates Holdings,AMERI
+2770,SS&C Technologies Holdings,SS&C
+2780,Oxford Industries,OXFOR
+2790,First Trust Nasdaq Transportation ETF,FIRST
+2800,Cellectar Biosciences,CELLE
+2810,Sigma Designs,SIGMA
+2820,Sina Corporation,SINA
+2830,ING Group,ING
+2840,Pluristem Therapeutics,PLURI
+2850,Marchex,MARCH
+2860,Landmark Infrastructure Partners LP,LANDM
+2870,Welltower Inc.,WELLT
+2880,Akebia Therapeutics,AKEBI
+2890,Blackrock MuniAssets Fund,BLACK
+2900,Marsh & McLennan Companies,MARSH
+2910,Strattec Security Corporation,STRAT
+2920,Thermo Fisher Scientific Inc,THERM
+2930,Rockwell Medical,ROCKW
+2940,Matrix Service Company,MATRI
+2950,Genius Brands International,GENIU
+2960,TerraForm Power,TERRA
+2970,Equifax,EQUIF
+2980,AC Immune SA,IMMUN
+2990,World Fuel Services Corporation,WORLD
+3000,Xenia Hotels & Resorts,XENIA
+3010,Clipper Realty Inc.,CLIPP
+3020,Cemex S.A.B. de C.V.,CEMEX
+3030,Alphabet Inc.,ALPHA
+3040,Build-A-Bear Workshop,BUILD
+3050,Regions Financial Corporation,REGIO
+3060,Terreno Realty Corporation,TERRE
+3070,Axalta Coating Systems Ltd.,AXALT
+3080,Entergy Louisiana,ENTER
+3090,Quintiles IMS Holdings,QUINT
+3100,Oak Valley Bancorp (CA),OAK
+3110,Morgan Stanley China A Share Fund Inc.,MORGA
+3120,Lam Research Corporation,LAM
+3130,Laredo Petroleum,LARED
+3140,Pulse Biosciences,PULSE
+3150,NextEra Energy,NEXTE
+3160,Artesian Resources Corporation,ARTES
+3170,Warrior Met Coal,WARRI
+3180,MGC Diagnostics Corporation,MGC
+3190,Teradyne,TERAD
+3200,General American Investors,GENER
+3210,China Petroleum & Chemical Corporation,CHINA
+3220,Korea Fund,KOREA
+3230,Drive Shack Inc.,DRIVE
+3240,Paramount Group,PARAM
+3250,Entertainment Gaming Asia Incorporated,ENTER
+3260,Protective Life Corporation,PROTE
+3270,National General Holdings Corp,NATIO
+3280,MSC Industrial Direct Company,MSC
+3290,YuMe,YUME
+3300,Summit Hotel Properties,SUMMI
+3310,Eaton Vance Tax-Managed Buy-Write Income Fund,EATON
+3320,Kinsale Capital Group,KINSA
+3330,Comp En De Mn Cemig ADS,COMP
+3340,Western Digital Corporation,WESTE
+3350,AllianzGI Diversified Income & Convertible Fund,ALLIA
+3360,Reliance Steel & Aluminum Co.,RELIA
+3370,Brookline Bancorp,BROOK
+3380,Costamare Inc.,COSTA
+3390,Tri Continental Corporation,TRI
+3400,VelocityShares 3x Inverse Silver ETN,VELOC
+3410,Mesoblast Limited,MESOB
+3420,CapStar Financial Holdings,CAPST
+3430,Vanguard Russell 1000 Value ETF,VANGU
+3440,Textainer Group Holdings Limited,TEXTA
+3450,Park Sterling Corporation,PARK
+3460,National General Holdings Corp,NATIO
+3470,BancFirst Corporation,BANCF
+3480,Pampa Energia S.A.,PAMPA
+3490,PowerShares QQQ Trust,POWER
+3500,Nuveen Connecticut Quality Municipal Income Fund,NUVEE
+3510,Aclaris Therapeutics,ACLAR
+3520,Salesforce.com Inc,SALES
+3530,Sucampo Pharmaceuticals,SUCAM
+3540,Walgreens Boots Alliance,WALGR
+3550,Movado Group Inc.,MOVAD
+3560,CalAmp Corp.,CALAM
+3570,Empire State Realty Trust,EMPIR
+3580,Siliconware Precision Industries Company,SILIC
+3590,Anika Therapeutics Inc.,ANIKA
+3600,Edwards Lifesciences Corporation,EDWAR
+3610,Dominion Energy,DOMIN
+3620,Statoil ASA,STATO
+3630,VictoryShares Dividend Accelerator ETF,VICTO
+3640,California Water  Service Group Holding,CALIF
+3650,FORM Holdings Corp.,FORM
+3660,Kite Realty Group Trust,KITE
+3670,Fortress Investment Group LLC,FORTR
+3680,Sanchez Energy Corporation,SANCH
+3690,Origo Acquisition Corporation,ORIGO
+3700,Biohaven Pharmaceutical Holding Company Ltd.,BIOHA
+3710,pSivida Corp.,PSIVI
+3720,NextEra Energy,NEXTE
+3730,PowerShares S&P SmallCap Consumer Staples Portfolio,POWER
+3740,Johnson Outdoors Inc.,JOHNS
+3750,KBL Merger Corp. IV,KBL
+3760,Hersha Hospitality Trust,HERSH
+3770,Floor & Decor Holdings,FLOOR
+3780,PHI,PHI
+3790,Dorman Products,DORMA
+3800,American Homes 4 Rent,AMERI
+3810,Pacira Pharmaceuticals,PACIR
+3820,Applied Optoelectronics,APPLI
+3830,Xilinx,XILIN
+3840,Steel Partners Holdings LP,STEEL
+3850,SPAR Group,SPAR
+3860,Constellation Brands Inc,CONST
+3870,Tennant Company,TENNA
+3880,Capital Southwest Corporation,CAPIT
+3890,Threshold Pharmaceuticals,THRES
+3900,Mountain Province Diamonds Inc.,MOUNT
+3910,Alpine Global Dynamic Dividend Fund,ALPIN
+3920,Aviat Networks,AVIAT
+3930,Putnam Managed Municipal Income Trust,PUTNA
+3940,Cadence Design Systems,CADEN
+3950,Coty Inc.,COTY
+3960,FirstEnergy Corporation,FIRST
+3970,Liquidity Services,LIQUI
+3980,Trevena,TREVE
+3990,Quotient Limited,QUOTI
+4000,Erie Indemnity Company,ERIE
+4010,PPG Industries,PPG
+4020,First Trust Switzerland AlphaDEX Fund,FIRST
+4030,Vornado Realty Trust,VORNA
+4040,Toronto Dominion Bank (The),TORON
+4050,First Trust Alternative Absolute Return Strategy ETF,FIRST
+4060,Mobileye N.V.,MOBIL
+4070,Crown Castle International Corporation,CROWN
+4080,3D Systems Corporation,SYSTE
+4090,Bank of the James Financial Group,BANK
+4100,VEREIT Inc.,VEREI
+4110,Kadant Inc,KADAN
+4120,Blackrock MuniYield California Fund,BLACK
+4130,Timken Steel Corporation,TIMKE
+4140,Gramercy Property Trust Inc.,GRAME
+4150,Reven Housing REIT,REVEN
+4160,First Trust Nasdaq Bank ETF,FIRST
+4170,Enova International,ENOVA
+4180,First Trust NASDAQ Clean Edge Green Energy Index Fund,FIRST
+4190,Univar Inc.,UNIVA
+4200,Lakeland Industries,LAKEL
+4210,MB Financial Inc.,FINAN
+4220,LivaNova PLC,LIVAN
+4230,Alico,ALICO
+4240,Dorman Products,DORMA
+4250,MFA Financial,MFA
+4260,DRDGOLD Limited,DRDGO
+4270,First Trust RiverFront Dynamic Developed International ETF,FIRST
+4280,TESSCO Technologies Incorporated,TESSC
+4290,Condor Hospitality Trust,CONDO
+4300,J P Morgan Chase & Co,JPMC&
+4310,L.S. Starrett Company (The),L.S.
+4320,Eaton vance Floating-Rate Income Plus Fund,EATON
+4330,American Financial Group,AMERI
+4340,Orexigen Therapeutics,OREXI
+4350,Grupo Aval Acciones y Valores S.A.,GRUPO
+4360,Prudential Bancorp,PRUDE
+4370,Andina Acquisition Corp. II,ANDIN
+4380,GSI Technology,GSI
+4390,Sonoma Pharmaceuticals,SONOM
+4400,Range Resources Corporation,RANGE
+4410,National General Holdings Corp,NATIO
+4420,Immuron Limited,IMMUR
+4430,Lexington Realty Trust,LEXIN
+4440,Weis Markets,WEIS
+4450,Comstock Resources,COMST
+4460,New Media Investment Group Inc.,NEW
+4470,Callon Petroleum Company,CALLO
+4480,Weingarten Realty Investors,WEING
+4490,OneMain Holdings,ONEMA
+4500,Ryman Hospitality Properties,RYMAN
+4510,PowerShares S&P SmallCap Materials Portfolio,POWER
+4520,RiceBran Technologies,RICEB
+4530,CVB Financial Corporation,CVB
+4540,Voya Asia Pacific High Dividend Equity Income Fund,VOYA
+4550,Teekay LNG Partners L.P.,TEEKA
+4560,Principal Price Setters Index ETF,PRINC
+4570,Dick's Sporting Goods Inc,DICK'
+4580,Colonial High Income Municipal Trust,COLON
+4590,K12 Inc,K12
+4600,Argo Group International Holdings,ARGO
+4610,W.R. Grace & Co.,W.R.
+4620,Hovnanian Enterprises Inc,HOVNA
+4630,Johnson Controls International plc,JOHNS
+4640,First Trust RiverFront Dynamic Emerging Markets ETF,FIRST
+4650,Audentes Therapeutics,AUDEN
+4660,Barnes Group,BARNE
+4670,Republic First Bancorp,REPUB
+4680,Southern Company (The),SOUTH
+4690,Scana Corporation,SCANA
+4700,Netflix,NETFL
+4710,NI Holdings,HOLDI
+4720,Spark Energy,SPARK
+4730,Regal Beloit Corporation,REGAL
+4740,Gabelli Convertible and Income Securities Fund,GABEL
+4750,NBT Bancorp Inc.,NBT
+4760,Scorpio Bulkers Inc.,SCORP
+4770,Main Street Capital Corporation,MAIN
+4780,Ship Finance International Limited,SHIP
+4790,Amtech Systems,AMTEC
+4800,Double Eagle Acquisition Corp.,DOUBL
+4810,ICF International,ICF
+4820,Trustmark Corporation,TRUST
+4830,Oaktree Capital Group,OAKTR
+4840,RXi Pharmaceuticals Corporation,RXI
+4850,Lamb Weston Holdings,LAMB
+4860,Loncar Cancer Immunotherapy ETF,LONCA
+4870,Echo Global Logistics,ECHO
+4880,American Midstream Partners,AMERI
+4890,Cara Therapeutics,CARA
+4900,SunTrust Banks,SUNTR
+4910,Biohaven Pharmaceutical Holding Company Ltd.,BIOHA
+4920,VistaGen Therapeutics,VISTA
+4930,Grupo Aeroportuario Del Pacifico,GRUPO
+4940,Torchlight Energy Resources,TORCH
+4950,The Intergroup Corporation,THE
+4960,Benchmark Electronics,BENCH
+4970,Mammoth Energy Services,MAMMO
+4980,M&T Bank Corporation,M&T
+4990,AutoNation,AUTON
+5000,ICICI Bank Limited,ICICI
+5010,Pacific Mercantile Bancorp,PACIF
+5020,BlackRock Credit Allocation Income Trust,BLACK
+5030,WhiteHorse Finance,WHITE
+5040,KKR Real Estate Finance Trust Inc.,KKR
+5050,Legg Mason US Diversified Core ETF,LEGG
+5060,GlaxoSmithKline PLC,GLAXO
+5070,M/I Homes,M/I
+5080,Littelfuse,LITTE
+5090,WisdomTree Japan Hedged SmallCap Equity Fund,WISDO
+5100,PROS Holdings,PROS
+5110,Redhill Biopharma Ltd.,REDHI
+5120,Bank of Nova Scotia (The),BANK
+5130,American Electric Technologies,AMERI
+5140,Grupo Aeroportuario del Centro Norte S.A.B. de C.V.,GRUPO
+5150,Grupo Financiero Galicia S.A.,GRUPO
+5160,TrueCar,TRUEC
+5170,Worthington Industries,WORTH
+5180,Intuit Inc.,INTUI
+5190,WisdomTree Investments,WISDO
+5200,SecureWorks Corp.,SECUR
+5210,PowerShares DWA Tactical Sector Rotation Portfolio,POWER
+5220,Ritchie Bros. Auctioneers Incorporated,RITCH
+5230,AllianzGI Diversified Income & Convertible Fund,ALLIA
+5240,Innophos Holdings,INNOP
+5250,Biogen Inc.,BIOGE
+5260,Waters Corporation,WATER
+5270,Camden National Corporation,CAMDE
+5280,The Bon-Ton Stores,THE
+5290,Vanguard Intermediate -Term Government Bond ETF,VANGU
+5300,DTE Energy Company,DTE
+5310,Rentech,RENTE
+5320,Colony NorthStar,COLON
+5330,Anworth Mortgage Asset  Corporation,ANWOR
+5340,Constellation Brands Inc,CONST
+5350,United Microelectronics Corporation,UNITE
+5360,Corporate Asset Backed Corp CABCO,CORPO
+5370,Chimera Investment Corporation,CHIME
+5380,Summit Hotel Properties,SUMMI
+5390,Pendrell Corporation,PENDR
+5400,Westmoreland Coal Company,WESTM
+5410,Clearfield,CLEAR
+5420,Vanguard Russell 1000 Value ETF,VANGU
+5430,TechnipFMC plc,TECHN
+5440,Aethlon Medical,AETHL
+5450,Asia Pacific Wire & Cable Corporation Limited,ASIA
+5460,BalckRock Taxable Municipal Bond Trust,BALCK
+5470,Perceptron,PERCE
+5480,WebMD Health Corp,WEBMD
+5490,Atlantic Capital Bancshares,ATLAN
+5500,Equitable Financial Corp.,EQUIT
+5510,M I Acquisitions,MIA
+5520,Sunstone Hotel Investors,SUNST
+5530,Allegheny Technologies Incorporated,ALLEG
+5540,Generac Holdlings Inc.,GENER
+5550,HarborOne Bancorp,HARBO
+5560,Sumitomo Mitsui Financial Group Inc,SUMIT
+5570,Goldman Sachs MLP Income Opportunities Fund,GOLDM
+5580,Quest Resource Holding Corporation.,QUEST
+5590,Benitec Biopharma Limited,BENIT
+5600,Flaherty & Crumrine Preferred Income Fund Incorporated,FLAHE
+5610,PROS Holdings,PROS
+5620,Super Micro Computer,SUPER
+5630,Kewaunee Scientific Corporation,KEWAU
+5640,iShares MSCI Emerging Markets Asia Index Fund,ISHAR
+5650,First Trust SSI Strategic Convertible Securities ETF,FIRST
+5660,Genie Energy Ltd.,GENIE
+5670,Genius Brands International,GENIU
+5680,Bank Mutual Corporation,BANK
+5690,Lehman ABS Corporation,LEHMA
+5700,AGNC Investment Corp.,AGNC
+5710,Trupanion,TRUPA
+5720,Allied Healthcare Products,ALLIE
+5730,Mellanox Technologies,MELLA
+5740,Immuron Limited,IMMUR
+5750,Applied DNA Sciences Inc,APPLI
+5760,CommerceHub,COMME
+5770,FIRST REPUBLIC BANK,FIRST
+5780,RiceBran Technologies,RICEB
+5790,Rayonier Inc.,RAYON
+5800,First Trust NASDAQ Cybersecurity ETF,FIRST
+5810,Arlington Asset Investment Corp,ARLIN
+5820,Hugoton Royalty Trust,HUGOT
+5830,Banco Santander,BANCO
+5840,Kraton Corporation,KRATO
+5850,Planet Fitness,PLANE
+5860,Tsakos Energy Navigation Ltd,TSAKO
+5870,First Trust Mid Cap Growth AlphaDEX Fund,FIRST
+5880,Greenbrier Companies,GREEN
+5890,Aevi Genomic Medicine,AEVI
+5900,Duff & Phelps Select Energy MLP Fund Inc.,DUFF
+5910,Diana Shipping inc.,DIANA
+5920,Pointer Telocation Ltd.,POINT
+5930,Endurance International Group Holdings,ENDUR
+5940,Hershey Company (The),HERSH
+5950,Navios Maritime Midstream Partners LP,NAVIO
+5960,CBS Corporation,CBS
+5970,Gulf Island Fabrication,GULF
+5980,TerraForm Power,TERRA
+5990,First Trust Large Cap Core AlphaDEX Fund,FIRST
+6000,ANI Pharmaceuticals,ANI
+6010,MBIA,MBIA
+6020,New Mountain Finance Corporation,NEW
+6030,Ulta Beauty,ULTA
+6040,ChromaDex Corporation,CHROM
+46080,Starbucks Corporation,STARB
+46100,LG Electronics,ELECT
+46120,McDonald's Corporation,MCDON

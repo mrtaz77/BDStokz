@@ -1,13 +1,20 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors') ;
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+
 
 const errHandler = require('./middleware/errHandler');
-const auth = require('./middleware/auth');
+const {auth} = require('./middleware/auth');
 
 
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use(morgan('dev'));
 app.use(cors(
@@ -19,12 +26,19 @@ app.use(cors(
     }
 ));
 app.use(express.json());
-app.set('view engine', 'ejs');
+app.use(auth);
+
+app.use(express.static('public'));
 
 // using routes and linking them to routers 
 app.use('/login',require('./route/login'));
+app.use('/reg', require('./route/reg'));
 app.use('/stock', require('./route/stock'));
 app.use('/activity', require('./route/activity'));
+app.use('/logout',require('./route/logout'));
+app.use('/participate', require('./route/participate'));
+app.use('/admin', require('./route/admin'));
+app.use('/user', require('./route/user'));
 
 app.use(errHandler.notFound);
 app.use(errHandler.errHandler);

@@ -1,13 +1,14 @@
 const jwt = require('jsonwebtoken');
 
 // function to login user into a session
-const loginUser = async (res,name) => {
+const loginUser = async (res,name,usrtype) => {
     // create token
     const payload = {
-        name: name
+        name: name,
+        usrtype: usrtype
     }
 
-    let token = jwt.sign(payload, process.env.JWT_SECRET);
+    let token = jwt.sign(payload, "53r37_L3Ak3D");
 
     // set token in cookie
     let options = {
@@ -20,3 +21,5 @@ const loginUser = async (res,name) => {
 module.exports = {
     loginUser
 };
+
+//process.env.JWT_SECRET

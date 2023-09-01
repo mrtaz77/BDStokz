@@ -1,6 +1,31 @@
 const db = require('../config/database.js');
 const oracledb = require('oracledb'); 
 
+const getUserTypeByName = async (name) => {
+    const sql = `
+        SELECT 
+            "TYPE" 
+            FROM "USER"
+            WHERE NAME = :name
+    `;
+
+    const binds = {
+        name: name
+    }
+
+    try{
+        const result = await db.execute(sql,binds);
+        if(result.rows.length==0){
+            console.log(`No such user ${name} found`);
+            return null;
+        }
+        console.log(result.rows[0].TYPE);
+        return result.rows[0].TYPE;
+    }catch(err){
+        console.error(`Found error: ${err} while searching for user-type ${name}...`);
+    }
+}
+
 const getUserLoginInfoByName = async (name) => {
     const sql = `
         SELECT 
@@ -54,5 +79,6 @@ const chkCreds = async (name,password) => {
 
 module.exports = {
     getUserLoginInfoByName,
+    getUserTypeByName,
     chkCreds
 };

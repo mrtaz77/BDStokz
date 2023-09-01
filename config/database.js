@@ -4,9 +4,12 @@ const oracledb = require("oracledb");
 async function init() {
     console.log("DB init...");
     await oracledb.createPool({
-        user: process.env.DB_USER,
-        password: process.env.DB_PASS,
-        connectString: process.env.DB_CONNECT_STRING,
+        // user: process.env.DB_USER,
+        // password: process.env.DB_PASS,
+        // connectString: process.env.DB_CONNECT_STRING,
+        user: 'C##STOCKDB',
+    password: '13579',
+    connectString : 'localhost:1521/ORCL',
         poolMin: 4,
         poolMax: 10,
         poolIncrement: 1
