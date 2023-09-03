@@ -8,6 +8,8 @@ const getAllStockSymbol = async (payload) => {
         SYMBOL 
     FROM
         STOCK 
+    WHERE 
+        BLOCKED = 'F'
     ORDER BY
         SYMBOL
     `;
