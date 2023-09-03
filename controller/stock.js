@@ -81,27 +81,40 @@ const getTopLoserGainer = async(payload) => {
             return null;
     }
     const sql = `
-        SELECT
-            O1.SYMBOL,
-            ( SELECT NAME FROM "USER" WHERE S.CORP_ID = USER_ID ) CORPORATION,
-            O1.LATEST_PRICE,
-            S.LTP,
-            S.LTP - O1.LATEST_PRICE CHANGE,
-            ROUND( ( S.LTP - O1.LATEST_PRICE ) / O1.LATEST_PRICE * 100, 4 ) "CHANGE%",
+    SELECT
+        S.SYMBOL,
+        ( SELECT NAME FROM "USER" WHERE S.CORP_ID = USER_ID ) CORPORATION,
+        S.LTP,
+        S.LTP - NVL( C.LATEST_PRICE, S.LTP ) CHANGE,
+        ROUND(
+            ( S.LTP - NVL( C.LATEST_PRICE, S.LTP ) ) / NVL( C.LATEST_PRICE, S.LTP ) * 100,
+            4 
+        ) "CHANGE%",
+        NVL(
             (
             SELECT
                 SUM( O4.LATEST_QUANTITY ) 
             FROM
                 "ORDER" O4 
             WHERE
-                O4.SYMBOL = O1.SYMBOL 
-                AND TRUNC( O4.TRANSACTION_TIME ) = TRUNC( O1.TRANSACTION_TIME ) 
-            ) VOLUME 
+                O4.SYMBOL = S.SYMBOL 
+                AND O4.STATUS = 'SUCCESS' 
+                AND TRUNC( O4.TRANSACTION_TIME ) = TRUNC( C.TRANSACTION_TIME ) 
+            ),
+            0 
+        ) VOLUME 
+    FROM
+        STOCK S LEFT OUTER
+        JOIN (
+        SELECT
+            O1.SYMBOL,
+            O1.LATEST_PRICE,
+            O1.TRANSACTION_TIME 
         FROM
-            "ORDER" O1
-            JOIN STOCK S ON O1.SYMBOL = S.SYMBOL 
+            "ORDER" O1 
         WHERE
-            TRUNC( O1.TRANSACTION_TIME ) >= ALL ( SELECT TRUNC( O2.TRANSACTION_TIME ) FROM "ORDER" O2 WHERE O2.SYMBOL = O1.SYMBOL ) 
+            O1.STATUS = 'SUCCESS' 
+            AND TRUNC( O1.TRANSACTION_TIME ) >= ALL ( SELECT TRUNC( O2.TRANSACTION_TIME ) FROM "ORDER" O2 WHERE O2.SYMBOL = O1.SYMBOL AND O2.STATUS = 'SUCCESS' ) 
             AND TO_TIMESTAMP( TO_CHAR( TRANSACTION_TIME, 'HH24-MI-SS' ), 'HH24-MI-SS' ) <= ALL (
             SELECT
                 TO_TIMESTAMP( TO_CHAR( O3.TRANSACTION_TIME, 'HH24-MI-SS' ), 'HH24-MI-SS' ) 
@@ -109,10 +122,13 @@ const getTopLoserGainer = async(payload) => {
                 "ORDER" O3 
             WHERE
                 O3.SYMBOL = O1.SYMBOL 
+                AND O3.STATUS = 'SUCCESS' 
                 AND TRUNC( O3.TRANSACTION_TIME ) = TRUNC( O1.TRANSACTION_TIME ) 
             ) 
-        ORDER BY
-            "CHANGE%" ${sort} FETCH FIRST 5 ROWS ONLY
+        ) C ON S.SYMBOL = C.SYMBOL 
+    ORDER BY
+        "CHANGE%" ${sort},
+        LTP ${sort} FETCH FIRST 5 ROWS ONLY
     `;
     
     
