@@ -766,7 +766,7 @@ const updateProfile = async (payload)=>{
         };
         const newResultByName =  await getUserById(userId);
         const profile = await getProfileByName(newResultByName.NAME); 
-        console.log(profile);
+        // console.log(profile);
         return profile;
 
     }catch(err){

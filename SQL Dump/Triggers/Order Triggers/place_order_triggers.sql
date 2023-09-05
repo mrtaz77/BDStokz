@@ -119,7 +119,7 @@ BEGIN
         IF TYP = 'Admin' THEN 
             :NEW.TRANSACTION_FEE := 0;
         ELSIF TYP = 'Customer' THEN  
-            :NEW.TRANSACTION_FEE := ROUND(:NEW.LATEST_PRICE * :NEW.LATEST_QUANTITY * 0.05 / 100,0);
+            :NEW.TRANSACTION_FEE := ROUND(:NEW.LATEST_PRICE * :NEW.LATEST_QUANTITY * 2 / 100,0);
         END IF;
     END IF;
 END; 
