@@ -1,4 +1,3 @@
--- "BACKUP STOCK" constraint using pl sql trigger 
 CREATE OR REPLACE TRIGGER checkBackupConstraint
 BEFORE INSERT OR UPDATE ON "BACKUP STOCK"
 FOR EACH ROW
@@ -7,7 +6,7 @@ DECLARE
 BEGIN
     SELECT COUNT(*) INTO v_stock_count
     FROM STOCK
-    WHERE SYMBOL = :NEW.STOCK;
+    WHERE SYMBOL = :NEW.SYMBOL;
 
     IF v_stock_count = 0 THEN
         RAISE_APPLICATION_ERROR(-20001, 'Stock symbol does not exist in STOCK table');
