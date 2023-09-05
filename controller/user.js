@@ -370,7 +370,7 @@ async function createBroker (payload) {
             :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip
         );
         insert into BROKER (USER_ID, LICENSE_NO, COMMISSION_PCT, EXPERTISE) values(
-            (SELECT USER_ID FROM "USER" WHERE NAME = :name),:licenseNo,:commissionPCT,:expertise
+            (SELECT USER_ID FROM "USER" WHERE NAME = :name),:licenseNo,0.01,:expertise
         );
         -- Loop for inserting contacts
         FOR i IN 1 .. :contact_count LOOP
@@ -395,7 +395,6 @@ async function createBroker (payload) {
             country : payload.country,
             zip : payload.zip,
             licenseNo : payload.licenseNo,
-            commissionPCT : payload.commissionPCT,
             expertise : payload.expertise,
             contact_count: payload.contact.length,
             contacts: payload.contact
