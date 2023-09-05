@@ -723,7 +723,9 @@ const updateProfile = async (payload)=>{
                 }
             }
             if(field == `SYMBOL`){
-                const stock = getAllStockDataBySymbol({symbol:newValue});
+                const stock = await getAllStockDataBySymbol({symbol:newValue});
+                console.log('stock: ', stock);
+                
                 if(stock != null){
                     errors.push(`Symbol already in use`);
                 }
@@ -756,7 +758,6 @@ const updateProfile = async (payload)=>{
             newValue: newValue,
             userId : userId 
         }
-        console.log(sql);
 
         if(errors.length == 0)await db.execute(sql,binds);
         else{
