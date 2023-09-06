@@ -133,7 +133,7 @@ const getOrderDetailsById = async (orderId) => {
 
         const result = await execute(sql,binds);
 
-        return result.rows;
+        return result.rows[0];
 
     }catch (error) {
         console.error(`While getting order details of ${orderId}`);
@@ -200,9 +200,9 @@ const setBuyOrderStatus = async (payload) => {
         const order = await getOrderDetailsById(orderId);
 
         if(order === null || order.STATUS !== 'PENDING' || order.TYPE !== 'BUY'){
-            console.log('order.TYPE: ', order.TYPE);
-            console.log('order.STATUS: ', order.STATUS);
-            console.log('order: ', order);
+            // console.log('order.TYPE: ', order.TYPE);
+            // console.log('order.STATUS: ', order.STATUS);
+            // console.log('order: ', order);
             console.error(`Invalid order request`);
             return null;
         }
@@ -214,10 +214,13 @@ const setBuyOrderStatus = async (payload) => {
         WHERE ORDER_ID = :orderId
         `;
 
+        
+
         const binds = {
             orderId: orderId,
             status: status
         };
+
 
         await execute(sql,binds);
 
@@ -238,7 +241,7 @@ const sellOrderSuccess = async (payload) => {
         const order = await getOrderDetailsById(orderId);
         const user = await userController.getUserById(buyerId);
 
-        if(order === null || order.STATUS !== 'PENDING' || order.TYPE !== ''){
+        if(order === null || order.STATUS !== 'PENDING' || order.TYPE !== 'SELL'){
             console.log('order.TYPE: ', order.TYPE);
             console.log('order.STATUS: ', order.STATUS);
             console.log('order: ', order);
@@ -266,7 +269,10 @@ const sellOrderSuccess = async (payload) => {
         await execute(plSpl, binds);
 
         const result = await getOrderDetailsById(orderId);
-        return result;
+
+        
+
+        return result.STATUS;
 
     }catch (error) {
         console.error(`While placing order details : ${error.message}`);

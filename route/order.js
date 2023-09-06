@@ -97,8 +97,7 @@ router.post('/placeOrder', [
     body('userId').notEmpty().withMessage('User ID is required'),
     body('type').notEmpty().withMessage('Order type is required'),
     body('price').notEmpty().withMessage('Price is required'),
-    body('quantity').notEmpty().withMessage('Quantity is required'),
-    body('stop_price').notEmpty().withMessage('Stop price is required')
+    body('quantity').notEmpty().withMessage('Quantity is required')
 ], async (req, res) => {
     try {
       // Check for validation errors
@@ -158,7 +157,7 @@ router.put('/sell-order-success', async (req, res) => {
         const result = await sellOrderSuccess(req.body);
     
         // Handle the result accordingly
-        if (result != null) {
+        if (result != null && result == 'SUCCESS') {
             res.status(200).json({ message: 'Sell order successful' });
         } else {
             res.status(400).json({ error: `Sell order failed` });
