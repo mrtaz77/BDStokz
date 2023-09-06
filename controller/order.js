@@ -184,6 +184,46 @@ const placeOrder = async (payload) => {
     }
 }
 
+const updateOrder = async (payload) => {
+    try{
+
+        let order = await getOrderDetailsById(payload.orderId);
+
+        const userId = order.USER_ID;
+
+        if (userId !== payload.userId) {
+            console.error(`Update Permission denied`);
+            return null;
+        }
+
+        const sql = `
+        UPDATE "ORDER"
+        SET LATEST_PRICE = :price,LATEST_QUANTITY = :quantity,STOP_PRICE = :stop_price 
+        WHERE "ORDER_ID" = :order_id
+        `;
+
+
+
+        const binds = {
+            price : payload.price,
+            quantity : payload.quantity,
+            stop_price : payload.stop_price,
+            orderId: payload.orderId
+        }
+
+        await execute(sql,binds);
+
+        order = await getOrderDetailsById(id);
+
+        return order;
+
+    }catch (error) {
+        console.error(`While updating order details : ${error.message}`);
+        return null;
+    }
+}
+
+
 const setBuyOrderStatus = async (payload) => {
     try{
         const corpId = payload.corpId;
@@ -324,6 +364,7 @@ module.exports = {
     setBuyOrderStatus,
     sellOrderSuccess,
     getUserOrdersByType,
-    getOrdersBySymbolAndType
+    getOrdersBySymbolAndType,
+    updateOrder
 };
 

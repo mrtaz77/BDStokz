@@ -170,7 +170,35 @@ router.put('/sell-order-success', async (req, res) => {
 });
 
 
+router.patch('/update',[
+    body('symbol').notEmpty().withMessage('Symbol is required'),
+    body('userId').notEmpty().withMessage('User ID is required'),
+    body('type').notEmpty().withMessage('Order type is required'),
+    body('price').notEmpty().withMessage('Price is required'),
+    body('quantity').notEmpty().withMessage('Quantity is required')
+], async (req, res) => {
+    try {
+      // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+        }
 
+        // Call your controller function to place the order
+        const result = await updateOrder(req.body);
+
+        // Handle the result accordingly (e.g., send a success or error response)
+        if (result != null) {
+            res.status(200).json({ message: 'Order updated successfully', order: result.order });
+        } else {
+            res.status(400).json({ error: `Order was not updated` });
+        }
+    } catch (error) {
+        // Handle errors here
+        console.error('Error:', error);
+        res.status(500).json({ error: 'An error occurred' }); // Send an appropriate error response
+    }
+});
 
 
 
