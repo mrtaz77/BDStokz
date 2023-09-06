@@ -2,7 +2,7 @@ const {execute} = require('../config/database');
 const oracledb = require('oracledb');
 const userController = require('./user');
 
-const getAllOrders = async (n) => {
+const getAllOrders = async () => {
     try{
         const sql = `
         SELECT 
@@ -19,11 +19,9 @@ const getAllOrders = async (n) => {
         STOP_PRICE
         FROM "ORDER" 
         ORDER BY LATEST_UPDATE_TIME DESC
-        FETCH FIRST :n ROWS ONLY
         `;
 
         const bind = {
-            n: n
         };
 
         const result = await execute(sql,bind);
@@ -74,7 +72,7 @@ const getUserOrdersByType = async (payload) => {
 
 const getAllOrdersByType = async (payload) => {
     try{
-        const n = payload.n || 30;
+        // const n = payload.n || 30;
         const type = payload.type || 'SELL';
 
         const sql = `
@@ -92,11 +90,10 @@ const getAllOrdersByType = async (payload) => {
             FROM "ORDER" 
             WHERE "TYPE" = :type
             ORDER BY LATEST_UPDATE_TIME DESC
-            FETCH FIRST :n ROWS ONLY
+            --FETCH FIRST :n ROWS ONLY
         `;
 
         const bind = {
-            n: n,
             type : type
         };
 
@@ -127,6 +124,7 @@ const getOrderDetailsById = async (orderId) => {
             STOP_PRICE
             FROM "ORDER"  
             WHERE ORDER_ID = :orderId
+            ORDER BY LATEST_UPDATE_TIME DESC
         `;
 
         const binds = {
@@ -271,6 +269,41 @@ const sellOrderSuccess = async (payload) => {
     }
 };
 
+const getOrdersBySymbolAndType = async (payload) => {
+    try{
+        const symbol = payload.symbol;
+        const type = payload.type;
+
+        const sql = `
+        SELECT 
+        ORDER_ID,
+        (SELECT NAME FROM "USER" WHERE "USER".USER_ID = "ORDER".USER_ID) NAME,
+        STATUS,
+        LATEST_QUANTITY,
+        LATEST_PRICE,
+        TRANSACTION_FEE,
+        FORMAT_TIMESTAMP_ORDER(LATEST_UPDATE_TIME) LATEST_UPDATE_TIME,
+        FORMAT_TIMESTAMP_ORDER(TRANSACTION_TIME) TRANSACTION_TIME,
+        STOP_PRICE
+        FROM "ORDER" 
+        WHERE SYMBOL = :symbol AND "TYPE" = :type
+        ORDER BY LATEST_UPDATE_TIME DESC
+        `;
+
+        const bind = {
+            symbol: symbol,
+            type: type
+        };
+
+        const result = await execute(sql,bind);
+
+        return result.rows;
+
+    }catch (error) {
+        console.error(`While getting orders by ${payload.symbol}`);
+        return null;
+    }
+}
 
 module.exports = {
     getAllOrders,
@@ -279,6 +312,7 @@ module.exports = {
     placeOrder,
     setBuyOrderStatus,
     sellOrderSuccess,
-    getUserOrdersByType
+    getUserOrdersByType,
+    getOrdersBySymbolAndType
 };
 

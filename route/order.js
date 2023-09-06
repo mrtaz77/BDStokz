@@ -7,17 +7,17 @@ const {
     placeOrder,
     setBuyOrderStatus,
     sellOrderSuccess,
-    getUserOrdersByType
+    getUserOrdersByType,
+    getOrdersBySymbolAndType
 } = require('../controller/order');
 
-router.get('/allOrders/:n',async (req,res,next) => {
+router.get('/allOrders',async (req,res,next) => {
     try{
-        const { n } = req.params;
-        const orders = await getAllOrders(req.params.n);
+        const orders = await getAllOrders();
 
         if (!orders || orders.length === 0) {
-            // If no orders are found, send a 404 response
-            return res.status(404).json({ error: 'No orders found' });
+            // If no orders are found, send a 400 response
+            return res.status(400).json({ error: 'No orders found' });
         }
     
         // Send a success response with the orders
@@ -32,13 +32,34 @@ router.get('/allOrders/:n',async (req,res,next) => {
 
 router.get('/orderTypes', async (req, res) => {
     try {
-        const { n, type } = req.query;
+        const { type } = req.query;
         // Call your controller function to get orders by type
         const orders = await getAllOrdersByType(req.query);
     
         if (!orders || orders.length === 0) {
-            // If no orders are found, send a 404 response
-            return res.status(404).json({ error: 'No orders found' });
+            // If no orders are found, send a 400 response
+            return res.status(400).json({ error: 'No orders found' });
+        }
+    
+        // Send a success response with the orders
+        res.status(200).json(orders);
+        } catch (error) {
+        // Handle errors here
+        console.error('Error:', error);
+        res.status(500).json({ error: 'An error occurred' }); // Send an appropriate error response
+        next(error);
+    }
+});
+
+router.get('/symbol', async (req, res) => {
+    try {
+        const { symbol , type } = req.query;
+        // Call your controller function to get orders by type
+        const orders = await getOrdersBySymbolAndType(req.query);
+    
+        if (!orders || orders.length === 0) {
+            // If no orders are found, send a 400 response
+            return res.status(400).json({ error: 'No orders found for this symbol' });
         }
     
         // Send a success response with the orders
@@ -57,8 +78,8 @@ router.get('/userOrders', async (req, res) => {
         const userOrders = await getUserOrdersByType(req.query);
     
         if (!userOrders || userOrders.length === 0) {
-            // If no user orders are found, send a 404 response
-            return res.status(404).json({ error: 'No user orders found' });
+            // If no user orders are found, send a 400 response
+            return res.status(400).json({ error: 'No user orders found' });
         }
     
         // Send a success response with the user orders
@@ -91,7 +112,7 @@ router.post('/placeOrder', [
 
         // Handle the result accordingly (e.g., send a success or error response)
         if (result != null) {
-            res.status(201).json({ message: 'Order placed successfully', order: result.order });
+            res.status(200).json({ message: 'Order placed successfully', order: result.order });
         } else {
             res.status(400).json({ error: `Order was not placed` });
         }
@@ -111,7 +132,7 @@ router.put('/set-buy-order-status', async (req, res) => {
 
             // Call your controller function to set buy order status
             const result = await setBuyOrderStatus(req.body);
-    
+
             // Handle the result accordingly
             if (result != null) {
                 res.status(200).json({ message: 'Buy order status updated successfully' });
@@ -140,14 +161,16 @@ router.put('/sell-order-success', async (req, res) => {
         if (result != null) {
             res.status(200).json({ message: 'Sell order successful' });
         } else {
-            res.status(400).json({ error: result.error });
+            res.status(400).json({ error: `Sell order failed` });
         }
     } catch (error) {
-    // Handle errors here
+        // Handle errors here
         console.error('Error:', error);
         res.status(500).json({ error: 'An error occurred' });
     }
 });
+
+
 
 
 
