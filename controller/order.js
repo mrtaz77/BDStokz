@@ -356,6 +356,40 @@ const getOrdersBySymbolAndType = async (payload) => {
     }
 }
 
+const cancelOrder = async (payload) => {
+    try{
+        let order = await getOrderDetailsById(payload.orderId);
+
+
+        if(order.USER_ID !== payload.userId) {  
+            console.error(`Deletion permission denied`);
+            return `FAILED`;
+        }
+
+        if(order.STATUS !== `PENDING`){
+            console.error(`Order completed already`);
+            return `FAILED`;
+        }
+
+        const sql = `
+        DELETE FROM "ORDER" WHERE "ORDER_ID" = :orderId
+        `;
+
+        const binds = {
+            orderId : payload.orderId
+        };
+
+
+        await execute(sql,binds);
+
+        return `SUCCESS`;
+
+    }catch (error) {
+        console.error(`While canceling order : ${error.message}`);
+        return `FAILED`;
+    }
+}
+
 module.exports = {
     getAllOrders,
     getOrderDetailsById,
@@ -365,6 +399,7 @@ module.exports = {
     sellOrderSuccess,
     getUserOrdersByType,
     getOrdersBySymbolAndType,
-    updateOrder
+    updateOrder,
+    cancelOrder
 };
 

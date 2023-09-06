@@ -6,9 +6,11 @@ const {
     getAllOrdersByType,
     placeOrder,
     setBuyOrderStatus,
+    cancelOrder,
     sellOrderSuccess,
     getUserOrdersByType,
-    getOrdersBySymbolAndType
+    getOrdersBySymbolAndType,
+    updateOrder,
 } = require('../controller/order');
 
 router.get('/allOrders',async (req,res,next) => {
@@ -189,6 +191,33 @@ router.patch('/update',[
 
         // Handle the result accordingly (e.g., send a success or error response)
         if (result != null) {
+            res.status(200).json({ message: 'Order updated successfully', order: result.order });
+        } else {
+            res.status(400).json({ error: `Order was not updated` });
+        }
+    } catch (error) {
+        // Handle errors here
+        console.error('Error:', error);
+        res.status(500).json({ error: 'An error occurred' }); // Send an appropriate error response
+    }
+});
+
+router.delete('/delete',[
+    body('userId').notEmpty().withMessage('User ID is required'),
+    body('orderId').notEmpty().withMessage('Order ID is required')
+], async (req, res) => {
+    try {
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+        }
+
+        // Call your controller function to place the order
+        const result = await cancelOrder(req.body);
+
+        // Handle the result accordingly (e.g., send a success or error response)
+        if (result === `SUCCESS`) {
             res.status(200).json({ message: 'Order updated successfully', order: result.order });
         } else {
             res.status(400).json({ error: `Order was not updated` });
