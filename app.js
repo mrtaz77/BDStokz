@@ -36,6 +36,7 @@ app.use('/activity', require('./route/activity'));
 // For testing purposes only
 app.use('/admin', require('./route/admin'));
 app.use('/user', require('./route/user'));
+app.use('/order', require('./route/order'));
 
 app.use(errHandler.notFound);
 app.use(errHandler.errHandler);

@@ -97,7 +97,7 @@ router.get('/empDetails/:name',async (req,res,next)=>{
         if(empDetails == null){
             return res.status(400).json({ message: 'employee not found' });
         }
-        else res.json(empDetails);
+        else res.status(200).json(empDetails);
     }catch (err) {
         console.log(err);
         next(err);
