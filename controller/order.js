@@ -145,9 +145,11 @@ const placeOrder = async (payload) => {
     try{
         const sql = `
         INSERT INTO "ORDER"(SYMBOL, USER_ID, "TYPE", LATEST_PRICE, LATEST_QUANTITY, STOP_PRICE)
-        VALUES (:symbol, :userId, :type, :price, :quantity, :stopPrice)
+        VALUES (:symbol, :userId, :type, :price, :quantity, :stop_price)
         RETURNING ORDER_ID INTO :orderId
         `;
+
+        const type = payload.type;
 
         const binds = {
             symbol : payload.symbol,
@@ -158,20 +160,23 @@ const placeOrder = async (payload) => {
             stop_price : payload.stop_price,
             orderId: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
         }
+        
 
         if(!(type === 'BUY' || type === 'SELL')){
             console.log(`Invalid type ${type}`);
             return null;
         }
 
-        const order = await execute(sql, binds);
+        const result = await execute(sql, binds);
 
         // Now, result.outBinds.orderId contains the generated ORDER_ID
-        const id = result.outBinds.orderId;
+        const id = result.outBinds.orderId[0];
 
-        const result = await getOrderDetailsById(id);
+        // console.log(id);
 
-        return result;
+        const order = await getOrderDetailsById(id);
+
+        return order;
 
     }catch (error) {
         console.error(`While placing order details : ${error.message}`);
