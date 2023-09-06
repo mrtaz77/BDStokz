@@ -30,9 +30,9 @@ const getPortfolioInfoByID = async(id) =>{
                 SECTOR,
                 BUY_AMOUNT,
                 SELL_AMOUNT,
-                CASH_AMOUNT
             FROM PORTFOLIO
             WHERE USER_ID = :id
+            ORDER BY SECTOR
             `;
 
             const binds = {
@@ -103,5 +103,4 @@ const createPortfolio = async (payload) => {
 module.exports = {
     getAllInfoByID,
     getPortfolioInfoByID,
-    createPortfolio
 }
