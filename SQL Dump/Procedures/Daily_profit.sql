@@ -1,13 +1,3 @@
-CREATE OR REPLACE FUNCTION SECTOR_OF_STOCK(SYM IN VARCHAR2)RETURN VARCHAR2 IS
-SEC VARCHAR2(40);
-BEGIN
-SELECT SECTOR INTO SEC FROM CORPORATION NATURAL JOIN STOCK WHERE SYMBOL = SYM;
-RETURN SEC;
-EXCEPTION
-	WHEN OTHERS THEN RETURN '';
-END;
-
-
 CREATE OR REPLACE PROCEDURE DAILY_PROFIT(profits OUT VARCHAR2) IS
   -- Declare a collection to hold the result records
   TYPE profit_record_type IS RECORD (
@@ -65,15 +55,8 @@ BEGIN
   END LOOP;
 
   -- Wrap the JSON object
-  v_json := '{"data": [' || SUBSTR(v_json, 2) || ']}';
+  v_json :=  '[' || SUBSTR(v_json, 2) || ']';
 
   -- Set the output parameter
   profits := v_json;
-END;
-
-DECLARE
-  POP VARCHAR2(32767);
-BEGIN
-  DAILY_PROFIT(POP);
-	DBMS_OUTPUT.PUT_LINE(POP);
 END;
