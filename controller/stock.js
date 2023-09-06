@@ -32,25 +32,76 @@ const getAllStockDataBySymbol = async (payload) => {
     const symbol = payload.symbol;
     const sql = `
     SELECT
-        SYMBOL,
-        (SELECT NAME FROM "USER" WHERE USER_ID = STOCK.CORP_ID) CORP_NAME,
-        SECTOR,
-        UPDATE_TIME,
-        VALUE,
-        PRICE,
-        LTP,
-        AVAILABLE_LOTS,
-        LOT,
-        BLOCKED,
-        OPEN(SYMBOL) OPEN,
-        CLOSE(SYMBOL) CLOSE,
-        HIGH(SYMBOL) HIGH,
-        LOW(SYMBOL) LOW
+        S.SYMBOL,
+        U.NAME AS CORP_NAME,
+        C.SECTOR,
+        S.UPDATE_TIME,
+        S.VALUE,
+        S.PRICE,
+        S.LTP,
+        S.AVAILABLE_LOTS,
+        S.LOT,
+        S.BLOCKED,
+        OPEN(S.SYMBOL) AS OPEN,
+        CLOSE(S.SYMBOL) AS CLOSE,
+        HIGH(S.SYMBOL) AS HIGH,
+        LOW(S.SYMBOL) AS LOW,
+        ROUND(AVG(S.LTP - NVL(O.LATEST_PRICE, S.LTP)), 4) AS CHANGE,
+        ROUND(AVG((S.LTP - NVL(O.LATEST_PRICE, S.LTP)) / NVL(O.LATEST_PRICE, S.LTP) * 100), 4) AS "CHANGE%",
+        ROUND(AVG(NVL(
+            (
+            SELECT SUM(O4.LATEST_QUANTITY) 
+            FROM "ORDER" O4 
+            WHERE O4.SYMBOL = S.SYMBOL 
+            AND O4.STATUS = 'SUCCESS' 
+            AND TRUNC(O4.TRANSACTION_TIME) = TRUNC(O.TRANSACTION_TIME)
+            ), 0)), 4) AS VOLUME 
     FROM
-        STOCK LEFT OUTER
-        JOIN CORPORATION ON STOCK.CORP_ID = CORPORATION.CORP_ID 
+        STOCK S
+    LEFT JOIN CORPORATION C ON S.CORP_ID = C.CORP_ID
+    LEFT JOIN (
+        SELECT
+            O1.SYMBOL,
+            O1.LATEST_PRICE,
+            O1.TRANSACTION_TIME
+        FROM
+            "ORDER" O1
+        WHERE
+            O1.STATUS = 'SUCCESS'
+            AND TRUNC(O1.TRANSACTION_TIME) >= ALL (
+                SELECT TRUNC(O2.TRANSACTION_TIME)
+                FROM "ORDER" O2
+                WHERE O2.SYMBOL = O1.SYMBOL AND O2.STATUS = 'SUCCESS'
+            )
+            AND TO_TIMESTAMP(TO_CHAR(TRANSACTION_TIME, 'HH24-MI-SS'), 'HH24-MI-SS') <= ALL (
+                SELECT
+                    TO_TIMESTAMP(TO_CHAR(O3.TRANSACTION_TIME, 'HH24-MI-SS'), 'HH24-MI-SS')
+                FROM
+                    "ORDER" O3
+                WHERE
+                    O3.SYMBOL = O1.SYMBOL
+                    AND O3.STATUS = 'SUCCESS'
+                    AND TRUNC(O3.TRANSACTION_TIME) = TRUNC(O1.TRANSACTION_TIME)
+            )
+    ) O ON S.SYMBOL = O.SYMBOL
+    LEFT JOIN "USER" U ON S.CORP_ID = U.USER_ID
     WHERE
-        SYMBOL = :symbol
+        S.SYMBOL = :symbol
+    GROUP BY 
+        S.SYMBOL,
+        U.NAME,
+        C.SECTOR,
+        S.UPDATE_TIME,
+        S.VALUE,
+        S.PRICE,
+        S.LTP,
+        S.AVAILABLE_LOTS,
+        S.LOT,
+        S.BLOCKED,
+        OPEN(S.SYMBOL),
+        CLOSE(S.SYMBOL),
+        HIGH(S.SYMBOL),
+        LOW(S.SYMBOL) 
     `;
 
     const binds = {
@@ -87,12 +138,10 @@ const getTopLoserGainer = async(payload) => {
         S.SYMBOL,
         ( SELECT NAME FROM "USER" WHERE S.CORP_ID = USER_ID ) CORPORATION,
         S.LTP,
-        S.LTP - NVL( C.LATEST_PRICE, S.LTP ) CHANGE,
-        ROUND(
-            ( S.LTP - NVL( C.LATEST_PRICE, S.LTP ) ) / NVL( C.LATEST_PRICE, S.LTP ) * 100,
-            4 
-        ) "CHANGE%",
-        NVL(
+        ROUND(AVG(S.LTP - NVL( C.LATEST_PRICE, S.LTP )),4) CHANGE,
+        ROUND(AVG(
+            ( S.LTP - NVL( C.LATEST_PRICE, S.LTP ) ) / NVL( C.LATEST_PRICE, S.LTP ) * 100),4) "CHANGE%",
+        ROUND(AVG(NVL(
             (
             SELECT
                 SUM( O4.LATEST_QUANTITY ) 
@@ -104,7 +153,7 @@ const getTopLoserGainer = async(payload) => {
                 AND TRUNC( O4.TRANSACTION_TIME ) = TRUNC( C.TRANSACTION_TIME ) 
             ),
             0 
-        ) VOLUME 
+        )),4) VOLUME 
     FROM
         STOCK S LEFT OUTER
         JOIN (
@@ -128,9 +177,11 @@ const getTopLoserGainer = async(payload) => {
                 AND TRUNC( O3.TRANSACTION_TIME ) = TRUNC( O1.TRANSACTION_TIME ) 
             ) 
         ) C ON S.SYMBOL = C.SYMBOL 
+		GROUP BY 
+			S.SYMBOL, S.LTP , S.CORP_ID
     ORDER BY
         "CHANGE%" ${sort},
-        LTP ${sort} FETCH FIRST 5 ROWS ONLY
+        S.LTP ${sort} FETCH FIRST 5 ROWS ONLY
     `;
     
     
