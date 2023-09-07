@@ -219,9 +219,9 @@ router.delete('/delete',[
 
         // Handle the result accordingly (e.g., send a success or error response)
         if (result === `SUCCESS`) {
-            res.status(200).json({ message: 'Order updated successfully', order: result.order });
+            res.status(200).json({ message: 'Order cancelled successfully', status: result });
         } else {
-            res.status(400).json({ error: `Order was not updated` });
+            res.status(400).json({ error: `Order was not cancelled` });
         }
     } catch (error) {
         // Handle errors here
