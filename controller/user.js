@@ -30,7 +30,7 @@ const getUserByEmail = async (payload) => {
     const sql = `
     SELECT USER_ID,NAME,EMAIL,"TYPE",(STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,ZIP
     FROM "USER"
-    WHERE EMAIL = :email
+    WHERE EMAIL = :email 
     `;
     const binds = {
         email: email
@@ -55,7 +55,7 @@ const getUserByName = async (payload) => {
     const sql = `
     SELECT USER_ID,NAME,EMAIL,"TYPE",(STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,ZIP
     FROM "USER"
-    WHERE NAME = :name
+    WHERE NAME = :name 
     `;
     const binds = {
         name: name
@@ -113,7 +113,7 @@ const getUserById = async (idP) => {
         (STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,
         ZIP
     FROM "USER"
-    WHERE USER_ID = :id
+    WHERE USER_ID = :id AND IS_DELETED = 'F'
     `;
     const binds = {
         id: id
@@ -516,8 +516,8 @@ const getProfileByName = async (name) => {
                 (SELECT NAME FROM "USER" WHERE USER_ID = ADDER_ID) ADDER,
                 EMPLOYEE_ID,
                 FUNDS
-            FROM "USER" JOIN ADMIN ON USER_ID = ADMIN_ID
-            WHERE NAME = :name    
+            FROM "USER" JOIN ADMIN ON USER_ID = ADMIN_ID 
+            WHERE NAME = :name  AND AND IS_DELETED = 'F' 
             `;
             break;
         case 'Customer':
@@ -537,7 +537,7 @@ const getProfileByName = async (name) => {
                 "USER" U
                 LEFT OUTER JOIN CUSTOMER C ON U.USER_ID = C.USER_ID 
             WHERE
-                U.NAME = :name
+                U.NAME = :name 
             `;
             break;
         case 'Broker':

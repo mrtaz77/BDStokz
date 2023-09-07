@@ -3,9 +3,10 @@ const oracledb = require('oracledb');
 const getUserTypeByName = async (name) => {
     const sql = `
         SELECT 
-            "TYPE" 
-            FROM "USER"
-            WHERE NAME = :name
+        "TYPE" 
+        FROM "USER"
+        WHERE NAME = :name
+        AND IS_DELETED = 'F'
     `;
 
     const binds = {
@@ -48,7 +49,8 @@ const getUserLoginInfoByName = async (name) => {
                 EMPLOYEE_ID,
                 FUNDS
             FROM "USER" JOIN ADMIN ON USER_ID = ADMIN_ID
-            WHERE NAME = :name    
+            WHERE NAME = :name 
+            AND IS_DELETED = 'F'   
             `;
             break;
         case 'Customer':
@@ -66,6 +68,7 @@ const getUserLoginInfoByName = async (name) => {
                 BROKER_ID
             FROM "USER" NATURAL JOIN CUSTOMER
             WHERE NAME = :name
+            AND IS_DELETED = 'F'
             `;
             break;
         case 'Broker':
@@ -82,6 +85,7 @@ const getUserLoginInfoByName = async (name) => {
                 EXPERTISE
             FROM "USER" NATURAL JOIN BROKER
             WHERE NAME = :name
+            AND IS_DELETED = 'F'
             `;
             break;
         case 'Corp':
@@ -97,6 +101,7 @@ const getUserLoginInfoByName = async (name) => {
                 SECTOR
             FROM "USER" NATURAL JOIN CORPORATION
             WHERE NAME = :name
+            AND IS_DELETED = 'F'
             `;
             break;
         default:

@@ -5,7 +5,7 @@ const userController = require('./user');
 const {chkCreds} = require('./login');
 const orderController = require('./order');
 
-const getAllCustomerInfo = async (payload) => {
+const getAllCustomerInfo = async () => {
     try{
         const sql = `
         SELECT
@@ -158,6 +158,7 @@ const getAllEmployeeNames = async() =>{
         const sql = `
         SELECT (FIRST_NAME||' '||LAST_NAME) NAME
         FROM EMPLOYEE  
+        WHERE IS_DELETED = 'F'
         `;
 
         const result = await execute(sql,{});
@@ -188,7 +189,7 @@ const getAllEmployeeDetailsByFullname = async(name) => {
             EMPLOYEE.MANAGER_ID,
             EMP_CONTACT.CONTACT AS CONTACT
         FROM EMPLOYEE LEFT OUTER JOIN EMP_CONTACT ON EMPLOYEE.EMPLOYEE_ID = EMP_CONTACT.EMPLOYEE_ID
-        WHERE FIRST_NAME || ' ' || LAST_NAME  = :name   
+        WHERE FIRST_NAME || ' ' || LAST_NAME  = :name  AND IS_DELETED = 'F' 
         `;
 
         const bind = {
@@ -212,6 +213,7 @@ const getAllUserNameAndType = async () => {
             "TYPE"
         FROM 
             "USER"
+        WHERE IS_DELETED = 'F'
         ORDER BY
             USER_ID
         `;
@@ -257,20 +259,20 @@ const addAdmin = async (payload) => {
         INSERT INTO "USER" (NAME,PWD,EMAIL,"TYPE",STREET_NO,STREET_NAME,CITY,COUNTRY,ZIP)
         values (:name,:pwd,:email,'Admin',20,'Mirpur','Dhaka','Bangladesh',:zip);
 
-        INSERT INTO ADMIN values(
+        INSERT INTO ADMIN(ADMIN_ID,ADDER_ID,EMPLOYEE_ID) values(
             (SELECT USER_ID FROM "USER" WHERE NAME = :name),
             :adderId,
             (SELECT EMPLOYEE_ID FROM EMPLOYEE WHERE FIRST_NAME ||' '||LAST_NAME = :name),
-            1000
+            25000
         );
         FOR R IN (
             SELECT CONTACT
             FROM EMP_CONTACT WHERE
-            EMPLOYEE_ID = (SELECT EMPLOYEE_ID FROM EMPLOYEE WHERE FIRST_NAME ||' '||LAST_NAME = :name)
+            EMPLOYEE_ID = (SELECT EMPLOYEE_ID FROM EMPLOYEE WHERE FIRST_NAME ||' '||LAST_NAME = :name AND IS_DELETED = 'F')
         )
         LOOP 
             INSERT INTO USER_CONTACT(USER_ID,CONTACT) values(
-            (SELECT USER_ID FROM "USER" WHERE NAME = :name),
+            (SELECT USER_ID FROM "USER" WHERE NAME = :name AND IS_DELETED = 'F'),
             R.CONTACT
             );
         END LOOP;
@@ -317,6 +319,11 @@ const deleteUser = async (payload) => {
             return 0;
         }
 
+        if(user.TYPE === 'Admin'){
+            console.error('Cannot delete admin');
+            return 0;	
+        }
+
         const admin = await userController.getUserById(adminId);
 
         if(admin === null || admin.TYPE != 'Admin'){
@@ -332,7 +339,8 @@ const deleteUser = async (payload) => {
         }
 
         const sql = `
-        DELETE FROM "USER"
+        UPDATE "USER"
+        SET IS_DELETED = 'T'
         WHERE USER_ID = :userId
         `;
 

@@ -8,7 +8,7 @@ const getAllOrders = async () => {
         SELECT 
         ORDER_ID,
         SYMBOL,
-        (SELECT NAME FROM "USER" WHERE "USER".USER_ID = "ORDER".USER_ID) NAME,
+        (SELECT NAME FROM "USER" WHERE "USER".USER_ID = "ORDER".USER_ID AND IS_DELETED = 'F') NAME,
         "TYPE",
         STATUS,
         LATEST_QUANTITY,
@@ -328,7 +328,7 @@ const getOrdersBySymbolAndType = async (payload) => {
         const sql = `
         SELECT 
         ORDER_ID,
-        (SELECT NAME FROM "USER" WHERE "USER".USER_ID = "ORDER".USER_ID) NAME,
+        (SELECT NAME FROM "USER" WHERE "USER".USER_ID = "ORDER".USER_ID AND IS_DELETED = 'F') NAME,
         STATUS,
         LATEST_QUANTITY,
         LATEST_PRICE,
