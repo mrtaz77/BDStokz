@@ -2,7 +2,14 @@ const {execute} = require('../config/database');
 const oracledb = require('oracledb');
 const userController = require('./user');
 
+let errors = [];
+
+async function getOrderErrors(){
+    return errors;
+}
+
 const getAllOrders = async () => {
+    errors.length = 0;
     try{
         const sql = `
         SELECT 
@@ -29,12 +36,13 @@ const getAllOrders = async () => {
         return result.rows;
 
     }catch (error) {
-        console.error(`While getting orders`);
+        errors.push(`While getting orders`);
         return null;
     }
 }
 
 const getUserOrdersByType = async (payload) => {
+    errors.length = 0;
     try{
         const userId = payload.userId;
         const type = payload.type;
@@ -65,13 +73,14 @@ const getUserOrdersByType = async (payload) => {
         return result.rows;
 
     }catch (error) {
-        console.error(`While getting orders`);
+        errors.push(`While getting orders`);
         return null;
     }
 }
 
 const getAllOrdersByType = async (payload) => {
     try{
+        errors.length = 0;
         // const n = payload.n || 30;
         const type = payload.type || 'SELL';
 
@@ -102,13 +111,14 @@ const getAllOrdersByType = async (payload) => {
         return result.rows;
 
     }catch (error) {
-        console.error(`While getting orders`);
+        errors.push(`While getting orders`);
         return null;
     }
 }
 
 const getOrderDetailsById = async (orderId) => {
     try{
+        errors.length = 0;
         const sql = `
         SELECT 
             ORDER_ID,
@@ -136,13 +146,14 @@ const getOrderDetailsById = async (orderId) => {
         return result.rows[0];
 
     }catch (error) {
-        console.error(`While getting order details of ${orderId}`);
+        errors.push(`While getting order details of ${orderId}`);
         return null;
     }
 }
 
 const placeOrder = async (payload) => {
     try{
+        errors.length = 0;
         const sql = `
         INSERT INTO "ORDER"(SYMBOL, USER_ID, "TYPE", LATEST_PRICE, LATEST_QUANTITY, STOP_PRICE)
         VALUES (:symbol, :userId, :type, :price, :quantity, :stop_price)
@@ -163,7 +174,7 @@ const placeOrder = async (payload) => {
         
 
         if(!(type === 'BUY' || type === 'SELL')){
-            console.log(`Invalid type ${type}`);
+            errors.push(`Invalid type ${type}`);
             return null;
         }
 
@@ -179,20 +190,21 @@ const placeOrder = async (payload) => {
         return order;
 
     }catch (error) {
-        console.error(`While placing order details : ${error.message}`);
+        errors.push(`While placing order details : ${error.message}`);
         return null;
     }
 }
 
 const updateOrder = async (payload) => {
     try{
+        errors.length = 0;
 
         let order = await getOrderDetailsById(payload.orderId);
 
         const userId = order.USER_ID;
 
         if (userId !== payload.userId) {
-            console.error(`Update Permission denied`);
+            errors.push(`Update Permission denied`);
             return null;
         }
 
@@ -218,7 +230,7 @@ const updateOrder = async (payload) => {
         return order;
 
     }catch (error) {
-        console.error(`While updating order details : ${error.message}`);
+        errors.push(`While updating order details : ${error.message}`);
         return null;
     }
 }
@@ -226,6 +238,7 @@ const updateOrder = async (payload) => {
 
 const setBuyOrderStatus = async (payload) => {
     try{
+        errors.length = 0;
         const corpId = payload.corpId;
         const orderId = payload.orderId;
         const status = payload.status;
@@ -233,7 +246,7 @@ const setBuyOrderStatus = async (payload) => {
         const corp = await userController.getUserById(corpId);
 
         if(corp.TYPE !== `Corp`){
-            console.error(`Unauthorized user : permission denied...`);
+            errors.push(`Unauthorized user : permission denied...`);
             return null;
         }
 
@@ -243,7 +256,7 @@ const setBuyOrderStatus = async (payload) => {
             // console.log('order.TYPE: ', order.TYPE);
             // console.log('order.STATUS: ', order.STATUS);
             // console.log('order: ', order);
-            console.error(`Invalid order request`);
+            errors.push(`Invalid order request`);
             return null;
         }
 
@@ -269,28 +282,29 @@ const setBuyOrderStatus = async (payload) => {
         return result.STATUS;
 
     }catch (error) {
-        console.error(`While setting order status : ${error.message}`);
+        errors.push(`While setting order status : ${error.message}`);
         return null;
     }
 }
 
 const sellOrderSuccess = async (payload) => {
     try{
+        errors.length = 0;
         const orderId = payload.orderId;
         const buyerId = payload.buyerId;
         const order = await getOrderDetailsById(orderId);
         const user = await userController.getUserById(buyerId);
 
         if(order === null || order.STATUS !== 'PENDING' || order.TYPE !== 'SELL'){
-            console.log('order.TYPE: ', order.TYPE);
-            console.log('order.STATUS: ', order.STATUS);
-            console.log('order: ', order);
-            console.error(`Invalid order request`);
+            // console.log('order.TYPE: ', order.TYPE);
+            // console.log('order.STATUS: ', order.STATUS);
+            // console.log('order: ', order);
+            errors.push(`Invalid order request`);
             return null;
         }
 
         if(user === null || !(user.TYPE === 'Admin' || user.TYPE === 'Customer')){
-            console.error(`Unauthorized user : permission denied...`);
+            errors.push(`Unauthorized user : permission denied...`);
             return null;
         }
 
@@ -315,13 +329,14 @@ const sellOrderSuccess = async (payload) => {
         return result.STATUS;
 
     }catch (error) {
-        console.error(`While placing order details : ${error.message}`);
+        errors.push(`While placing order details : ${error.message}`);
         return null;
     }
 };
 
 const getOrdersBySymbolAndType = async (payload) => {
     try{
+        errors.length = 0;
         const symbol = payload.symbol;
         const type = payload.type;
 
@@ -351,23 +366,24 @@ const getOrdersBySymbolAndType = async (payload) => {
         return result.rows;
 
     }catch (error) {
-        console.error(`While getting orders by ${payload.symbol}`);
+        errors.push(`While getting orders by ${payload.symbol}`);
         return null;
     }
 }
 
 const cancelOrder = async (payload) => {
     try{
+        errors.length = 0;
         let order = await getOrderDetailsById(payload.orderId);
 
 
         if(order.USER_ID !== payload.userId) {  
-            console.error(`Deletion permission denied`);
+            errors.push(`Deletion permission denied`);
             return `FAILED`;
         }
 
         if(order.STATUS !== `PENDING`){
-            console.error(`Order completed already`);
+            errors.push(`Order completed already`);
             return `FAILED`;
         }
 
@@ -385,7 +401,7 @@ const cancelOrder = async (payload) => {
         return `SUCCESS`;
 
     }catch (error) {
-        console.error(`While canceling order : ${error.message}`);
+        errors.push(`While canceling order : ${error.message}`);
         return `FAILED`;
     }
 }
@@ -400,6 +416,7 @@ module.exports = {
     getUserOrdersByType,
     getOrdersBySymbolAndType,
     updateOrder,
-    cancelOrder
+    cancelOrder,
+    getOrderErrors
 };
 

@@ -3,10 +3,16 @@ const oracledb = require('oracledb');
 const {getAllStockDataBySymbol} = require('./stock');
 const userController = require('./user');
 const {chkCreds} = require('./login');
-const orderController = require('./order');
+
+let errors = [];
+
+async function getAdminErrors(){
+    return errors;
+}
 
 const getAllCustomerInfo = async () => {
     try{
+        errors.length = 0;
         const sql = `
         SELECT
             "USER".USER_ID,
@@ -23,23 +29,26 @@ const getAllCustomerInfo = async () => {
             "USER"
             JOIN CUSTOMER ON "USER".USER_ID = CUSTOMER.USER_ID 
             LEFT OUTER JOIN USER_CONTACT ON "USER".USER_ID = USER_CONTACT.USER_ID
+        WHERE 
+            IS_DELETED = 'F'
         `;
         
         const result = await execute(sql,{});
         if(result.rows.length==0){
-            console.log(`No customer data found...`);
+            errors.push(`No customer data found...`);
             return null;
         }
         return result.rows;
 
     }catch(err){
-        console.log(`Found ${err.message} while getting customer info...`);
+        errors.push(`Found ${err.message} while getting customer info...`);
         return null;
     }
 } 
 
 const updateStock = async (payload) => {
     try{
+        errors.length = 0;
         const adminId = payload.adminId ;
         const symbol = payload.symbol;
         const field = payload.field;
@@ -49,14 +58,14 @@ const updateStock = async (payload) => {
         const admin = await userController.getUserById(adminId);
 
         if(admin == null || admin.TYPE != 'Admin'){
-            console.log("Not an admin");
+            errors.push("Not an admin");
             return null;
         }
 
         const stock = await getAllStockDataBySymbol(payload);
 
         if(stock == null){
-            console.log("Stock not found");
+            errors.push("Stock not found");
             return null;
         }
 
@@ -64,7 +73,7 @@ const updateStock = async (payload) => {
         if(field == `SYMBOL`){
             const stock = await getAllStockDataBySymbol({symbol:newValue});
             if(stock != null){
-                console.log("Stock symbol already present");
+                errors.push("Stock symbol already present");
                 return null;
             }
         }
@@ -87,7 +96,7 @@ const updateStock = async (payload) => {
 
         return newStock;
     }catch(err){
-        console.log(`Found ${err.message} while updating stock info...`);
+        errors.push(`Found ${err.message} while updating stock info...`);
         return null;
     }
 }
@@ -95,12 +104,13 @@ const updateStock = async (payload) => {
 const block = async (set,payload) => {
     const symbol = payload.symbol;
     try{
+        errors.length = 0;
         const result = await getAllStockDataBySymbol(payload);
         if(result == null){
-            console.log(`No stock data found`);
+            errors.push(`No stock data found`);
             return null;
         }else if(result.BLOCKED == set){
-            console.log(`${symbol} already ${set}`);
+            errors.push(`${symbol} already ${set}`);
             return result;
         }
 
@@ -119,13 +129,14 @@ const block = async (set,payload) => {
 
         return await getAllStockDataBySymbol(payload);
     }catch(err){
-        console.log(`Found ${err.message} while setting ${symbol} to ${set}...`);
+        errors.push(`Found ${err.message} while setting ${symbol} to ${set}...`);
         throw err;
     }
 }
 
 async function getDailyProfit() {
     try {
+        errors.length = 0;
         const plSql = `
             DECLARE
                 v_profits VARCHAR2(32767);
@@ -148,13 +159,14 @@ async function getDailyProfit() {
 
         return JSON.parse(jsonString);
     } catch (error) {
-        console.error('Error in getDailyProfit:', error);
+        errors.push('Error in getDailyProfit: ', error);
         throw error;
     }
 }
 
 const getAllEmployeeNames = async() =>{
     try{
+        errors.length = 0;
         const sql = `
         SELECT (FIRST_NAME||' '||LAST_NAME) NAME
         FROM EMPLOYEE  
@@ -165,13 +177,14 @@ const getAllEmployeeNames = async() =>{
         return result.rows;
 
     } catch (error) {
-        console.error(`While getting employees`);
+        errors.push(`While getting employees`);
         return null;
     }
 }
 
 const getAllEmployeeDetailsByFullname = async(name) => {
     try{
+        errors.length = 0;
         const sql = `
         SELECT 
             EMPLOYEE.EMPLOYEE_ID,
@@ -200,13 +213,14 @@ const getAllEmployeeDetailsByFullname = async(name) => {
         return result.rows;
 
     } catch (error) {
-        console.error(`While getting details for ${name}`);
+        errors.push(`While getting details for ${name}`);
         return null;
     }
 }
 
 const getAllUserNameAndType = async () => {
     try{
+        errors.length = 0;
         const sql = `
         SELECT 
             NAME,
@@ -222,33 +236,34 @@ const getAllUserNameAndType = async () => {
         return result.rows;
 
     }catch (error) {
-        console.error(`While getting users`);
+        errors.push(`While getting users`);
         return null;
     }
 }
 
 const addAdmin = async (payload) => {
     try{
+        errors.length = 0;
         const adderId = payload.adminId;
         const empName = payload.empName;
 
         const empDetails = await getAllEmployeeDetailsByFullname(empName);
         if(empDetails == null){
-            console.log(`Could not find employee details for ${empName}`);
+            errors.push(`Could not find employee details for ${empName}`);
             return null;
         }
 
         const adder = await userController.getUserById(adderId);
 
         if(adder == null || adder.TYPE != 'Admin'){
-            console.error(`Adder not an admin`);
+            errors.push(`Adder not an admin`);
             return null;
         }
 
         const existingAdmin = await userController.getUserByName({name:empName});
 
         if(existingAdmin != null && existingAdmin.TYPE == 'Admin'){
-            console.error('Already an admin');
+            errors.push('Already an admin');
             return null;
         }
         
@@ -284,7 +299,7 @@ const addAdmin = async (payload) => {
             name: empName,
             pwd: pwd,
             email : empDetails[0].EMAIL,
-            zip : empDetails[0].ZIP_CODE === null ?1200 : empDetails[0].ZIP_CODE,
+            zip : empDetails[0].ZIP_CODE === null ? 1200 : empDetails[0].ZIP_CODE,
             adderId : adderId
         };
 
@@ -297,13 +312,14 @@ const addAdmin = async (payload) => {
         return newAdmin;
 
     }catch (error) {
-        console.error(`While adding admin got ${error.message}`);
+        errors.push(`While adding admin got ${error.message}`);
         return null;
     }
 };
 
 const deleteUser = async (payload) => {
     try{
+        errors.length = 0;
         let userId = await userController.getUserByName(payload);
         userId = userId.USER_ID;
         const adminId = payload.deleterId;
@@ -315,26 +331,26 @@ const deleteUser = async (payload) => {
         const user = await userController.getUserById(userId);
 
         if(user === null){
-            console.error('User not found');
+            errors.push('User not found');
             return 0;
         }
 
         if(user.TYPE === 'Admin'){
-            console.error('Cannot delete admin');
+            errors.push('Cannot delete admin');
             return 0;	
         }
 
         const admin = await userController.getUserById(adminId);
 
         if(admin === null || admin.TYPE != 'Admin'){
-            console.error(`Deleter not an admin`);
+            errors.push(`Deleter not an admin`);
             return 0;
         }
 
         const pass = await chkCreds(admin.NAME,pwd);
 
         if(pass !== 1337){
-            console.error(`Incorrect password`);
+            errors.push(`Incorrect password`);
             return 0;
         }
 
@@ -353,20 +369,21 @@ const deleteUser = async (payload) => {
         return await userController.getUserById(userId);
 
     }catch (error) {
-        console.error(`While deleting admin got ${error.message}`);
+        errors.push(`While deleting admin got ${error.message}`);
         return 0;
     }
 }
 
 const deleteOrderPermanent = async (payload) => {
     try{
+        errors.length = 0;
         const adminId = payload.adminId;
         const orderId = payload.orderId;
 
         const admin = await userController.getUserById(adminId);
 
         if(admin === null || admin.TYPE !== 'Admin'){
-            console.error(`Deletion permission denied`);
+            errors.push(`Deletion permission denied`);
             return 0;
         }
 
@@ -388,7 +405,7 @@ const deleteOrderPermanent = async (payload) => {
         return null;
         
     }catch (error) {
-        console.error(`While deleting order ${orderId}`);
+        errors.push(`While deleting order ${orderId}`);
         return null;
     }
 }
@@ -403,5 +420,6 @@ module.exports = {
     getAllUserNameAndType,
     addAdmin,
     deleteUser,
-    deleteOrderPermanent
+    deleteOrderPermanent,
+    getAdminErrors
 }

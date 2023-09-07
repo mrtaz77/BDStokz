@@ -22,7 +22,7 @@ router.post('/',async(req, res)=>{
         // }
         //console.log(result.NAME);
         if((result == null)||(result == undefined)){
-            res.status(400).json({ message: 'errors',err:errors});
+            res.status(400).json({ message: 'error'});
             console.log(`Error creating new user...`);
             //res.redirect('/');
         }else{  

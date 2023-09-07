@@ -1,8 +1,14 @@
 const db = require('../config/database.js');
 const oracledb = require('oracledb');
 
+let errors = [];
+
+async function getStockErrors(){
+    return errors;
+}
+
 const getAllStockSymbol = async (payload) => {
-    console.log(payload);
+    errors.length = 0;
     const sql = `
     SELECT
         SYMBOL 
@@ -14,21 +20,23 @@ const getAllStockSymbol = async (payload) => {
         SYMBOL
     `;
 
-    const binds = {}
+    const binds = {};
 
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`No stocks found`);
+            errors.push(`No stocks found`);
             return null;
         }
         return result.rows;
     }catch(err){
-        console.error(`Found error: ${err} while searching for stocks...`);
+        errors.push(`Found error: ${err} while searching for stocks...`);
+        null;
     }
 }
 
 const getAllStockDataBySymbol = async (payload) => {
+    errors.length = 0;
     const symbol = payload.symbol;
     const sql = `
     SELECT
@@ -111,17 +119,19 @@ const getAllStockDataBySymbol = async (payload) => {
     try {
         const result = (await db.execute(sql,binds)).rows;
         if(result == null){
-            console.log(`Stock ${symbol} not found...`);
+            errors.push(`Stock ${symbol} not found...`);
             return null;
         }
         return result[0];
     }catch(err) {
-        console.log(err);
+        errors.push(err);
+        return null;
     }
 }
 
 const getTopLoserGainer = async(payload) => {
-    console.log(payload.order);
+    // console.log(payload.order);
+    errors.length = 0;
     let sort;
     switch(payload.order){
         case `gain` :
@@ -188,16 +198,18 @@ const getTopLoserGainer = async(payload) => {
     try {
         const result = (await db.execute(sql,{})).rows;
         if(result.length === 0){
-            console.log(`Top ${payload.order}ers not found...`);
+            errors.push(`Top ${payload.order}ers not found...`);
             return null;
         }
         return result;
     }catch(err) {
-        console.log(err);
+        errors.push(err);
+        return null;
     }
 }
 
 const getAnnualAvgPrice = async () => {
+    errors.length = 0;
     const plsqlBlock = `
     DECLARE
         ANS VARCHAR2(32767);
@@ -214,18 +226,19 @@ const getAnnualAvgPrice = async () => {
     try{
         const result = await db.execute(plsqlBlock, bindVars);
         const jsonString = result.outBinds.result;
-        console.log('Received JSON string:', jsonString);
+        // console.log('Received JSON string:', jsonString);
     
         let jsonObject;
         try {
             jsonObject = JSON.parse(jsonString);
-            console.log('Parsed JSON object:', jsonObject);
+            // console.log('Parsed JSON object:', jsonObject);
         } catch (parseError) {
-            console.error('Error parsing JSON:', parseError);
+            errors.push('Error parsing JSON:', parseError);
+            return null;
         }
         return jsonObject;
     }catch(err){
-        console.log(`Found ${err.message} while getting dsex`);
+        errors.push(`Found ${err.message} while getting dsex`);
         return null;
     }
 }
@@ -235,5 +248,6 @@ module.exports = {
     getAllStockSymbol,
     getAllStockDataBySymbol,
     getTopLoserGainer,
-    getAnnualAvgPrice
+    getAnnualAvgPrice,
+    getStockErrors
 };

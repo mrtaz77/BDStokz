@@ -1,8 +1,15 @@
 const { execute } = require('../config/database');
 const { getUserById } = require('./user');
+let errors = [];
+
+async function getCustomerErrors(){
+    return errors;
+}
+
 
 const getAllInfoByID = async(id) =>{
     try{
+        errors.length = 0;
         const sql = `
         SELECT * FROM CUSTOMER WHERE ID = :id AND IS_DELETED = 'F'
         `;
@@ -14,12 +21,14 @@ const getAllInfoByID = async(id) =>{
         const result = await execute(sql,bind);
         return result;
     }catch(err){
-        console.log(`Found error: ${err.message} while getting info of ${id}`);
+        errors.push(`Found error: ${err.message} while getting info of ${id}`);
+        return null;
     }
 } 
 
 const getPortfolioInfoByID = async(id) =>{
     try{
+        errors.length = 0;
         const result = await getUserById(id);
         const type = result.TYPE;
 
@@ -43,16 +52,18 @@ const getPortfolioInfoByID = async(id) =>{
             return portfoio.rows;
 
         }else{
-            console.log(`${id} is not a customer`);
+            errors.push(`${id} is not a customer`);
             return null;
         }
 
     }catch(err){
-        console.log(`Found error: ${err.message} while getting portfoio of ${id}`);
+        errors.push(`Found error: ${err.message} while getting portfoio of ${id}`);
+        return null;
     }
 }
 
 module.exports = {
     getAllInfoByID,
     getPortfolioInfoByID,
+    getCustomerErrors
 }

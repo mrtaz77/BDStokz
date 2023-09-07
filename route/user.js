@@ -143,7 +143,7 @@ router.delete('/delContact', [
 
 router.post('/addContact',[
     body('userId').notEmpty().withMessage('userId is required'),
-    body('contact').notEmpty().withMessage('contact to be deleted is required'),
+    body('contact').notEmpty().withMessage('contact to be deleted is required')
 ],async(req, res,next) => {
     try{
         const result = await userController.addContact(req.body);

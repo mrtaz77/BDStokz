@@ -2,12 +2,19 @@ const db = require('../config/database.js');
 const userController  = require('./user');    
 const activityController = require('./activity');
 
+let errors = [];
+
+async function getParticipationErrors(){
+    return errors;
+}
+
 const setParticipation = async  (payload) => {
     try{
+        errors.length = 0;
         const user = await userController.getUserById(payload.userId);
         const activity = await activityController.getActivityById(payload.activityId);
         if(user == null || activity == null){
-            console.log(`Invalid registration...`);
+            errors.push(`Invalid registration...`);
             return null;
         }
 
@@ -25,13 +32,14 @@ const setParticipation = async  (payload) => {
         return await getParticipation(payload);
 
     }catch(err){
-        console.log(`Found error: ${err.message} while setting participation...`);
+        errors.push(`Found error: ${err.message} while setting participation...`);
         return null;
     }
 }
 
 const getParticipation = async(payload) => {
     try{
+        errors.length = 0;
         const sql = `
         SELECT * 
         FROM participation 
@@ -46,12 +54,12 @@ const getParticipation = async(payload) => {
 
         const results = await db.execute(sql, binds);
 
-        console.log(results.rows);
+        // console.log(results.rows);
         
         return results.rows;
 
     }catch(err){
-        console.log(`Found error: ${err.message} while getting participation...`);
+        errors.push(`Found error: ${err.message} while getting participation...`);
         return null;
     }
 }
@@ -59,5 +67,6 @@ const getParticipation = async(payload) => {
 
 module.exports = {
     setParticipation,
-    getParticipation
+    getParticipation,
+    getParticipationErrors
 }

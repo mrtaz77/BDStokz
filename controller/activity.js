@@ -1,6 +1,13 @@
 const db = require('../config/database.js');
 
+let errors = [];
+
+async function getActivityErrors(){
+    return errors;
+}
+
 const getActivityById = async (activityId) => {
+    errors.length = 0;
     try{
         const sql = `
         SELECT
@@ -25,12 +32,13 @@ const getActivityById = async (activityId) => {
         const result = await db.execute(sql, binds);
         return result;
     }catch(err){
-        console.log(`Found ${err.message} while getting info of ${activityId}...`);
+        errors.push(`Found ${err.message} while getting info of ${activityId}...`);
         return null;
     }
 }
 
 const getUpcomingActivities = async (payload) => {
+    errors.length = 0;
     console.log(payload); 
 
     const sql = `
@@ -42,7 +50,8 @@ const getUpcomingActivities = async (payload) => {
         ACTIVITY."TYPE",
         VENUE,
         FEE,
-        DESCRIPTION
+        DESCRIPTION,
+        ACTIVITY_ID
     FROM
         ACTIVITY
         JOIN "USER" ON CORP_ID = USER_ID 
@@ -56,12 +65,13 @@ const getUpcomingActivities = async (payload) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`No upcoming activities`);
+            errors.push(`No upcoming activities`);
             return null;
         }
         return result.rows;
     }catch(err){
-        console.error(`Found error: ${err} while searching for stocks...`);
+        errors.push(`Found error: ${err} while searching for stocks...`);
+        return null;
     }
 }
 
@@ -69,5 +79,6 @@ const getUpcomingActivities = async (payload) => {
 
 module.exports = {
     getUpcomingActivities,
-    getActivityById
+    getActivityById,
+    getActivityErrors
 };

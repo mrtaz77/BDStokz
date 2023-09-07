@@ -1,30 +1,41 @@
 const oracledb = require('oracledb');
 const db = require('../config/database.js');
 const validations = require('../util/validation');
-const {getUserTypeByName} = require('./login')
+const {getUserTypeByName,chkCreds} = require('./login')
 const fields = require('../util/fields')
 const {getAllStockDataBySymbol} = require('./stock')
 
+let errors = [];
+
+const getUserErrors = async () =>{
+    return errors;
+}
+
 const getPwdHash = async (pwd) => {
-    const sql = `
-    BEGIN 
-        :pwdHash := PWD_HASH(:pwd);
-    END;
-    `;
+    try{
+        errors.length = 0;
+        const sql = `
+        BEGIN 
+            :pwdHash := PWD_HASH(:pwd);
+        END;
+        `;
 
-    binds = {
-        pwd : pwd,
-        pwdHash : { type: oracledb.STRING, dir: oracledb.BIND_OUT }
+        binds = {
+            pwd : pwd,
+            pwdHash : { type: oracledb.STRING, dir: oracledb.BIND_OUT }
+        }
+
+        const hash = await db.execute(sql, binds);
+        // console.log(hash);
+        // console.log(hash.outBinds.pwdHash);
+        return hash.outBinds.pwdHash;}
+    catch(err){
+        errors.push(err);
     }
-
-    const hash = await db.execute(sql, binds);
-    // console.log(hash);
-    // console.log(hash.outBinds.pwdHash);
-    return hash.outBinds.pwdHash;
 }
 
 const getUserByEmail = async (payload) => {
-    console.log(payload);
+    errors.length = 0;
     const email = payload.email;
     console.log(`Fetching ${payload.email}...`);
     const sql = `
@@ -39,17 +50,18 @@ const getUserByEmail = async (payload) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`Email ${email} does not exist`);
+            errors.push(`Email ${email} does not exist`);
             return null;
         }
         return result.rows;
     }catch(err){
-        console.error(`Found error: ${err} while searching id ${email}`);
+        errors.push(`Found error: ${err} while searching id ${email}`);
+        return null;
     }
 }
 
 const getUserByName = async (payload) => {
-    console.log(payload);
+    errors.length = 0;
     const name = payload.name;
     console.log(`Fetching ${name}...`);
     const sql = `
@@ -69,7 +81,8 @@ const getUserByName = async (payload) => {
         }
         return result.rows[0];
     }catch(err){
-        console.error(`Found error: ${err} while searching user ${name}`);
+        errors.push(`Found error: ${err} while searching user ${name}`);
+        return null;
     }
 
 }
@@ -78,6 +91,7 @@ const getUserByName = async (payload) => {
 
 
 const getUserByContact = async (contact) => {
+    errors.length = 0;
     console.log(`Fetching ${contact}...`);
     const sql = `
     SELECT USER_ID
@@ -91,17 +105,19 @@ const getUserByContact = async (contact) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`Contact ${contact} does not exist`);
+            errors.push(`Contact ${contact} does not exist`);
             return null;
         }
         return result.rows[0];
     }catch(err){
         console.error(`Found error: ${err} while searching user ${contact}`);
+        return null;
     }
 
 }
 
 const getUserById = async (idP) => {
+    errors.length = 0;
     const id = idP;
     console.log(`Fetching ${idP}...`);
     const sql = `
@@ -122,12 +138,13 @@ const getUserById = async (idP) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`User ${id} does not exist`);
+            errors.push(`User ${id} does not exist`);
             return null;
         }
         return result.rows[0];
     }catch(err){
-        console.error(`Found error: ${err} while searching user ${id}`);
+        errors.push(`Found error: ${err} while searching user ${id}`);
+        return null;
     }
 
 }
@@ -135,7 +152,7 @@ const getUserById = async (idP) => {
 
 const createUser = async (payload) => {
     try{
-        let errors = [];
+        errors.length = 0 ;
         console.log(`In create user ${payload}`);
         // necessary user table checks
         const resultByName  = await getUserByName(payload);
@@ -203,7 +220,8 @@ const createUser = async (payload) => {
         }
 
     }catch(err){
-        console.error(`Found error: ${err} while creating user ${payload}`);
+        errors.push(`Found error: ${err} while creating user ${payload}`);
+        return null;
     }   
 }
 
@@ -223,12 +241,12 @@ const chkAccountOfCustomer = async (accountNo) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`Account No ${accountNo} does not exist`);
+            errors.push(`Account No ${accountNo} does not exist`);
             return null;
         }
         return result.rows[0];
     }catch(err){
-        console.error(`Found error: ${err} while searching account ${accountNo}`);
+        errors.push(`Found error: ${err} while searching account ${accountNo}`);
     }
 }
 
@@ -248,12 +266,12 @@ const chkLicenseOfBroker = async (licenseNo) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`License No ${licenseNo} does not exist`);
+            errors.push(`License No ${licenseNo} does not exist`);
             return null;
         }
         return result.rows[0];
     }catch(err){
-        console.error(`Found error: ${err} while searching license ${licenseNo}`);
+        errors.push(`Found error: ${err} while searching license ${licenseNo}`);
     }
 }
 
@@ -273,12 +291,12 @@ const chkRegOfCorp = async (corpRegNo) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`CorpReg No ${corpRegNo} does not exist`);
+            errors.push(`CorpReg No ${corpRegNo} does not exist`);
             return null;
         }
         return result.rows[0];
     }catch(err){
-        console.error(`Found error: ${err} while searching license ${corpRegNo}`);
+        errors.push(`Found error: ${err} while searching license ${corpRegNo}`);
     }
 }
 
@@ -290,18 +308,18 @@ async function createCustomer (payload) {
         if(payload.refererName !== null){
             const referer = await getUserByName({name:payload.refererName}) ;
             if(referer === null){
-                console.log(`Customer ${payload.refererName} not registered`);
+                errors.push(`Customer ${payload.refererName} not registered`);
                 return;
             }
             if(referer.TYPE !== 'Customer'){
-                console.log(`Only a customer can refer site to someone`);
+                errors.push(`Only a customer can refer site to someone`);
                 return;
             }
         }
 
 
         if(await chkAccountOfCustomer(payload.accountNo) != null){
-            console.log(`Account already in use`);
+            errors.push(`Account already in use`);
             return;
         }
         const pwdHash = await getPwdHash(payload.pwd);
@@ -350,7 +368,7 @@ async function createCustomer (payload) {
         console.log(await getUserByName(payload));
 
     }catch(err){
-        console.log(`Failed to create ${payload} for error ${err}`);
+        errors.push(`Failed to create ${payload} for error ${err}`);
     }
 }
 
@@ -358,7 +376,7 @@ async function createBroker (payload) {
     console.log(`Creating ${payload} broker `);
     try{
         if(await chkLicenseOfBroker(payload.licenseNo) != null ){ 
-            console.log(`License ${payload.licenseNo} already exists`);
+            errors.push(`License ${payload.licenseNo} already exists`);
             return;
         }
 
@@ -406,19 +424,19 @@ async function createBroker (payload) {
         console.log(await getUserByName(payload));
 
     }catch(err){
-        console.log(`Failed to create ${payload} for error ${err}`);
+        errors.push(`Failed to create ${payload} for error ${err}`);
     }
 }
 
 async function createCorp (payload) {
     try{
         if(await chkRegOfCorp(payload.corpRegNo) !== null){
-            console.log(`Reg no ${payload.corpRegNo} already exists`);
+            errors.push(`Reg no ${payload.corpRegNo} already exists`);
             return;
         }
 
         if(payload.sector == null){
-            console.log(`Corporation sector must be specified`);
+            errors.push(`Corporation sector must be specified`);
             return;
         }
 
@@ -465,14 +483,15 @@ async function createCorp (payload) {
         console.log(`After inserting name`);
         console.log(await getUserByName(payload));
     }catch(err){
-        console.log(`Failed to create ${payload} for error ${err}`);
+        errors.push(`Failed to create ${payload} for error ${err}`);
     }
 }
 
 const isPrem = async (id) => {
     try{
+        errors.length = 0;
         let prem;
-        console.log(`id: ${id}`);
+        // console.log(`id: ${id}`);
         const plSql = `
             DECLARE
                 CHK CHAR(1);
@@ -493,13 +512,15 @@ const isPrem = async (id) => {
         return prem.outBinds.flag;
     }catch(err){
         console.log(`Failed to get premium status of ${id} for error ${err}`);
+        return `N`;
     }
 }
 
 const getProfileByName = async (name) => {
+    errors.length = 0;
     const type = await getUserTypeByName(name);
     if(type == null){
-        console.log(`No such user ${name} found`);
+        errors.push(`No such user ${name} found`);
         return null;
     }
     let sql;
@@ -517,7 +538,7 @@ const getProfileByName = async (name) => {
                 EMPLOYEE_ID,
                 FUNDS
             FROM "USER" JOIN ADMIN ON USER_ID = ADMIN_ID 
-            WHERE NAME = :name  AND AND IS_DELETED = 'F' 
+            WHERE NAME = :name 
             `;
             break;
         case 'Customer':
@@ -589,17 +610,19 @@ const getProfileByName = async (name) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length === 0){
-            console.log(`No such user ${name} found`);
+            errors.push(`No such user ${name} found`);
             return null;
         }
-        console.log(result.rows);
+        // console.log(result.rows);
         return result.rows;
     }catch(err){
-        console.error(`Found error: ${err} while searching for user ${name}...`);
+        errors.push(`Found error: ${err} while searching for user ${name}...`);
+        return null;
     }
 };
 
 const getContactByName = async (name)=>{
+    errors.length = 0;
     const sql = `
     SELECT CONTACT 
     FROM USER_CONTACT
@@ -613,26 +636,26 @@ const getContactByName = async (name)=>{
     try{
         const result = await db.execute(sql,bind);
         if(result.rows.length==0){
-            console.log(`No such user ${name} found`);
+            errors.push(`No user ${name} found with this contact`);
             return null;
         }
         console.log(result.rows);
         return result.rows;
     }catch(err){
-        console.error(`Found error: ${err} while getting contact for user ${name}...`);
+        errors.push(`Found error: ${err} while getting contact for user ${name}...`);
+        return null;
     }
 }
 
 const updateProfile = async (payload)=>{
     try{
+        errors.length = 0;
         const userId = payload.userId;
         const field = payload.field;
         const newValue = payload.newValue;
 
-        
-
         const user = await getUserById(userId);
-        let errors = [];
+        
 
         let sql;
 
@@ -770,31 +793,32 @@ const updateProfile = async (payload)=>{
         return profile;
 
     }catch(err){
-        console.log(`Found ${err.message} while updating profile of ${payload.userId}...`);
+        errors.push(`Found ${err.message} while updating profile of ${payload.userId}...`);
         return null;
     }
 }
 
 const addContact = async (payload)=> {
     try{
+        errors.length = 0;
         const userId = payload.userId;
         const user = await getUserById(userId);
         const contact = payload.contact;
 
         if(user == null){
-            console.log(`User not found`);
+            errors.push(`User not found`);
             return null;
         }
 
         if(!validations.validateContact(contact)){
-            console.log(`Contact in valid`);
+            errors.push(`Contact in valid`);
             return null;
         }
 
         const resultByContact = await getUserByContact(contact);
 
         if(resultByContact != null){
-            console.log(`Contact already in use`);
+            errors.push(`Contact already in use`);
             return null;
         }
 
@@ -814,18 +838,19 @@ const addContact = async (payload)=> {
         return result;
 
     }catch(err){
-        console.log(`Found ${err.message} while adding contact of ${payload.userId}...`);
+        errors.push(`Found ${err.message} while adding contact of ${payload.userId}...`);
         return null;
     }
 };
 
 const deleteContact = async (payload) => {
     try{
+        errors.length = 0;
         const userId = payload.userId;
         const contact = payload.contact;
         const userById = await getUserById(userId);
         const userByContact = await getUserByContact(contact);
-        let errors = [];
+        
 
         if(userById == null){
             errors.push(`Invalid user`);
@@ -864,6 +889,46 @@ const deleteContact = async (payload) => {
     }
 }
 
+const deleteAccount = async (payload) => {
+    try{    
+        errors.length = 0;
+        const userId = payload.userId;
+        const pwd = payload.password;
+
+        const user = await getUserById(userId);
+
+        if(user === null){
+            errors.push(`User ${payload.userId} does not exist`);
+            return 0;
+        }
+
+        const pass = await chkCreds(user.NAME,pwd);
+
+        if(pass !== 1337){
+            console.error(`Incorrect password`);
+            return 0;
+        }
+
+        const sql = `
+        UPDATE "USER"
+        SET IS_DELETED = 'T'
+        WHERE USER_ID = :userId
+        `;
+
+        const binds = {
+            userId: userId
+        }
+
+        await execute(sql,binds);
+
+        return await getUserById(userId);
+
+    }catch(error){
+        errors.push(`Found ${err.message} while deleting account of ${payload.userId}...`);
+        return 0;
+    }
+}
+
 module.exports = {
     getPwdHash,
     getUserByEmail,
@@ -879,5 +944,7 @@ module.exports = {
     getContactByName,
     updateProfile,
     addContact,
-    deleteContact
+    deleteContact,
+    deleteAccount,
+    getUserErrors
 };
