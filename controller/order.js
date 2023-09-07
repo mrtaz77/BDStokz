@@ -154,7 +154,7 @@ const placeOrder = async (payload) => {
         const binds = {
             symbol : payload.symbol,
             userId : payload.userId,
-            type : payload.type,
+            type : type,
             price : payload.price,
             quantity : payload.quantity,
             stop_price : payload.stop_price,

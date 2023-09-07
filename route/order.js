@@ -105,7 +105,7 @@ router.post('/placeOrder', [
       // Check for validation errors
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ errors: errors.array() });
         }
 
         // Call your controller function to place the order
@@ -113,7 +113,7 @@ router.post('/placeOrder', [
 
         // Handle the result accordingly (e.g., send a success or error response)
         if (result != null) {
-            res.status(200).json({ message: 'Order placed successfully', order: result.order });
+            res.status(200).json({ message: 'Order placed successfully', order: result });
         } else {
             res.status(400).json({ error: `Order was not placed` });
         }
