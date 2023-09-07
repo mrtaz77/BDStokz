@@ -37,18 +37,18 @@ const getUpcomingActivities = async (payload) => {
     SELECT
         NAME ORGANIZER,
         TO_CHAR( "DATE", 'DD Month YYYY' ) EVENT_DATE,
-        TIME_FORMAT ( START_TIME ) START_TIME,
+        TIME_FORMAT ( START_TIME ) "START TIME",
         DURATION_FORMAT ( "DURATION(min)" ) DURATION,
         ACTIVITY."TYPE",
         VENUE,
         FEE,
-        DESCRIPTION 
+        DESCRIPTION
     FROM
         ACTIVITY
         JOIN "USER" ON CORP_ID = USER_ID 
     WHERE
-        "DATE" > SYSDATE
-    ORDER BY "DATE"
+        START_TIME > CURRENT_TIMESTAMP
+    ORDER BY "DATE",START_TIME
     `;
 
     const binds = {}
