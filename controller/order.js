@@ -210,7 +210,7 @@ const updateOrder = async (payload) => {
 
         const sql = `
         UPDATE "ORDER"
-        SET LATEST_PRICE = :price,LATEST_QUANTITY = :quantity,STOP_PRICE = :stop_price 
+        SET LATEST_PRICE = :price,LATEST_QUANTITY = :quantity 
         WHERE "ORDER_ID" = :order_id
         `;
 
@@ -219,7 +219,6 @@ const updateOrder = async (payload) => {
         const binds = {
             price : payload.price,
             quantity : payload.quantity,
-            stop_price : payload.stop_price,
             orderId: payload.orderId
         }
 

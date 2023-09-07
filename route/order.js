@@ -173,9 +173,7 @@ router.put('/sell-order-success', async (req, res) => {
 
 
 router.patch('/update',[
-    body('symbol').notEmpty().withMessage('Symbol is required'),
-    body('userId').notEmpty().withMessage('User ID is required'),
-    body('type').notEmpty().withMessage('Order type is required'),
+    body('orderId').notEmpty().withMessage('User ID is required'),
     body('price').notEmpty().withMessage('Price is required'),
     body('quantity').notEmpty().withMessage('Quantity is required')
 ], async (req, res) => {
