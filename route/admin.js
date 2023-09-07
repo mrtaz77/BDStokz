@@ -172,7 +172,7 @@ router.delete('/deleteOrder',[
 
 });
 
-
+router.use('/adminLogs',require('./log'));
 
 
 

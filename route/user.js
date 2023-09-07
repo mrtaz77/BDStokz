@@ -163,5 +163,6 @@ router.post('/addContact',[
 });
 
 router.use('/logout',require('./logout'));
+router.use('/userLogs',require('./log'));
 
 module.exports = router;
