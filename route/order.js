@@ -11,6 +11,7 @@ const {
     getUserOrdersByType,
     getOrdersBySymbolAndType,
     updateOrder,
+    getOrderErrors
 } = require('../controller/order');
 
 router.get('/allOrders',async (req,res,next) => {
@@ -173,7 +174,8 @@ router.put('/sell-order-success', async (req, res) => {
 
 
 router.patch('/update',[
-    body('orderId').notEmpty().withMessage('User ID is required'),
+    body('userId').notEmpty().withMessage('User ID is required'),
+    body('orderId').notEmpty().withMessage('Order ID is required'),
     body('price').notEmpty().withMessage('Price is required'),
     body('quantity').notEmpty().withMessage('Quantity is required')
 ], async (req, res) => {
@@ -191,7 +193,8 @@ router.patch('/update',[
         if (result != null) {
             res.status(200).json({ message: 'Order updated successfully', order: result.order });
         } else {
-            res.status(400).json({ error: `Order was not updated` });
+            const errors = await getOrderErrors();
+            res.status(200).json({ message: 'Order was not updated',err:errors});
         }
     } catch (error) {
         // Handle errors here

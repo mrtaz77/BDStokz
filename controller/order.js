@@ -219,12 +219,12 @@ const updateOrder = async (payload) => {
         const binds = {
             price : payload.price,
             quantity : payload.quantity,
-            orderId: payload.orderId
+            order_id: payload.orderId
         }
 
         await execute(sql,binds);
 
-        order = await getOrderDetailsById(id);
+        order = await getOrderDetailsById(payload.orderId);
 
         return order;
 
