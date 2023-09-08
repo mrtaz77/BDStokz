@@ -42,7 +42,7 @@ DECLARE
     old_street_name VARCHAR2(255);
     old_city VARCHAR2(255);
     old_country VARCHAR2(255);
-    old_zip NUMBER;
+    old_zip VARCHAR2(20);
 BEGIN
   -- Get the old values of the updated fields
   
@@ -145,7 +145,7 @@ DECLARE
     old_value NUMBER;
     old_available_lots NUMBER;
     old_ltp NUMBER;
-    old_blocked NUMBER;
+    old_blocked VARCHAR2(2);
 BEGIN
   -- Get the old values of the updated fields
   
@@ -216,7 +216,7 @@ BEGIN
 		
       INSERT INTO admin_log (event_type, description, event_time)
       VALUES ('UPDATE',
-              'LTP '|| :new.symbol ||' updated from ' || old_ltp || ' to ' || :NEW.ltp,
+              'LTP  of '|| :new.symbol ||' updated from ' || old_ltp || ' to ' || :NEW.ltp,
               SYSDATE);
     END IF;
 
@@ -475,6 +475,3 @@ INSERT INTO USER_LOG(USER_ID,EVENT_TYPE,DESCRIPTION) VALUES (:NEW.ADMIN_ID,'FUND
 INSERT INTO ADMIN_LOG(EVENT_TYPE,DESCRIPTION) VALUES ('FUNDS UPDATE',:NEW.ADMIN_ID||' : '||:OLD.FUNDS||' -> '||:NEW.FUNDS);
 END;
 /
-
-
-

@@ -19,7 +19,7 @@ DECLARE
     old_street_name VARCHAR2(255);
     old_city VARCHAR2(255);
     old_country VARCHAR2(255);
-    old_zip NUMBER;
+    old_zip VARCHAR2(20);
 BEGIN
   -- Get the old values of the updated fields
   
@@ -122,7 +122,7 @@ DECLARE
     old_value NUMBER;
     old_available_lots NUMBER;
     old_ltp NUMBER;
-    old_blocked NUMBER;
+    old_blocked VARCHAR2(2);
 BEGIN
   -- Get the old values of the updated fields
   
@@ -193,7 +193,7 @@ BEGIN
 		
       INSERT INTO admin_log (event_type, description, event_time)
       VALUES ('UPDATE',
-              'LTP '|| :new.symbol ||' updated from ' || old_ltp || ' to ' || :NEW.ltp,
+              'LTP  of '|| :new.symbol ||' updated from ' || old_ltp || ' to ' || :NEW.ltp,
               SYSDATE);
     END IF;
 
@@ -255,7 +255,7 @@ END;
 
 
 CREATE OR REPLACE TRIGGER owns_log 
-BEFORE INSERT OR UPDATE OF QUANTITY
+AFTER INSERT OR UPDATE OF QUANTITY
 ON OWNS 
 FOR EACH ROW
 BEGIN 
@@ -263,8 +263,8 @@ BEGIN
 		INSERT INTO USER_LOG(USER_ID,EVENT_TYPE,DESCRIPTION) VALUES (:new.USER_ID,'NEW OWNERSHIP','You now own '||:new.QUANTITY||' of '||:new.SYMBOL);
 		INSERT INTO ADMIN_LOG(EVENT_TYPE,DESCRIPTION) VALUES ('NEW OWNERSHIP',:new.user_id||' now owns '||:new.QUANTITY||' of '||:new.SYMBOL);
 	ELSIF UPDATING('QUANTITY') THEN 
-		INSERT INTO USER_LOG(USER_ID,EVENT_TYPE,DESCRIPTION) VALUES (:new.USER_ID,'UPDATE OWNERSHIP','You now own '||:new.QUANTITY||' of '||:new.SYMBOL);
-		INSERT INTO ADMIN_LOG(EVENT_TYPE,DESCRIPTION) VALUES ('UPDATE OWNERSHIP',:new.user_id||' now owns '||:new.QUANTITY||' of '||:new.SYMBOL);
+		INSERT INTO USER_LOG(USER_ID,EVENT_TYPE,DESCRIPTION) VALUES (:new.USER_ID,'UPDATE OWNERSHIP','Your owns of '||:new.SYMBOL||' changed from '||:old.QUANTITY||' to '||:new.QUANTITY);
+		INSERT INTO ADMIN_LOG(EVENT_TYPE,DESCRIPTION) VALUES ('UPDATE OWNERSHIP',:new.user_id||' owns of '||:new.SYMBOL||' changed from '||:old.QUANTITY||' to '||:new.QUANTITY);
 	END IF;
 END;
 /  
