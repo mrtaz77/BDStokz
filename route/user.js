@@ -164,5 +164,6 @@ router.post('/addContact',[
 
 router.use('/logout',require('./logout'));
 router.use('/userLogs',require('./log'));
+router.use('/broker',require('./broker'));
 
 module.exports = router;
