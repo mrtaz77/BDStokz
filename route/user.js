@@ -162,6 +162,31 @@ router.post('/addContact',[
     }
 });
 
+router.delete('/deleteAccount',[
+    body('userId').notEmpty().withMessage('userId is required'),
+    body('password').notEmpty().withMessage('password is required')
+],async(req, res,next) => {
+    try{
+        const result = await userController.deleteAccount(req.body);
+
+        if(result !== null){
+            const errors = await userController.getUserErrors();
+            res.status(400).json({ message: 'Account deletion unsuccessful',err:errors});
+        }
+
+        else {
+            res.status(200).json({ message: 'Account deleted successfully' });
+        }
+        
+
+    }catch (error) {
+        // Handle errors here
+        console.error('Error:', error);
+        res.status(500).json({ error: 'An error occurred' }); // Send an appropriate error response
+        next(error);
+    }
+});
+
 router.use('/logout',require('./logout'));
 router.use('/userLogs',require('./log'));
 router.use('/broker',require('./broker'));

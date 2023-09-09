@@ -919,11 +919,11 @@ const deleteAccount = async (payload) => {
             userId: userId
         }
 
-        await execute(sql,binds);
+        await db.execute(sql,binds);
 
         return await getUserById(userId);
 
-    }catch(error){
+    }catch(err){
         errors.push(`Found ${err.message} while deleting account of ${payload.userId}...`);
         return 0;
     }
