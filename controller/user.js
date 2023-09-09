@@ -28,8 +28,8 @@ const getPwdHash = async (pwd) => {
         const hash = await db.execute(sql, binds);
         // console.log(hash);
         // console.log(hash.outBinds.pwdHash);
-        return hash.outBinds.pwdHash;}
-    catch(err){
+        return hash.outBinds.pwdHash;
+    }catch(err){
         errors.push(err);
     }
 }
@@ -65,7 +65,13 @@ const getUserByName = async (payload) => {
     const name = payload.name;
     console.log(`Fetching ${name}...`);
     const sql = `
-    SELECT USER_ID,NAME,EMAIL,"TYPE",(STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,ZIP
+    SELECT 
+        USER_ID,
+        NAME,
+        EMAIL,
+        "TYPE",
+        (STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,
+        ZIP
     FROM "USER"
     WHERE NAME = :name 
     `;
@@ -158,6 +164,8 @@ const createUser = async (payload) => {
         const resultByName  = await getUserByName(payload);
         const resultByEmail = await getUserByEmail(payload);
 
+        errors.length = 0 ;
+
         if(resultByName != null){
             errors.push(`Username already in use...`);
         }
@@ -213,8 +221,6 @@ const createUser = async (payload) => {
                     await createCorp(payload);
                     break;
             }
-
-            
             const result = await getUserByName(payload);
             return result;
         }
@@ -226,6 +232,7 @@ const createUser = async (payload) => {
 }
 
 const chkAccountOfCustomer = async (accountNo) => {
+    errors.length = 0;
     const sql = `
         SELECT 
             ACCOUNT_NO
@@ -276,6 +283,7 @@ const chkLicenseOfBroker = async (licenseNo) => {
 }
 
 const chkRegOfCorp = async (corpRegNo) => {
+    errors.length = 0;
     const sql = `
         SELECT 
             CORP_REG_NO
@@ -307,6 +315,7 @@ async function createCustomer (payload) {
     try{
         if(payload.refererName !== null){
             const referer = await getUserByName({name:payload.refererName}) ;
+            errors.length = 0;
             if(referer === null){
                 errors.push(`Customer ${payload.refererName} not registered`);
                 return;
@@ -322,6 +331,7 @@ async function createCustomer (payload) {
             errors.push(`Account already in use`);
             return;
         }
+        errors.length = 0;
         const pwdHash = await getPwdHash(payload.pwd);
 
         const insertPlSql = `
@@ -375,10 +385,12 @@ async function createCustomer (payload) {
 async function createBroker (payload) {
     console.log(`Creating ${payload} broker `);
     try{
+        errors.length = 0;
         if(await chkLicenseOfBroker(payload.licenseNo) != null ){ 
             errors.push(`License ${payload.licenseNo} already exists`);
             return;
         }
+        errors.length = 0;
 
         const pwdHash = await getPwdHash(payload.pwd);
 
@@ -430,10 +442,12 @@ async function createBroker (payload) {
 
 async function createCorp (payload) {
     try{
+        errors.length = 0;
         if(await chkRegOfCorp(payload.corpRegNo) !== null){
             errors.push(`Reg no ${payload.corpRegNo} already exists`);
             return;
         }
+        errors.length = 0;
 
         if(payload.sector == null){
             errors.push(`Corporation sector must be specified`);
@@ -654,34 +668,29 @@ const updateProfile = async (payload)=>{
         const field = payload.field;
         const newValue = payload.newValue;
 
-        const user = await getUserById(userId);
-        
-
         let sql;
 
         if(newValue === null){
             errors.push(`New value cannot be null`);
         }
 
-
-        if(user == null){
-            errors.push(`User does not exist.`);
-        }
+        const user = await getUserById(userId);
 
         if(fields.user.includes(field)){
-
             if(field == 'NAME'){
                 const resultByName  = await getUserByName({name:newValue});
+                errors.length = 0;
                 if(resultByName != null){
                     errors.push("User name already exists...");
                 }
             }
             else if(field == 'EMAIL'){
                 const resultByEmail = await getUserByEmail({email:newValue});
+                errors.length = 0;
                 if(resultByEmail != null){
                     errors.push("Email already exists...");
                 }
-                if(!validations.validateEmail(newValue)){
+                else if(!validations.validateEmail(newValue)){
                     errors.push("Email invalid");
                 }
             }
@@ -695,6 +704,7 @@ const updateProfile = async (payload)=>{
         }else if(fields.customer.includes(field)){
             if(field == `ACCOUNT_NO`){
                 const result = await chkAccountOfCustomer(newValue);
+                errors.length = 0;
                 if(result != null){
                     errors.push(`Account already exists...`);
                 }
@@ -729,6 +739,7 @@ const updateProfile = async (payload)=>{
         }else if(fields.broker.includes(field)){
             if(field == `LICENSE_NO`){
                 const result = await chkLicenseOfBroker(newValue);
+                errors.length = 0;
                 if(result != null){
                     errors.push(`License already in use`);
                 }
@@ -741,6 +752,7 @@ const updateProfile = async (payload)=>{
         }else if(fields.corporation.includes(field)){
             if(field == `CORP_REG_NO`){
                 const result  = await chkRegOfCorp(newValue);
+                errors.length = 0;
                 if(result != null){
                     errors.push(`Corporation already in use`);
                 }
@@ -748,6 +760,7 @@ const updateProfile = async (payload)=>{
             if(field == `SYMBOL`){
                 const stock = await getAllStockDataBySymbol({symbol:newValue});
                 console.log('stock: ', stock);
+                errors.length = 0;
                 
                 if(stock != null){
                     errors.push(`Symbol already in use`);
@@ -821,6 +834,8 @@ const addContact = async (payload)=> {
             errors.push(`Contact already in use`);
             return null;
         }
+
+        errors.length = 0;
 
         const sql = `
         INSERT INTO USER_CONTACT(USER_ID, CONTACT)
