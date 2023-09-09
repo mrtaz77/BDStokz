@@ -6,7 +6,7 @@ const {
     getLogErrors,
 } = require('../controller/log');
 
-router.get('/adminLogs', async (req, res) => {
+router.get('/admin', async (req, res) => {
     try{
         const {userId} = req.query;
 
@@ -26,7 +26,7 @@ router.get('/adminLogs', async (req, res) => {
     }
 });
 
-router.get('/userLogs', async (req, res) => {
+router.get('/user', async (req, res) => {
     try{
         const {userId} = req.query;
 
