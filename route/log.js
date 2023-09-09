@@ -30,7 +30,7 @@ router.get('/userLogs', async (req, res) => {
     try{
         const {userId} = req.query;
 
-        const logs = await getAllAdminLogs(userId);
+        const logs = await getUserLogsById(userId);
 
         if (!logs || logs.length === 0) {
             // If no logs are found, send a 400 response
