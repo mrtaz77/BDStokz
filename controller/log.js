@@ -53,7 +53,7 @@ const getUserLogsById = async (userId) => {
         return result.rows;
 
     }catch(error){
-        errors.push(`Found ${err.message} while getting admin logs...`);
+        errors.push(`Found ${err.message} while getting user logs...`);
         return null;
     }
 }
