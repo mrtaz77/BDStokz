@@ -21,7 +21,7 @@ router.get('/adminLogs', async (req, res) => {
         res.status(200).json({message: 'Obtained logs',logs: logs});
 
     }catch(err){
-        console.error('Error:', error);
+        console.error('Error:', err);
         res.status(500).json({ error: 'An error occurred' }); // Send an appropriate error response
     }
 });
@@ -41,7 +41,7 @@ router.get('/userLogs', async (req, res) => {
         res.status(200).json({message: 'Obtained logs',logs: logs});
 
     }catch(err){
-        console.error('Error:', error);
+        console.error('Error:', err);
         res.status(500).json({ error: 'An error occurred' }); // Send an appropriate error response
     }
 });
