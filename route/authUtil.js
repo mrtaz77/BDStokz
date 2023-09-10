@@ -12,7 +12,7 @@ const loginUser = async (res,payload) => {
         httpOnly: true
     }
 
-    console.log(token);
+    // console.log(token);
     res.cookie('userSessionToken', token, options);
 }
 
