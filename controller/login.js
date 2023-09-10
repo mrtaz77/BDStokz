@@ -77,7 +77,7 @@ const getUserLoginInfoByName = async (name) => {
                 REFERER_ID,
                 REFER_COUNT,
                 BROKER_ID
-            FROM "USER" NATURAL JOIN CUSTOMER
+            FROM "USER" JOIN CUSTOMER USING (USER_ID)
             WHERE NAME = :name
             AND "USER".IS_DELETED = 'F' 
             `;
@@ -94,7 +94,7 @@ const getUserLoginInfoByName = async (name) => {
                 LICENSE_NO,
                 COMMISSION_PCT,
                 EXPERTISE
-            FROM "USER" NATURAL JOIN BROKER
+            FROM "USER" JOIN BROKER USING (USER_ID)
             WHERE NAME = :name
             AND "USER".IS_DELETED = 'F' 
             `;

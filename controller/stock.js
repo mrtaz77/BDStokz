@@ -95,6 +95,7 @@ const getAllStockDataBySymbol = async (payload) => {
     LEFT JOIN "USER" U ON S.CORP_ID = U.USER_ID
     WHERE
         S.SYMBOL = :symbol
+        AND S.BLOCKED = 'F'
     GROUP BY 
         S.SYMBOL,
         U.NAME,
@@ -187,6 +188,7 @@ const getTopLoserGainer = async(payload) => {
                 AND TRUNC( O3.TRANSACTION_TIME ) = TRUNC( O1.TRANSACTION_TIME ) 
             ) 
         ) C ON S.SYMBOL = C.SYMBOL 
+        WHERE S.BLOCKED = 'F'
 		GROUP BY 
 			S.SYMBOL, S.LTP , S.CORP_ID
     ORDER BY
