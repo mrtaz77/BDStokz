@@ -118,7 +118,7 @@ const insertAdminLog = async (payload) => {
         return `SUCCESS`;
 
     }catch(error){
-        errors.push(`Found ${error.message} while getting user logs...`);
+        errors.push(`Found ${error.message} while getting admin logs...`);
         return `FAILED`;
     }
 }

@@ -158,7 +158,7 @@ const chkCreds = async (name,password) => {
 
         const returnedValue = result.outBinds.result;
 
-        errors.push(`Got ${returnedValue} in login `);
+        // errors.push(`Got ${returnedValue} in login `);
         return returnedValue;
     }catch(err){
         errors.push(`Found error in credentials...`);
