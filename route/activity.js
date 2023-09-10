@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
         }
 
         // Respond with a 200 OK status and the activities
-        res.status(200).json({ activities, message: 'Upcoming activities retrieved successfully' });
+        res.status(200).json(activities);
     } catch (error) {
         // Handle any errors that occur during the request
         res.status(500).json({ error: 'An error occurred while fetching activities' });
