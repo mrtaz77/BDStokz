@@ -2,6 +2,31 @@ const router = require('express-promise-router')();
 const adminController = require('../controller/admin');
 const orderController = require('../controller/order');
 const { body } = require('express-validator');
+const {
+    getAllAdminLogs,
+    getLogErrors,
+} = require('../controller/log');
+
+router.get('/log', async (req, res) => {
+    try{
+        console.log(req.query);
+        const {adminId} = req.query;
+
+        const logs = await getAllAdminLogs(adminId);
+
+        if (!logs || logs.length === 0) {
+            // If no logs are found, send a 400 response
+            const errors = await getLogErrors();
+            return res.status(400).json({ message: 'errors',err:errors});
+        }
+
+        res.status(200).json({message: 'Obtained logs',logs: logs});
+
+    }catch(err){
+        console.error('Error:', err);
+        res.status(500).json({ error: 'An error occurred' }); // Send an appropriate error response
+    }
+});
 
 router.patch('/updateStock',[
     body('adminId').notEmpty().withMessage('adminId is required'),
@@ -172,7 +197,6 @@ router.delete('/deleteOrder',[
 
 });
 
-router.use('/log',require('./log'));
 
 
 

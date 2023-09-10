@@ -1,12 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 // function to login user into a session
-const loginUser = async (res,name) => {
+const loginUser = async (res,payload) => {
     // create token
-    const payload = {
-        name: name
-    }
-
+    
     let token = jwt.sign(payload, process.env.JWT_SECRET);
 
     // set token in cookie
@@ -14,6 +11,8 @@ const loginUser = async (res,name) => {
         maxAge: 9000000, 
         httpOnly: true
     }
+
+    console.log(token);
     res.cookie('userSessionToken', token, options);
 }
 

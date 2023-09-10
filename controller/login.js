@@ -1,6 +1,7 @@
 const db = require('../config/database.js');
 const oracledb = require('oracledb'); 
 
+
 let errors = [];
 
 async function getLoginErrors(){
@@ -60,7 +61,7 @@ const getUserLoginInfoByName = async (name) => {
                 FUNDS
             FROM "USER" JOIN ADMIN ON USER_ID = ADMIN_ID
             WHERE NAME = :name 
-            AND IS_DELETED = 'F'   
+            AND "USER".IS_DELETED = 'F'   
             `;
             break;
         case 'Customer':
@@ -78,7 +79,7 @@ const getUserLoginInfoByName = async (name) => {
                 BROKER_ID
             FROM "USER" NATURAL JOIN CUSTOMER
             WHERE NAME = :name
-            AND IS_DELETED = 'F'
+            AND "USER".IS_DELETED = 'F' 
             `;
             break;
         case 'Broker':
@@ -95,7 +96,7 @@ const getUserLoginInfoByName = async (name) => {
                 EXPERTISE
             FROM "USER" NATURAL JOIN BROKER
             WHERE NAME = :name
-            AND IS_DELETED = 'F'
+            AND "USER".IS_DELETED = 'F' 
             `;
             break;
         case 'Corp':
@@ -111,7 +112,7 @@ const getUserLoginInfoByName = async (name) => {
                 SECTOR
             FROM "USER" NATURAL JOIN CORPORATION
             WHERE NAME = :name
-            AND IS_DELETED = 'F'
+            AND "USER".IS_DELETED = 'F' 
             `;
             break;
         default:
