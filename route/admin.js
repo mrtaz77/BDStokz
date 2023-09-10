@@ -71,19 +71,20 @@ router.patch('/block/:set',[
 router.delete('/deleteUser',[
     body('userId').notEmpty().withMessage('name to be deleted is required'),
     body('deleterId').notEmpty().withMessage('deleterId is required'),
-    body('pwd').notEmpty().withMessage('pwd is required for deleting user')
+    body('password').notEmpty().withMessage('pwd is required for deleting user')
 ],async (req,res,next)=>{
     try{
         const result = await adminController.deleteUser(req.body);
         if(result === null){
+            
             return res.status(200).json({ message: 'User deleted successfully'});
         }
         else{
-            return res.status(400).json({ message: 'Deletion unsuccessfull' });
+            const errors = await adminController.getAdminErrors();
+            return res.status(400).json({ message: 'Deletion unsuccessfull',errors: errors });
         }
-    }catch (err) {
-        console.log(err);
-        next(err);
+    }catch (error) {
+        res.status(500).json({ error: `An error occurred ${error}` }); // Send an appropriate error response
     }
 });
 

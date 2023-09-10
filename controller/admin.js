@@ -267,12 +267,12 @@ const addAdmin = async (payload) => {
             return null;
         }
         
-        const pwd = await userController.getPwdHash('bdStockz@dummy');
+        const password = await userController.getpasswordHash('bdStockz@dummy');
 
         const insertPlsql = `
         BEGIN 
-        INSERT INTO "USER" (NAME,PWD,EMAIL,"TYPE",STREET_NO,STREET_NAME,CITY,COUNTRY,ZIP)
-        values (:name,:pwd,:email,'Admin',20,'Mirpur','Dhaka','Bangladesh',:zip);
+        INSERT INTO "USER" (NAME,password,EMAIL,"TYPE",STREET_NO,STREET_NAME,CITY,COUNTRY,ZIP)
+        values (:name,:password,:email,'Admin',20,'Mirpur','Dhaka','Bangladesh',:zip);
 
         INSERT INTO ADMIN(ADMIN_ID,ADDER_ID,EMPLOYEE_ID) values(
             (SELECT USER_ID FROM "USER" WHERE NAME = :name),
@@ -297,7 +297,7 @@ const addAdmin = async (payload) => {
 
         const binds = {
             name: empName,
-            pwd: pwd,
+            password: password,
             email : empDetails[0].EMAIL,
             zip : empDetails[0].ZIP_CODE === null ? 1200 : empDetails[0].ZIP_CODE,
             adderId : adderId
@@ -322,7 +322,7 @@ const deleteUser = async (payload) => {
         errors.length = 0;
         const userId = payload.userId;
         const adminId = payload.deleterId;
-        const pwd = payload.pwd;
+        const password = payload.password;
 
 
         const user = await userController.getUserById(userId);
@@ -344,7 +344,7 @@ const deleteUser = async (payload) => {
             return 0;
         }
 
-        const pass = await chkCreds(admin.NAME,pwd);
+        const pass = await chkCreds(admin.NAME,password);
 
         if(pass !== 1337){
             errors.push(`Incorrect password`);
