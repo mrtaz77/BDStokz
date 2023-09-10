@@ -1,6 +1,9 @@
 const {execute} = require('../config/database');
 const oracledb = require('oracledb');
-const {getAllStockDataBySymbol} = require('./stock');
+const {
+    getAllStockDataBySymbol,
+    getBlockedStatusBySymbol
+} = require('./stock');
 const userController = require('./user');
 const {chkCreds} = require('./login');
 
@@ -102,14 +105,14 @@ const updateStock = async (payload) => {
 }
 
 const block = async (set,payload) => {
-    const symbol = payload.symbol;
     try{
         errors.length = 0;
-        const result = await getAllStockDataBySymbol(payload);
+        const symbol = payload.symbol;
+        const result = await getBlockedStatusBySymbol(payload.symbol);
         if(result == null){
             errors.push(`No stock data found`);
             return null;
-        }else if(result.BLOCKED == set){
+        }else if(result === set){
             errors.push(`${symbol} already ${set}`);
             return result;
         }
@@ -127,10 +130,10 @@ const block = async (set,payload) => {
 
         await execute(sql, binds);
 
-        return await getAllStockDataBySymbol(payload);
+        return await getBlockedStatusBySymbol(payload.symbol);
     }catch(err){
-        errors.push(`Found ${err.message} while setting ${symbol} to ${set}...`);
-        throw err;
+        errors.push(`Found ${err.message} while setting ${payload.symbol} to ${set}...`);
+        return await getBlockedStatusBySymbol(payload.symbol);
     }
 }
 

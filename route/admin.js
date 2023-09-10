@@ -57,8 +57,11 @@ router.patch('/block/:set',[
     console.log(`Requesting block ${req.body.symbol} and ${req.params.set}`);
     try{
         const result = await adminController.block(req.params.set, req.body);
-        if(result !== null){
-            return res.status(400).json({ message: `${req.body.symbol} is not in db` });
+        console.log(result);
+
+        if(result !== req.params.set){
+            const errors = await adminController.getAdminErrors();
+            return res.status(400).json({ message: `${req.body.symbol} status not updated`,errors: errors });
         }else{
             return res.status(200).json({message: `${req.body.symbol} status set successfully`});
         }

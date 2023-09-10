@@ -259,11 +259,32 @@ const regStock = async (payload) => {
     }
 }
 
+const getBlockedStatusBySymbol = async (symbol) => {
+    try{
+        const sql = `
+        SELECT BLOCKED 
+        FROM STOCK WHERE SYMBOL = :symbol
+        `;
+
+        const bind = {
+            symbol: symbol
+        };
+
+        const result = await db.execute(sql, bind);
+
+        return result.rows[0].BLOCKED;
+
+    }catch(error){
+        errors.push(`Found ${error.message} while getting dsex`);
+        return null;
+    }
+}
 
 module.exports = {
     getAllStockSymbol,
     getAllStockDataBySymbol,
     getTopLoserGainer,
     getAnnualAvgPrice,
-    getStockErrors
+    getStockErrors,
+    getBlockedStatusBySymbol
 };
