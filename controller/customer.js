@@ -35,7 +35,6 @@ const getPortfolioInfoByID = async(id) =>{
         if(type == 'Customer'){
             const sql = `
             SELECT 
-                (SELECT NAME FROM "USER"  WHERE "USER".USER_ID = :id AND IS_DELETED = 'F') NAME,
                 SECTOR,
                 BUY_AMOUNT,
                 SELL_AMOUNT
