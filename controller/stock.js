@@ -7,6 +7,7 @@ async function getStockErrors(){
     return errors;
 }
 
+
 const getAllStockSymbol = async (payload) => {
     errors.length = 0;
     const sql = `
@@ -239,20 +240,6 @@ const getAnnualAvgPrice = async () => {
             return null;
         }
         return jsonObject;
-    }catch(err){
-        errors.push(`Found ${err.message} while getting dsex`);
-        return null;
-    }
-}
-
-const regStock = async (payload) => {
-    try{
-        errors.length = 0;
-        const symbol = payload.symbol;
-        const stock = await getAllStockDataBySymbol({symbol: symbol});
-
-        
-
     }catch(err){
         errors.push(`Found ${err.message} while getting dsex`);
         return null;

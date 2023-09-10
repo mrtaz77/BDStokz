@@ -219,6 +219,6 @@ router.get('/log', async (req, res) => {
 
 router.use('/logout',require('./logout'));
 router.use('/broker',require('./broker'));
-// router.use('/corp',require('./corp'));
+router.use('/corp',require('./corp'));
 
 module.exports = router;
