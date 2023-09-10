@@ -69,7 +69,7 @@ router.patch('/block/:set',[
 });
 
 router.delete('/deleteUser',[
-    body('name').notEmpty().withMessage('name to be deleted is required'),
+    body('userId').notEmpty().withMessage('name to be deleted is required'),
     body('deleterId').notEmpty().withMessage('deleterId is required'),
     body('pwd').notEmpty().withMessage('pwd is required for deleting user')
 ],async (req,res,next)=>{

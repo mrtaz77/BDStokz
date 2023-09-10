@@ -553,6 +553,7 @@ const getProfileByName = async (name) => {
                 FUNDS
             FROM "USER" JOIN ADMIN ON USER_ID = ADMIN_ID 
             WHERE NAME = :name 
+            AND "USER".IS_DELETED = 'F'
             `;
             break;
         case 'Customer':
@@ -573,6 +574,7 @@ const getProfileByName = async (name) => {
                 LEFT OUTER JOIN CUSTOMER C ON U.USER_ID = C.USER_ID 
             WHERE
                 U.NAME = :name 
+                AND "USER".IS_DELETED = 'F'
             `;
             break;
         case 'Broker':
@@ -590,6 +592,7 @@ const getProfileByName = async (name) => {
                 NVL((SELECT COUNT(*) FROM CUSTOMER WHERE BROKER_ID = USER_ID),0) NUM_OF_CUSTOMERS
             FROM "USER" NATURAL JOIN BROKER
             WHERE NAME = :name
+            AND "USER".IS_DELETED = 'F'
             `;
             break;
         case 'Corp':
@@ -610,6 +613,7 @@ const getProfileByName = async (name) => {
                 LEFT OUTER JOIN STOCK ON CORPORATION.CORP_ID = STOCK.CORP_ID
             WHERE
                 NAME = :name
+                AND "USER".IS_DELETED = 'F'
             `;
             break;
         default:

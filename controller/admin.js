@@ -320,12 +320,9 @@ const addAdmin = async (payload) => {
 const deleteUser = async (payload) => {
     try{
         errors.length = 0;
-        let userId = await userController.getUserByName(payload);
-        userId = userId.USER_ID;
+        const userId = payload.userId;
         const adminId = payload.deleterId;
         const pwd = payload.pwd;
-
-        console.log(userId);
 
 
         const user = await userController.getUserById(userId);
