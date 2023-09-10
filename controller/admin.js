@@ -267,11 +267,11 @@ const addAdmin = async (payload) => {
             return null;
         }
         
-        const password = await userController.getpasswordHash('bdStockz@dummy');
+        const password = await userController.getPwdHash('bdStockz@dummy');
 
         const insertPlsql = `
         BEGIN 
-        INSERT INTO "USER" (NAME,password,EMAIL,"TYPE",STREET_NO,STREET_NAME,CITY,COUNTRY,ZIP)
+        INSERT INTO "USER" (NAME,PWD,EMAIL,"TYPE",STREET_NO,STREET_NAME,CITY,COUNTRY,ZIP)
         values (:name,:password,:email,'Admin',20,'Mirpur','Dhaka','Bangladesh',:zip);
 
         INSERT INTO ADMIN(ADMIN_ID,ADDER_ID,EMPLOYEE_ID) values(

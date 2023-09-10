@@ -770,12 +770,24 @@ const updateProfile = async (payload)=>{
                     errors.push(`Symbol already in use`);
                 }
             }
+            if(field == `PRICE`){
+                if(newValue <= 0){
+                    errors.push(`Price must be positive`);
+                }
+            }
 
             switch(field){
                 case `SYMBOL`:
                     sql = `
                     UPDATE STOCK 
                     SET SYMBOL = :newValue
+                    WHERE CORP_ID = :userId
+                    `;
+                    break;
+                case `PRICE`:
+                    sql = `
+                    UPDATE STOCK 
+                    SET PRICE = :newValue
                     WHERE CORP_ID = :userId
                     `;
                     break;
