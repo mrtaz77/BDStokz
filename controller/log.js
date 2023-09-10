@@ -31,7 +31,7 @@ const getAllAdminLogs = async (userId) => {
         return result.rows;
 
     }catch(error){
-        errors.push(`Found ${err.message} while getting admin logs...`);
+        errors.push(`Found ${error.message} while getting admin logs...`);
         return null;
     }
 }
@@ -60,7 +60,7 @@ const getUserLogsById = async (userId) => {
         return result.rows;
 
     }catch(error){
-        errors.push(`Found ${err.message} while getting user logs...`);
+        errors.push(`Found ${error.message} while getting user logs...`);
         return null;
     }
 }
@@ -90,7 +90,7 @@ const insertUserLog = async (payload) => {
         return `SUCCESS`;
 
     }catch(error){
-        errors.push(`Found ${err.message} while getting user logs...`);
+        errors.push(`Found ${error.message} while getting user logs...`);
         return `FAILED`;
     }
 }
@@ -118,7 +118,7 @@ const insertAdminLog = async (payload) => {
         return `SUCCESS`;
 
     }catch(error){
-        errors.push(`Found ${err.message} while getting user logs...`);
+        errors.push(`Found ${error.message} while getting user logs...`);
         return `FAILED`;
     }
 }
