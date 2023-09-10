@@ -1,8 +1,12 @@
 const router = require('express-promise-router')();
-//const custController =  require('../controller/customer');
+const custController =  require('../controller/customer');
 const userController = require('../controller/user');
 const { body } = require('express-validator');
 
+const {
+    getUserLogsById,
+    getLogErrors,
+} = require('../controller/log');
 
 router.get('/',(req, res) => {
     const type = req.params.TYPE;
@@ -88,7 +92,7 @@ router.get('/contact/:name', async (req, res) => {
             // User not found
             res.status(404).json({ error: 'User not found' });
         } else {
-            res.json(userContacts);
+            res.status(200).json(userContacts);
         }
     } catch (error) {
         console.error(error);
@@ -163,7 +167,56 @@ router.post('/addContact',[
         next(error);
     }
 });
+router.delete('/deleteAccount',[
+    body('userId').notEmpty().withMessage('userId is required'),
+    body('password').notEmpty().withMessage('password is required')
+],async(req, res,next) => {
+    try{
+        const result = await userController.deleteAccount(req.body);
+
+        if(result !== null){
+            const errors = await userController.getErrors();
+            res.status(400).json({ message: 'Account deletion unsuccessful',errors:errors});
+        }
+
+        else {
+            res.status(200).json({ message: 'Account deleted successfully' });
+        }
+        
+
+    }catch (error) {
+        // Handle errors here
+        console.error('Error:', error);
+        res.status(500).json({ error: 'An error occurred' }); // Send an appropriate error response
+        next(error);
+    }
+});
+
+
+router.get('/log', async (req, res) => {
+    try{
+        const {userId} = req.query;
+
+        const logs = await getUserLogsById(userId);
+
+        if (!logs || logs.length === 0) {
+            // If no logs are found, send a 400 response
+            const errors = await getLogErrors();
+            return res.status(400).json({ message: 'errors',err:errors});
+        }
+
+        res.status(200).json({message: 'Obtained logs',logs: logs});
+
+    }catch(err){
+        console.error('Error:', err);
+        res.status(500).json({ error: 'An error occurred' }); // Send an appropriate error response
+    }
+});
+
+
+
 
 router.use('/logout',require('./logout'));
+router.use('/broker',require('./broker'));
 
 module.exports = router;

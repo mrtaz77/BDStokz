@@ -150,19 +150,10 @@
                             </div>
                         </div>
                     </a>
-                    <script>
-                        const userDataString = sessionStorage.getItem('userData');
-                            if (userDataString) {
-                                const userData = JSON.parse(userDataString);
-                                document.getElementById("name").textContent = userData.username;
-                                document.getElementById("usrtype").textContent = userData.userType;
-                            }
-                    </script>
+                    
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="profile.html"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Profile</a>
-                        <a class="dropdown-item" href="profile.html"><i class="ti ti-settings font-16 me-1 align-text-bottom"></i> Settings</a>
-                        <div class="dropdown-divider mb-0"></div>
-                        <a class="dropdown-item" href="login.html"><i class="ti ti-power font-16 me-1 align-text-bottom"></i> Logout</a>
+                        <a class="dropdown-item" id="mainProfileUser"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Profile</a>
+                        <a class="dropdown-item" href="#" id="logoutbutton"><i class="ti ti-power font-16 me-1 align-text-bottom"></i> Logout</a>
                     </div>
                 </li>
                 <!--end topbar-profile-->
@@ -200,8 +191,8 @@
                         <!--end nav-item-->
 
                         <li class="nav-item  parent-menu-item">
-                            <a class="nav-link" href="../portfolio/portfolio.html" id="navbarMarket">
-                                    <span><i class="ti ti-users menu-icon"></i>Users</span>
+                            <a class="nav-link" href="../portfolio/portfolio.html" id="userIconAndText">
+                                    <span><i class="ti ti-users menu-icon"></i><text id="toggleUserText">Users</text></span>
                                 </a>
                         </li>
                         <!--end nav-item-->
@@ -210,10 +201,20 @@
                         <!--end nav-item-->
 
                         <li class="nav-item  parent-menu-item">
-                            <a class="nav-link" href="../orders/orders.html" id="navbarMarket">
-                                    <span class="position-relative"><i class="ti ti-shopping-cart menu-icon"></i>Orders <small class="order-badge pending"></small></span>                            
+                            <a class="nav-link" id="userOrderHyperlink">
+                                    <span class="position-relative"><i class="ti ti-shopping-cart menu-icon"></i>My Orders <small class="order-badge pending"></small></span>                            
                                 </a>
                         </li>
+
+<script>
+                        const userDataString = sessionStorage.getItem('userData');
+                            if (userDataString) {
+                                const userData = JSON.parse(userDataString);
+                                document.getElementById("name").textContent = userData.username;
+                                document.getElementById("usrtype").textContent = userData.userType;
+                                document.getElementById("userOrderHyperlink").href = "../orders/orders.html?userId="+userData.userId+"&action=grid&del=grid";
+                            }
+                    </script>
                         <!--end nav-item-->
 
                         <!-- <li class="nav-item  parent-menu-item">
@@ -256,7 +257,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="../explore/explore.html" role="tab" aria-selected="true">Explore</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" id="investmentsHyperlink">
                                     <a class="nav-link" href="../investment/investment.html" role="tab" aria-selected="false">Investment</a>
                                 </li>
                                 <!-- <li class="nav-item">
@@ -437,46 +438,30 @@
                 <div class="modal-header">
                     <div>
                         <h6 class="modal-title m-0 mb-n1" id="BuyStocksLabel">Apple Inc</h6>
-                        <span class="font-10 d-block mb-1">nasdaq</span>
+                        <span class="font-10 d-block mb-1">dse</span>
                         <span class="border border-success px-1 rounded text-success">B</span>
+                        
                     </div>
                     <div>
-                        <h6 class="m-0 text-uppercase font-16 fw-bold">$147.95 <i class="ti ti-trending-down text-danger"></i></h6>
-                        <div class="d-inline-block font-10"><span class="text-danger">-110.60</span> <span class="text-danger">(30.52%)</span></div>
+                        <h6 class="m-0 text-uppercase font-16 fw-bold" id="buyStocksLtp"> 147.95 </h6><i class="ti" id="buyStocksIcon"></i>
+                        <div class="d-inline-block font-10"><span id="buyStocksChange">-110.60</span> <span id="buyStocksChangePercent">(30.52%)</span></div>
                         <div class="text-success">Live <span><i class="las la-dot-circle"></i></span></div>
+                        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                     </div>
                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
 
                 <div class="modal-body">
-                    <div class="form-check d-inline-block me-2">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                        <label class="form-check-label" for="flexRadioDefault1">
-                              Holding
-                            </label>
-                    </div>
-                    <div class="form-check mb-2 d-inline-block">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                        <label class="form-check-label" for="flexRadioDefault2">
-                              Trade
-                            </label>
-                    </div>
                     <form class="row gy-2 gx-3 align-items-end">
                         <div class="col-auto">
                             <label class="form-label" for="Quantity">Quantity</label>
-                            <input type="text" class="form-control form-control-sm" id="Quantity">
+                            <input type="text" class="form-control form-control-sm" id="BUYQuantity">
                         </div>
                         <div class="col-auto">
                             <label class="form-label" for="Price">Price</label>
-                            <input type="text" class="form-control form-control-sm" id="Price">
+                            <input type="text" class="form-control form-control-sm" id="BUYPrice">
                         </div>
                         <div class="col-auto">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="buy_limit">
-                                <label class="form-check-label" for="buy_limit">
-                                    Limit
-                                    </label>
-                            </div>
                         </div>
                     </form>
                     <div class="mt-3">
@@ -487,7 +472,7 @@
                             <form class="row gy-2 gx-3 align-items-center mt-1">
                                 <div class="col-auto">
                                     <label class="form-label" for="Trigger_Price">Trigger Price</label>
-                                    <input type="text" class="form-control form-control-sm" id="Trigger_Price">
+                                    <input type="text" class="form-control form-control-sm" id="stopPrice">
                                 </div>
                                 <div class="col-auto align-self-end">
                                     <div class="form-check">
@@ -502,23 +487,18 @@
                         <!--end collapse-->
                     </div>
                     <!--end /div-->
-                    <button class="btn btn-success w-100 my-3">BUY</button>
-                    <div class="row">
-                        <div class="col">
-                            <small class="text-muted d-block">Require Fund</small>
-                            <small>$00.00</small>
-                        </div>
-                        <!--end col-->
-                        <div class="col-auto">
-                            <small class="text-muted d-block">Available Fund</small>
-                            <small>$8545.00</small>
-                        </div>
-                        <!--end col-->
+                    <button class="btn btn-success w-100 my-3" id="buyButtonOriginal">BUY</button>
+                    <div id="BUYButtonOriginalErrbox">
+
                     </div>
                     <!--end row-->
                 </div>
                 <!--end modal-body-->
-
+                <div class="modal-footer">
+                    <div>
+                    <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
             <!--end modal-content-->
         </div>
@@ -532,46 +512,28 @@
                 <div class="modal-header">
                     <div>
                         <h6 class="modal-title m-0 mb-n1" id="SellStocksLabel">Apple Inc</h6>
-                        <span class="font-10 d-block mb-1">nasdaq</span>
+                        <span class="font-10 d-block mb-1">dse</span>
                         <span class="border border-danger px-1 rounded text-danger">S</span>
                     </div>
                     <div>
-                        <h6 class="m-0 text-uppercase font-16 fw-bold">$147.95 <i class="ti ti-trending-down text-danger"></i></h6>
-                        <div class="d-inline-block font-10"><span class="text-danger">-110.60</span> <span class="text-danger">(30.52%)</span></div>
+                        <h6 class="m-0 text-uppercase font-16 fw-bold" id="sellStocksLtp"> 147.95 </h6><i class="ti" id="sellStocksIcon"></i>
+                        <div class="d-inline-block font-10"><span id="sellStocksChange">-110.60</span> <span id="sellStocksChangePercent">(30.52%)</span></div>
                         <div class="text-success">Live <span><i class="las la-dot-circle"></i></span></div>
                     </div>
                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
 
                 <div class="modal-body">
-                    <div class="form-check d-inline-block me-2">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="sell_Limit">
-                        <label class="form-check-label" for="sell_Limit">
-                              Holding
-                            </label>
-                    </div>
-                    <div class="form-check mb-2 d-inline-block">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="sell_SL" checked>
-                        <label class="form-check-label" for="sell_SL">
-                              Trade
-                            </label>
-                    </div>
                     <form class="row gy-2 gx-3 align-items-end">
                         <div class="col-auto">
                             <label class="form-label" for="Quantity">Quantity</label>
-                            <input type="text" class="form-control form-control-sm" id="Quantity">
+                            <input type="text" class="form-control form-control-sm" id="SELLQuantity">
                         </div>
                         <div class="col-auto">
                             <label class="form-label" for="Price">Price</label>
-                            <input type="text" class="form-control form-control-sm" id="Price">
+                            <input type="text" class="form-control form-control-sm" id="SELLPrice">
                         </div>
                         <div class="col-auto">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="autoSizingCheck">
-                                <label class="form-check-label" for="autoSizingCheck">
-                                    Limit
-                                    </label>
-                            </div>
                         </div>
                     </form>
                     <div class="mt-3">
@@ -597,23 +559,16 @@
                         <!--end collapse-->
                     </div>
                     <!--end /div-->
-                    <button class="btn btn-danger w-100 my-3">SELL</button>
-                    <div class="row">
-                        <div class="col">
-                            <small class="text-muted d-block">Require Fund</small>
-                            <small>$00.00</small>
-                        </div>
-                        <!--end col-->
-                        <div class="col-auto">
-                            <small class="text-muted d-block">Available Fund</small>
-                            <small>$8545.00</small>
-                        </div>
-                        <!--end col-->
+                    <button class="btn btn-danger w-100 my-3" id="sellButtonOriginal">SELL</button>
+                    <div id="SELLButtonOriginalErrbox">
+
                     </div>
                     <!--end row-->
                 </div>
                 <!--end modal-body-->
-
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
             <!--end modal-content-->
         </div>
@@ -644,11 +599,11 @@
                                 </li>
                                 <!--end /li-->
                                 <li class="list-inline-item align-self-center mx-0">
-                                    <a href="javascript: void(0);"><i class="ti ti-chart-candle email-action-icons-item"></i></a>
+                                    <a id="ordersFromStockDetails"><i class="ti ti-shopping-cart menu-icon"></i></a>
                                 </li>
                                 <!--end /li-->
                                 <li class="list-inline-item align-self-center mx-0">
-                                    <a href="javascript: void(0);"><i class="ti ti-trash email-action-icons-item"></i></a>
+                                    <a href="javascript: void(0);"><i class="ti ti-trash email-action-icons-item" id="blockStockButton2"></i></a>
                                 </li>
                                 <!--end /li-->
                             </ul>
@@ -741,6 +696,7 @@
             return new bootstrap.Popover(popoverTriggerEl)
         });
     </script>
+    <script src="../commonScripts/index.js"></script>
     <script src="profileListManager.js"></script>
 </body>
 <!--end body-->

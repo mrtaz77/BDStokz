@@ -1,15 +1,10 @@
-
-
-
-
-
 async function fun(){
     const response = await fetch('http://localhost:3000/stock/dsex'); // Change the URL to your backend API endpoint
     const dataString = await response.json();
 //    let arr = [];
     let arr2 = [];
-    const inputArray = JSON.parse(dataString);
-            inputArray.forEach(item => {
+    //const inputArray = JSON.parse(dataString);
+            dataString.forEach(item => {
                 arr2.push([item.x,item.y]);
             });
 //    const parseStringToList = async (inputString) => {

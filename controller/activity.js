@@ -1,6 +1,13 @@
 const db = require('../config/database.js');
 
+let errors = [];
+
+async function getActivityErrors(){
+    return errors;
+}
+
 const getActivityById = async (activityId) => {
+    errors.length = 0;
     try{
         const sql = `
         SELECT
@@ -31,13 +38,14 @@ const getActivityById = async (activityId) => {
 }
 
 const getUpcomingActivities = async (payload) => {
+    errors.length = 0;
     console.log(payload); 
 
     const sql = `
     SELECT
         NAME ORGANIZER,
         TO_CHAR( "DATE", 'DD Month YYYY' ) EVENT_DATE,
-        TIME_FORMAT ( START_TIME ) START_TIME,
+        TIME_FORMAT ( START_TIME ) "START_TIME",
         DURATION_FORMAT ( "DURATION(min)" ) DURATION,
         ACTIVITY."TYPE",
         VENUE,
@@ -48,8 +56,8 @@ const getUpcomingActivities = async (payload) => {
         ACTIVITY
         JOIN "USER" ON CORP_ID = USER_ID 
     WHERE
-        "DATE" > SYSDATE
-    ORDER BY "DATE"
+    START_TIME > CURRENT_TIMESTAMP
+    ORDER BY "DATE",START_TIME
     `;
 
     const binds = {}
@@ -70,5 +78,6 @@ const getUpcomingActivities = async (payload) => {
 
 module.exports = {
     getUpcomingActivities,
-    getActivityById
+    getActivityById,
+    getActivityErrors
 };

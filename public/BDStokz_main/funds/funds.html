@@ -157,19 +157,10 @@
                             </div>
                         </div>
                     </a>
-                    <script>
-                        const userDataString = sessionStorage.getItem('userData');
-                            if (userDataString) {
-                                const userData = JSON.parse(userDataString);
-                                document.getElementById("name").textContent = userData.username;
-                                document.getElementById("usrtype").textContent = userData.userType;
-                            }
-                    </script>
+                    
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="profile.html"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Profile</a>
-                        <a class="dropdown-item" href="profile.html"><i class="ti ti-settings font-16 me-1 align-text-bottom"></i> Settings</a>
-                        <div class="dropdown-divider mb-0"></div>
-                        <a class="dropdown-item" href="login.html"><i class="ti ti-power font-16 me-1 align-text-bottom"></i> Logout</a>
+                        <a class="dropdown-item" id="mainProfileUser"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Profile</a>
+                        <a class="dropdown-item" href="#" id="logoutbutton"><i class="ti ti-power font-16 me-1 align-text-bottom"></i> Logout</a>
                     </div>
                 </li>
                 <!--end topbar-profile-->
@@ -207,8 +198,8 @@
                         <!--end nav-item-->
 
                         <li class="nav-item  parent-menu-item">
-                            <a class="nav-link" href="../portfolio/portfolio.html" id="navbarMarket">
-                                    <span><i class="ti ti-users menu-icon"></i>Users</span>
+                            <a class="nav-link" href="../portfolio/portfolio.html" id="userIconAndText">
+                                    <span><i class="ti ti-users menu-icon"></i><text id="toggleUserText">Users</text></span>
                                 </a>
                         </li>
                         <!--end nav-item-->
@@ -217,10 +208,20 @@
                         <!--end nav-item-->
 
                         <li class="nav-item  parent-menu-item">
-                            <a class="nav-link" href="../orders/orders.html" id="navbarMarket">
-                                    <span class="position-relative"><i class="ti ti-shopping-cart menu-icon"></i>Orders <small class="order-badge pending"></small></span>                            
+                            <a class="nav-link" id="userOrderHyperlink">
+                                    <span class="position-relative"><i class="ti ti-shopping-cart menu-icon"></i>My Orders <small class="order-badge pending"></small></span>                            
                                 </a>
                         </li>
+
+<script>
+                        const userDataString = sessionStorage.getItem('userData');
+                            if (userDataString) {
+                                const userData = JSON.parse(userDataString);
+                                document.getElementById("name").textContent = userData.username;
+                                document.getElementById("usrtype").textContent = userData.userType;
+                                document.getElementById("userOrderHyperlink").href = "../orders/orders.html?userId="+userData.userId+"&action=grid&del=grid";
+                            }
+                    </script>
                         <!--end nav-item-->
 
                         <!-- <li class="nav-item  parent-menu-item">
@@ -263,7 +264,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="../explore/explore.html" role="tab" aria-selected="true">Explore</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" id="investmentsHyperlink">
                                     <a class="nav-link" href="../investment/investment.html" role="tab" aria-selected="false">Investment</a>
                                 </li>
                                 <!-- <li class="nav-item">
@@ -739,20 +740,20 @@
                                                         <div class="d-flex justify-content-between">
                                                             <div class="action-icons">
                                                                 <ul class="list-inline">
-                                                                    <li class="list-inline-item align-self-center mx-0 bg-success">
-                                                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#BuyStocks"><i class="ti ti-letter-b text-white email-action-icons-item"></i></a>
+                                                                    <li class="list-inline-item align-self-center mx-0 bg-success" id="topGainBuyButtonHolder">
+                                                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#BuyStocks"><i class="ti ti-letter-b text-white email-action-icons-item" id="topGainBuyButton"></i></a>
                                                                     </li>
                                                                     <!--end /li-->
-                                                                    <li class="list-inline-item align-self-center mx-0 bg-danger">
-                                                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#SellStocks"><i class="ti ti-letter-s text-white email-action-icons-item"></i></a>
+                                                                    <li class="list-inline-item align-self-center mx-0 bg-danger" id="topGainSellButtonHolder">
+                                                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#SellStocks"><i class="ti ti-letter-s text-white email-action-icons-item" id="topGainSellButton"></i></a>
                                                                     </li>
                                                                     <!--end /li-->
-                                                                    <li class="list-inline-item align-self-center mx-0">
-                                                                        <a href="javascript: void(0);"><i class="ti ti-chart-candle email-action-icons-item"></i></a>
+                                                                    <li class="list-inline-item align-self-center mx-0" id="topGainOrderButtonHolder">
+                                                                        <a id="ordersFromStockDetailsTopGain"><i class="ti ti-shopping-cart menu-icon"></i></a>
                                                                     </li>
                                                                     <!--end /li-->
-                                                                    <li class="list-inline-item align-self-center mx-0">
-                                                                        <a href="javascript: void(0);"><i class="ti ti-trash email-action-icons-item"></i></a>
+                                                                    <li class="list-inline-item align-self-center mx-0" id="topGainBlockStockButtonHolder">
+                                                                        <a href="javascript: void(0);"><i class="ti ti-trash email-action-icons-item" id="blockStockButton2"></i></a>
                                                                     </li>
                                                                     <!--end /li-->
                                                                 </ul>
@@ -842,20 +843,20 @@
                                                         <div class="d-flex justify-content-between">
                                                             <div class="action-icons">
                                                                 <ul class="list-inline">
-                                                                    <li class="list-inline-item align-self-center mx-0 bg-success">
-                                                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#BuyStocks"><i class="ti ti-letter-b text-white email-action-icons-item"></i></a>
+                                                                    <li class="list-inline-item align-self-center mx-0 bg-success" id="topLoseBuyButtonHolder">
+                                                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#BuyStocks"><i class="ti ti-letter-b text-white email-action-icons-item" id="topLoseBuyButton"></i></a>
                                                                     </li>
                                                                     <!--end /li-->
-                                                                    <li class="list-inline-item align-self-center mx-0 bg-danger">
-                                                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#SellStocks"><i class="ti ti-letter-s text-white email-action-icons-item"></i></a>
-                                                                    </li>
-                                                                    <!--end /li-->
-                                                                    <li class="list-inline-item align-self-center mx-0">
-                                                                        <a href="javascript: void(0);"><i class="ti ti-chart-candle email-action-icons-item"></i></a>
+                                                                    <li class="list-inline-item align-self-center mx-0 bg-danger" id="topLoseSellButtonHolder">
+                                                                        <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#SellStocks"><i class="ti ti-letter-s text-white email-action-icons-item" id="topLoseSellButton"></i></a>
                                                                     </li>
                                                                     <!--end /li-->
                                                                     <li class="list-inline-item align-self-center mx-0">
-                                                                        <a href="javascript: void(0);"><i class="ti ti-trash email-action-icons-item"></i></a>
+                                                                        <a id="ordersFromStockDetailsTopLose"><i class="ti ti-shopping-cart menu-icon"></i></a>
+                                                                    </li>
+                                                                    <!--end /li-->
+                                                                    <li class="list-inline-item align-self-center mx-0" id="topLoseBlockStockButtonHolder">
+                                                                        <a href="javascript: void(0);"><i class="ti ti-trash email-action-icons-item" id="blockStockButton3"></i></a>
                                                                     </li>
                                                                     <!--end /li-->
                                                                 </ul>
@@ -1330,26 +1331,24 @@
                 </div>
                 <!--end modal-header-->
                 <div class="modal-body text-center">
-                    <!--<img src="assets/images/users/user-5.jpg" alt="" class="thumb-lg rounded-circle">
-                    <h5 class="mb-1">Good Morning!</h5>
-                    <p class="mb-0 text-muted">Hi, Aaron Gish ! Congratulations.</p>-->
                     <div class="d-flex justify-content-between">
                         <div class="action-icons">
                             <ul class="list-inline">
-                                <li class="list-inline-item align-self-center mx-0 bg-success">
-                                    <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#BuyStocks"><i class="ti ti-letter-b text-white email-action-icons-item"></i></a>
+                                <li class="list-inline-item align-self-center mx-0 bg-success" id="buyButtonStockDetailHolder">
+                                <a href="javascript: void(0);" data-bs-target="#BuyStocks" data-bs-toggle="modal" data-dismiss="modal"><i class="ti ti-letter-b text-white email-action-icons-item" id="buyButtonStockDetail"></i></a>
+                                    
                                 </li>
                                 <!--end /li-->
-                                <li class="list-inline-item align-self-center mx-0 bg-danger">
-                                    <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#SellStocks"><i class="ti ti-letter-s text-white email-action-icons-item"></i></a>
-                                </li>
-                                <!--end /li-->
-                                <li class="list-inline-item align-self-center mx-0">
-                                    <a href="javascript: void(0);"><i class="ti ti-chart-candle email-action-icons-item"></i></a>
+                                <li class="list-inline-item align-self-center mx-0 bg-danger" id="sellButtonStockDetailHolder">
+                                    <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#SellStocks" data-bs-dismiss="modal"><i class="ti ti-letter-s text-white email-action-icons-item" id="sellButtonStockDetail"></i></a>
                                 </li>
                                 <!--end /li-->
                                 <li class="list-inline-item align-self-center mx-0">
-                                    <a href="javascript: void(0);"><i class="ti ti-trash email-action-icons-item"></i></a>
+                                    <a id="ordersFromStockDetails"><i class="ti ti-shopping-cart menu-icon"></i></a>
+                                </li>
+                                <!--end /li-->
+                                <li class="list-inline-item align-self-center mx-0" id="blockStockButtonStockDetailHolder">
+                                    <a href="javascript: void(0);"><i class="ti ti-trash email-action-icons-item" id="blockStockButton"></i></a>
                                 </li>
                                 <!--end /li-->
                             </ul>

@@ -39,6 +39,8 @@ app.use('/logout',require('./route/logout'));
 app.use('/participate', require('./route/participate'));
 app.use('/admin', require('./route/admin'));
 app.use('/user', require('./route/user'));
+app.use('/order', require('./route/order'));
+app.use('/broker', require('./route/broker'));
 
 app.use(errHandler.notFound);
 app.use(errHandler.errHandler);

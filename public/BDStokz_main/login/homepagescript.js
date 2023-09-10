@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const corpRegNo = document.getElementById('corpRegNoinput').value; 
       const brokerExpertiseinput = document.getElementById('brokerExpertiseinput').value;
       const corpSector = document.getElementById('corpSectorinput').value;
+      const refName = document.getElementById('refererUserNameinput').value;
       const userData = {
         name: name,
         email: email,
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         type: userType,
         accountNo: custAcNo,
         brokerId: null,
-        refererId: null,
+        refererName: refName,
         licenseNo: brokerLicense,
         commissionPCT :null,
         expertise: brokerExpertiseinput,
@@ -51,36 +52,29 @@ document.addEventListener('DOMContentLoaded', function() {
           },
           body: JSON.stringify(userData)
         });
-  
+
+        const data = await response.json();
         if (response.ok) {
-          const data = await response.json();
-          if(data.message === 'errors'){
-            const formBody = document.getElementById('regFormholder');
-            data.err.forEach(item => {
-              const newDiv = document.createElement('div');
-              newDiv.className = 'alert alert-danger';
-              newDiv.textContent = item;
-              newDiv.id='err'+cnt;
-              formBody.appendChild(newDiv);
-              errmsgs.push('err'+cnt);
-              cnt+=1;
-            });
-          }
-          else{
-            const responseData = await response.json();
-          console.log('Registration successful:', responseData);
+          // const data = await response.json();
+          // if(data.message === 'errors'){
+          //   const formBody = document.getElementById('regFormholder');
+          //   data.err.forEach(item => {
+          //     const newDiv = document.createElement('div');
+          //     newDiv.className = 'alert alert-danger';
+          //     newDiv.textContent = item;
+          //     newDiv.id='err'+cnt;
+          //     formBody.appendChild(newDiv);
+          //     errmsgs.push('err'+cnt);
+          //     cnt+=1;
+          //   });
+          // }
+          //else{
           const regSuccess = document.getElementById('regSuccess');
           regSuccess.style.display = 'block'; 
-          // Redirect to another page with query parameters
-          const queryParams = new URLSearchParams();
-          queryParams.append('name', userData.name);
-          //queryParams.append('email', userData.email);
-          queryParams.append('usertype', userData.type);
-          const redirectURL = 'http://localhost:3000/BdStokz_main/index/index.html' //+ '?'+ queryParams.toString();
-          window.location.href = redirectURL;
-          }
+          //}
         } else {
-          console.error('Registration failed:', response.statusText);
+          //console.error('Registration failed:', response.statusText);
+          ShowRegErrors(0,data.err,'regFormholder',0);
         }
       } catch (error) {
         console.error('An error occurred:', error);
@@ -140,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const corpSectorSection = document.getElementById('corpSector');
       const userTypeSelect = document.getElementById('UserType-reg');
       const brokerLicenseSection = document.getElementById('brokerLicenseSec');
+      const refererName = document.getElementById('refererUserName');
 
       userTypeSelect.addEventListener('change', () => {
           const selectedUserType = userTypeSelect.value;
@@ -149,20 +144,22 @@ document.addEventListener('DOMContentLoaded', function() {
           custAccountNoSection.style.display = 'none';
           corpRegNoSection.style.display = 'none';
           corpSectorSection.style.display = 'none';
+          refererName.style.display = 'none';
           
           console.log("you are a broker");
           // Reset display for all sections
       
           // Show relevant sections based on selected user type
-          if (selectedUserType === '1') { // Broker
+          if (selectedUserType === 'Broker') { // Broker
               brokerLicenseSection.style.display = 'block';
               brokerExpertiseSection.style.display = 'block';
               console.log("you are a broker");
-          } else if (selectedUserType === '2') { // Corporation
+          } else if (selectedUserType === 'Corp') { // Corporation
               corpRegNoSection.style.display = 'block';
               corpSectorSection.style.display = 'block';
-          } else if (selectedUserType === '3') { // Customer
+          } else if (selectedUserType === 'Customer') { // Customer
               custAccountNoSection.style.display = 'block';
+              refererName.style.display = 'block';
           }
       });
      
@@ -214,5 +211,27 @@ document.addEventListener('DOMContentLoaded', function() {
       const wrongCredAlert = document.getElementById('wrongCredLogin');
           wrongCredAlert.style.display = 'none';
   });
+
+  function ShowRegErrors(flag,errmsgs,id,cleaningFlag=1){
+    const errbox = document.getElementById(id);
+    if(cleaningFlag ===  1)
+    errbox.innerHTML = '';
+    let cnt=0;
+    errmsgs.forEach(item => {
+      const newDiv = document.createElement('div');
+      if(flag === 1)
+      newDiv.className = "alert alert-success alert-dismissible fade show mb-3";
+      else
+      newDiv.className = "alert alert-danger alert-dismissible fade show mb-3";
+      newDiv.style.width = "100%";
+      newDiv.innerHTML = `
+      ${item}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      newDiv.id='err'+cnt;
+      errbox.appendChild(newDiv);
+      cnt+=1;
+    });
+  }
 
   

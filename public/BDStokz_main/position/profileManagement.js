@@ -1,5 +1,13 @@
 let id_global;
 
+const userDataStringScript = sessionStorage.getItem('userData');
+  let userDataset;
+  if (userDataStringScript) {
+      userDataset = JSON.parse(userDataStringScript);
+  }
+
+
+
 async function initiateProfManager(){
 const queryParams = new URLSearchParams(window.location.search);
 
@@ -9,14 +17,128 @@ console.log("The link is "+'http://localhost:3000/user/profile/'+nameParam);
 const response = await fetch('http://localhost:3000/user/profile/'+nameParam); 
 const data = await response.json();
 
-// console.log("In profile manager.....");
-// console.log("username is "+data.NAME);
+
+if(userDataset.username !== nameParam){
+    if(userDataset.userType === 'Customer'){
+        document.getElementById('accountDeleteButton').style.display = "none";
+        document.getElementById('pwdAccountDelete').style.display = "none";
+        document.getElementById('proceedAccountDelete').style.display = "none";
+        document.getElementById('addBrokerButton').style.display = "block";
+    }
+    else if(userDataset.userType!== 'Admin'){
+        document.getElementById('accountDeleteButton').style.display = "none";
+        document.getElementById('pwdAccountDelete').style.display = "none";
+        document.getElementById('proceedAccountDelete').style.display = "none";
+        document.getElementById('addBrokerButton').style.display = "none";
+    }
+}
+
 
 
 document.getElementById('profileUserName').textContent = data[0].NAME;
 document.getElementById('profileUserType').textContent = data[0]["TYPE"];
 //document.getElementById('profileDisplayPhn').textContent = data.contact[0];
 document.getElementById('profileDisplayMail').textContent = data[0].EMAIL;
+
+
+document.getElementById('accountDeleteButton').addEventListener("click", function(){
+    document.getElementById('accountDeleteButton').style.display = "none";
+    document.getElementById('pwdAccountDelete').style.display = "block";
+    document.getElementById('proceedAccountDelete').style.display = "block";
+});
+
+document.getElementById('addBrokerButton').addEventListener("click", async function(){
+    const errBoxGenInfo=document.getElementById('errBoxDeleteAccount');
+    //const newValue = document.getElementById('symbolAccordionText').textContent;
+    const userData = {
+        userId:userDataset.userId,
+        field: 'BROKER_ID',
+        newValue:id_global
+    };
+    try {
+        const response = await fetch('http://localhost:3000/user/updateProfile', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+       });
+        const data = await response.json();
+        if (response.ok) {
+            if(data.message === 'User info updated successfully' ){
+               showProfileUpdateErrors(1,['Broker added successfully!'],'errBoxDeleteAccount');
+            }
+        } else {
+            showProfileUpdateErrors(0,data.errors,errBoxDeleteAccount);
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+});
+
+document.getElementById('proceedAccountDelete').addEventListener("click", async function(){
+    const userDataString = sessionStorage.getItem('userData');
+    let userDataset;
+    if (userDataString) {
+        userDataset = JSON.parse(userDataString);
+    }
+    if(userDataset.userType !== 'Admin'){
+    const pwd = document.getElementById('pwdAccountDelete').value;
+
+    const userData = {
+      userId: data[0].USER_ID,
+      password: pwd
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/user/deleteAccount', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+      const data = await response.json();
+      if (response.ok) {
+        //document.getElementById('profileCard').style.display = "none";
+        window.location.href = 'http://localhost:3000/BdStokz_main/login/login.html';
+      } else {
+            showProfileUpdateErrors(0,data.errors,'errBoxDeleteAccount');
+        }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+  else{
+    const pwd = document.getElementById('pwdAccountDelete').value;
+
+    const userData = {
+      deleterId: userDataset.userId,
+      userId: data[0].USER_ID,
+      password: pwd
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/user/deleteAccount', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+      const data = await response.json();
+      if (response.ok) {
+        document.getElementById('profileCard').style.display = "none";
+        //window.location.href = 'http://localhost:3000/BdStokz_main/login/login.html';
+      } else {
+            showProfileUpdateErrors(0,data.errors,'errBoxDeleteAccount');
+        }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+}
+);
 
 try{
 const response3 = await fetch('http://localhost:3000/user/contact/'+nameParam);
@@ -73,42 +195,44 @@ delContactBtn.addEventListener('click', async function(){
         const data = await response.json();
         if (response.ok) {
           if(data.message === 'Contact deleted successfully'){
-            const newDiv = document.createElement('div');
-            newDiv.className = 'alert alert-success';
-            newDiv.textContent = 'Contact successfully deleted!';
-            const closeButton = document.createElement('button');
-                closeButton.className = 'close';
-                closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+            // const newDiv = document.createElement('div');
+            // newDiv.className = 'alert alert-success';
+            // newDiv.textContent = 'Contact successfully deleted!';
+            // const closeButton = document.createElement('button');
+            //     closeButton.className = 'close';
+            //     closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
 
-                closeButton.addEventListener('click', function () {
-                    newDiv.parentNode.removeChild(newDiv);
-                });
-                newDiv.appendChild(closeButton);
-            document.getElementById('errorBoxContactInfo').appendChild(newDiv);
+            //     closeButton.addEventListener('click', function () {
+            //         newDiv.parentNode.removeChild(newDiv);
+            //     });
+            //     newDiv.appendChild(closeButton);
+            // document.getElementById('errorBoxContactInfo').appendChild(newDiv);
+            showProfileUpdateErrors(1,['Contact successfully deleted!'],'errorBoxContactInfo');
           }
           else{
            
           }
         } else {
-            //const data = await response.json();
-            const errbox = document.getElementById('errorBoxContactInfo');
-            let cnt=0;
-            data.errors.forEach(item => {
-              const newDiv = document.createElement('div');
-              newDiv.className = 'alert alert-danger';
-              newDiv.textContent = item;
-              const closeButton = document.createElement('button');
-                closeButton.className = 'close';
-                closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+            // //const data = await response.json();
+            // const errbox = document.getElementById('errorBoxContactInfo');
+            // let cnt=0;
+            // data.errors.forEach(item => {
+            //   const newDiv = document.createElement('div');
+            //   newDiv.className = 'alert alert-danger';
+            //   newDiv.textContent = item;
+            //   const closeButton = document.createElement('button');
+            //     closeButton.className = 'close';
+            //     closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
 
-                closeButton.addEventListener('click', function () {
-                    newDiv.parentNode.removeChild(newDiv);
-                });
-                newDiv.appendChild(closeButton);
-              newDiv.id='err'+cnt;
-              errbox.appendChild(newDiv);
-              cnt+=1;
-            });
+            //     closeButton.addEventListener('click', function () {
+            //         newDiv.parentNode.removeChild(newDiv);
+            //     });
+            //     newDiv.appendChild(closeButton);
+            //   newDiv.id='err'+cnt;
+            //   errbox.appendChild(newDiv);
+            //   cnt+=1;
+            // });
+            showProfileUpdateErrors(0,data.errors,'errorBoxContactInfo');
         }
       } catch (error) {
         console.error('An error occurred:', error);
@@ -135,34 +259,36 @@ document.getElementById('editBankAcBtn').addEventListener('click', async functio
         const data = await response.json();
         if (response.ok) {
             if(data.message === 'User info updated successfully' ){
-                const newDiv = document.createElement('div');
-                newDiv.className = 'alert alert-success';
-                newDiv.textContent ='ACCOUNT_NO successfully updated!';
-                const closeButton = document.createElement('button');
-                closeButton.className = 'close';
-                closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+                // const newDiv = document.createElement('div');
+                // newDiv.className = 'alert alert-success';
+                // newDiv.textContent ='ACCOUNT_NO successfully updated!';
+                // const closeButton = document.createElement('button');
+                // closeButton.className = 'close';
+                // closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
 
-                closeButton.addEventListener('click', function () {
-                    newDiv.parentNode.removeChild(newDiv);
-                });
-                newDiv.appendChild(closeButton);
-                errBoxGenInfo.appendChild(newDiv);
+                // closeButton.addEventListener('click', function () {
+                //     newDiv.parentNode.removeChild(newDiv);
+                // });
+                // newDiv.appendChild(closeButton);
+                // errBoxGenInfo.appendChild(newDiv);
+                showProfileUpdateErrors(1,['Account No successfully updated!'],'bankACEditErrorBox');
             }
         } else {
-            data.errors.forEach(element => {
-                    const newDiv = document.createElement('div');
-                    newDiv.className = 'alert alert-danger';
-                    newDiv.textContent = element;
-                    const closeButton = document.createElement('button');
-                    closeButton.className = 'close';
-                    closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+            // data.errors.forEach(element => {
+            //         // const newDiv = document.createElement('div');
+            //         // newDiv.className = 'alert alert-danger';
+            //         // newDiv.textContent = element;
+            //         // const closeButton = document.createElement('button');
+            //         // closeButton.className = 'close';
+            //         // closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
         
-                    closeButton.addEventListener('click', function () {
-                        newDiv.parentNode.removeChild(newDiv);
-                    });
-                    newDiv.appendChild(closeButton);
-                    errBoxGenInfo.appendChild(newDiv);
-            });
+            //         // closeButton.addEventListener('click', function () {
+            //         //     newDiv.parentNode.removeChild(newDiv);
+            //         // });
+            //         // newDiv.appendChild(closeButton);
+            //         // errBoxGenInfo.appendChild(newDiv);
+            // });
+            showProfileUpdateErrors(0,data.errors,'bankACEditErrorBox');
         }
       } catch (error) {
         console.error('An error occurred:', error);
@@ -189,34 +315,36 @@ document.getElementById('editCorpSectorBtn').addEventListener('click', async fun
         const data = await response.json();
         if (response.ok) {
             if(data.message === 'User info updated successfully' ){
-                const newDiv = document.createElement('div');
-                newDiv.className = 'alert alert-success';
-                newDiv.textContent ='SECTOR successfully updated!';
-                const closeButton = document.createElement('button');
-                closeButton.className = 'close';
-                closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+                // const newDiv = document.createElement('div');
+                // newDiv.className = 'alert alert-success';
+                // newDiv.textContent ='SECTOR successfully updated!';
+                // const closeButton = document.createElement('button');
+                // closeButton.className = 'close';
+                // closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
 
-                closeButton.addEventListener('click', function () {
-                    newDiv.parentNode.removeChild(newDiv);
-                });
-                newDiv.appendChild(closeButton);
-                errBoxGenInfo.appendChild(newDiv);
+                // closeButton.addEventListener('click', function () {
+                //     newDiv.parentNode.removeChild(newDiv);
+                // });
+                // newDiv.appendChild(closeButton);
+                // errBoxGenInfo.appendChild(newDiv);
+                showProfileUpdateErrors(1,['Sector successfully updated!'],'sectorEditErrorBox');
             }
         } else {
-            data.errors.forEach(element => {
-                    const newDiv = document.createElement('div');
-                    newDiv.className = 'alert alert-danger';
-                    newDiv.textContent = element;
-                    const closeButton = document.createElement('button');
-                    closeButton.className = 'close';
-                    closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+            // data.errors.forEach(element => {
+            //         const newDiv = document.createElement('div');
+            //         newDiv.className = 'alert alert-danger';
+            //         newDiv.textContent = element;
+            //         const closeButton = document.createElement('button');
+            //         closeButton.className = 'close';
+            //         closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
         
-                    closeButton.addEventListener('click', function () {
-                        newDiv.parentNode.removeChild(newDiv);
-                    });
-                    newDiv.appendChild(closeButton);
-                    errBoxGenInfo.appendChild(newDiv);
-            });
+            //         closeButton.addEventListener('click', function () {
+            //             newDiv.parentNode.removeChild(newDiv);
+            //         });
+            //         newDiv.appendChild(closeButton);
+            //         errBoxGenInfo.appendChild(newDiv);
+            // });
+            showProfileUpdateErrors(0,data.errors,'sectorEditErrorBox');
         }
       } catch (error) {
         console.error('An error occurred:', error);
@@ -243,34 +371,36 @@ document.getElementById('editCorpSymbolBtn').addEventListener('click', async fun
         const data = await response.json();
         if (response.ok) {
             if(data.message === 'User info updated successfully' ){
-                const newDiv = document.createElement('div');
-                newDiv.className = 'alert alert-success';
-                newDiv.textContent ='SYMBOL successfully updated!';
-                const closeButton = document.createElement('button');
-                closeButton.className = 'close';
-                closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+                // const newDiv = document.createElement('div');
+                // newDiv.className = 'alert alert-success';
+                // newDiv.textContent ='SYMBOL successfully updated!';
+                // const closeButton = document.createElement('button');
+                // closeButton.className = 'close';
+                // closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
 
-                closeButton.addEventListener('click', function () {
-                    newDiv.parentNode.removeChild(newDiv);
-                });
-                newDiv.appendChild(closeButton);
-                errBoxGenInfo.appendChild(newDiv);
+                // closeButton.addEventListener('click', function () {
+                //     newDiv.parentNode.removeChild(newDiv);
+                // });
+                // newDiv.appendChild(closeButton);
+                // errBoxGenInfo.appendChild(newDiv);
+                showProfileUpdateErrors(1,['SYMBOL successfully updated!'],'symbolEditErrorBox');
             }
         } else {
-            data.errors.forEach(element => {
-                    const newDiv = document.createElement('div');
-                    newDiv.className = 'alert alert-danger';
-                    newDiv.textContent = element;
-                    const closeButton = document.createElement('button');
-                    closeButton.className = 'close';
-                    closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+            // data.errors.forEach(element => {
+            //         const newDiv = document.createElement('div');
+            //         newDiv.className = 'alert alert-danger';
+            //         newDiv.textContent = element;
+            //         const closeButton = document.createElement('button');
+            //         closeButton.className = 'close';
+            //         closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
         
-                    closeButton.addEventListener('click', function () {
-                        newDiv.parentNode.removeChild(newDiv);
-                    });
-                    newDiv.appendChild(closeButton);
-                    errBoxGenInfo.appendChild(newDiv);
-            });
+            //         closeButton.addEventListener('click', function () {
+            //             newDiv.parentNode.removeChild(newDiv);
+            //         });
+            //         newDiv.appendChild(closeButton);
+            //         errBoxGenInfo.appendChild(newDiv);
+            // });
+            showProfileUpdateErrors(0,data.errors,'symbolEditErrorBox');
         }
       } catch (error) {
         console.error('An error occurred:', error);
@@ -297,34 +427,36 @@ document.getElementById('editExpertiseBtn').addEventListener('click', async func
         const data = await response.json();
         if (response.ok) {
             if(data.message === 'User info updated successfully' ){
-                const newDiv = document.createElement('div');
-                newDiv.className = 'alert alert-success';
-                newDiv.textContent ='EXPERTISE successfully updated!';
-                const closeButton = document.createElement('button');
-                closeButton.className = 'close';
-                closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+                // const newDiv = document.createElement('div');
+                // newDiv.className = 'alert alert-success';
+                // newDiv.textContent ='EXPERTISE successfully updated!';
+                // const closeButton = document.createElement('button');
+                // closeButton.className = 'close';
+                // closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
 
-                closeButton.addEventListener('click', function () {
-                    newDiv.parentNode.removeChild(newDiv);
-                });
-                newDiv.appendChild(closeButton);
-                errBoxGenInfo.appendChild(newDiv);
+                // closeButton.addEventListener('click', function () {
+                //     newDiv.parentNode.removeChild(newDiv);
+                // });
+                // newDiv.appendChild(closeButton);
+                // errBoxGenInfo.appendChild(newDiv);
+                showProfileUpdateErrors(1,['EXPERTISE successfully updated!'],'expertiseEditErrorBox');
             }
         } else {
-            data.errors.forEach(element => {
-                    const newDiv = document.createElement('div');
-                    newDiv.className = 'alert alert-danger';
-                    newDiv.textContent = element;
-                    const closeButton = document.createElement('button');
-                    closeButton.className = 'close';
-                    closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+            // data.errors.forEach(element => {
+            //         const newDiv = document.createElement('div');
+            //         newDiv.className = 'alert alert-danger';
+            //         newDiv.textContent = element;
+            //         const closeButton = document.createElement('button');
+            //         closeButton.className = 'close';
+            //         closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
         
-                    closeButton.addEventListener('click', function () {
-                        newDiv.parentNode.removeChild(newDiv);
-                    });
-                    newDiv.appendChild(closeButton);
-                    errBoxGenInfo.appendChild(newDiv);
-            });
+            //         closeButton.addEventListener('click', function () {
+            //             newDiv.parentNode.removeChild(newDiv);
+            //         });
+            //         newDiv.appendChild(closeButton);
+            //         errBoxGenInfo.appendChild(newDiv);
+            // });
+            showProfileUpdateErrors(0,data.errors,'expertiseEditErrorBox');
         }
       } catch (error) {
         console.error('An error occurred:', error);
@@ -406,42 +538,44 @@ async function updateContact(userData){
         const data = await response.json();
         if (response.ok) {
           if(data.message === 'User info updated successfully'){
-            const newDiv = document.createElement('div');
-            newDiv.className = 'alert alert-success';
-            newDiv.textContent = 'Contact successfully updated!';
-            const closeButton = document.createElement('button');
-                closeButton.className = 'close';
-                closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+            // const newDiv = document.createElement('div');
+            // newDiv.className = 'alert alert-success';
+            // newDiv.textContent = 'Contact successfully updated!';
+            // const closeButton = document.createElement('button');
+            //     closeButton.className = 'close';
+            //     closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
 
-                closeButton.addEventListener('click', function () {
-                    newDiv.parentNode.removeChild(newDiv);
-                });
-                newDiv.appendChild(closeButton);
-            document.getElementById('errorBoxContactInfo').appendChild(newDiv);
+            //     closeButton.addEventListener('click', function () {
+            //         newDiv.parentNode.removeChild(newDiv);
+            //     });
+            //     newDiv.appendChild(closeButton);
+            // document.getElementById('errorBoxContactInfo').appendChild(newDiv);
+            showProfileUpdateErrors(1,['Contact successfully updated!'],'errorBoxContactInfo');
           }
           else{
            
           }
         } else {
             //const data = await response.json();
-            const errbox = document.getElementById('errorBoxContactInfo');
-            let cnt=0;
-            data.errors.forEach(item => {
-              const newDiv = document.createElement('div');
-              newDiv.className = 'alert alert-danger';
-              newDiv.textContent = item;
-              const closeButton = document.createElement('button');
-                closeButton.className = 'close';
-                closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+            // const errbox = document.getElementById('errorBoxContactInfo');
+            // let cnt=0;
+            // data.errors.forEach(item => {
+            //   const newDiv = document.createElement('div');
+            //   newDiv.className = 'alert alert-danger';
+            //   newDiv.textContent = item;
+            //   const closeButton = document.createElement('button');
+            //     closeButton.className = 'close';
+            //     closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
 
-                closeButton.addEventListener('click', function () {
-                    newDiv.parentNode.removeChild(newDiv);
-                });
-                newDiv.appendChild(closeButton);
-              newDiv.id='err'+cnt;
-              errbox.appendChild(newDiv);
-              cnt+=1;
-            });
+            //     closeButton.addEventListener('click', function () {
+            //         newDiv.parentNode.removeChild(newDiv);
+            //     });
+            //     newDiv.appendChild(closeButton);
+            //   newDiv.id='err'+cnt;
+            //   errbox.appendChild(newDiv);
+            //   cnt+=1;
+            // });
+            showProfileUpdateErrors(0,data.errors,'errorBoxContactInfo');
         }
       } catch (error) {
         console.error('An error occurred:', error);
@@ -474,34 +608,36 @@ document.getElementById('updateGenInfo').addEventListener("click", async functio
                         const errBoxGenInfo = document.getElementById('errBoxGenInfoUpdate');
                         if (response.ok) {
                             if(data.message === 'User info updated successfully' ){
-                                const newDiv = document.createElement('div');
-                                newDiv.className = 'alert alert-success';
-                                newDiv.textContent = user[i]+' successfully updated!';
-                                const closeButton = document.createElement('button');
-                                closeButton.className = 'close';
-                                closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+                                // const newDiv = document.createElement('div');
+                                // newDiv.className = 'alert alert-success';
+                                // newDiv.textContent = user[i]+' successfully updated!';
+                                // const closeButton = document.createElement('button');
+                                // closeButton.className = 'close';
+                                // closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
 
-                                closeButton.addEventListener('click', function () {
-                                    newDiv.parentNode.removeChild(newDiv);
-                                });
-                                newDiv.appendChild(closeButton);
-                                errBoxGenInfo.appendChild(newDiv);
+                                // closeButton.addEventListener('click', function () {
+                                //     newDiv.parentNode.removeChild(newDiv);
+                                // });
+                                // newDiv.appendChild(closeButton);
+                                // errBoxGenInfo.appendChild(newDiv);
+                                showProfileUpdateErrors(1,[user[i]+' successfully updated!'],'errBoxGenInfoUpdate',0);
                             }
                         } else {
-                            data.errors.forEach(element => {
-                                    const newDiv = document.createElement('div');
-                                    newDiv.className = 'alert alert-danger';
-                                    newDiv.textContent = element;
-                                    const closeButton = document.createElement('button');
-                                    closeButton.className = 'close';
-                                    closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+                            // data.errors.forEach(element => {
+                            //         const newDiv = document.createElement('div');
+                            //         newDiv.className = 'alert alert-danger';
+                            //         newDiv.textContent = element;
+                            //         const closeButton = document.createElement('button');
+                            //         closeButton.className = 'close';
+                            //         closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
                         
-                                    closeButton.addEventListener('click', function () {
-                                        newDiv.parentNode.removeChild(newDiv);
-                                    });
-                                    newDiv.appendChild(closeButton);
-                                    errBoxGenInfo.appendChild(newDiv);
-                            });
+                            //         closeButton.addEventListener('click', function () {
+                            //             newDiv.parentNode.removeChild(newDiv);
+                            //         });
+                            //         newDiv.appendChild(closeButton);
+                            //         errBoxGenInfo.appendChild(newDiv);
+                            // });
+                            showProfileUpdateErrors(0,data.errors,'errBoxGenInfoUpdate',0);
                         }
                     } catch (error) {
                         console.error(`An error occurred while updating ${user[i]}:`, error);
@@ -511,3 +647,86 @@ document.getElementById('updateGenInfo').addEventListener("click", async functio
         }
         
 });
+
+document.getElementById('addAdminButton').addEventListener("click",async function(){
+    let usID = id_global;
+    const newContact = document.getElementById('addAdminForm').value;
+    const userData = {
+        adminId: usID,
+        empName: newContact,
+    };
+    try {
+        const response = await fetch('http://localhost:3000/admin/addAdmin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+        const data = await response.json();
+        if (response.ok) {
+          //if(data.message === 'Contact deleted successfully'){
+            // const newDiv = document.createElement('div');
+            // newDiv.className = 'alert alert-success';
+            // newDiv.textContent = 'Admin successfully added!';
+            // const closeButton = document.createElement('button');
+            //     closeButton.className = 'close';
+            //     closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+
+            //     closeButton.addEventListener('click', function () {
+            //         newDiv.parentNode.removeChild(newDiv);
+            //     });
+            //     newDiv.appendChild(closeButton);
+            // document.getElementById('errorBoxAddAdmin').appendChild(newDiv);
+
+          // //} vul bracket eta
+          showProfileUpdateErrors(1,['Admin successfully added!'],'errorBoxAddAdmin');
+          
+        } else {
+            //const data = await response.json();
+            // const errbox = document.getElementById('errorBoxAddAdmin');
+            // let cnt=0;
+            // data.errors.forEach(item => {
+            //   const newDiv = document.createElement('div');
+            //   newDiv.className = 'alert alert-danger';
+            //   newDiv.textContent = item;
+            //   const closeButton = document.createElement('button');
+            //     closeButton.className = 'close';
+            //     closeButton.innerHTML = '&times;'; // The times symbol represents a cross (X)
+
+            //     closeButton.addEventListener('click', function () {
+            //         newDiv.parentNode.removeChild(newDiv);
+            //     });
+            //     newDiv.appendChild(closeButton);
+            //   newDiv.id='err'+cnt;
+            //   errbox.appendChild(newDiv);
+            //   cnt+=1;
+            // });
+            showProfileUpdateErrors(0,data.errors,'errorBoxAddAdmin');
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+});
+
+function showProfileUpdateErrors(flag,errmsgs,id,cleaningFlag = 1){
+    const errbox = document.getElementById(id);
+    if(cleaningFlag === 1)
+    errbox.innerHTML = '';
+    let cnt=0;
+    errmsgs.forEach(item => {
+      const newDiv = document.createElement('div');
+      if(flag === 1)
+      newDiv.className = "alert alert-success alert-dismissible fade show mb-3";
+      else
+      newDiv.className = "alert alert-danger alert-dismissible fade show mb-3";
+      newDiv.style.width = "100%";
+      newDiv.innerHTML = `
+      ${item}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      newDiv.id='err'+cnt;
+      errbox.appendChild(newDiv);
+      cnt+=1;
+    });
+  }

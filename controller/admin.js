@@ -1,10 +1,21 @@
 const {execute} = require('../config/database');
 const oracledb = require('oracledb');
-const {getAllStockDataBySymbol} = require('./stock');
+const {
+    getAllStockDataBySymbol,
+    getBlockedStatusBySymbol
+} = require('./stock');
 const userController = require('./user');
+const {chkCreds} = require('./login');
+// const orderController = require('./order');
+let errors = [];
+
+async function getErrors (){
+    return errors;
+}
 
 const getAllCustomerInfo = async (payload) => {
     try{
+        errors.length = 0;
         const sql = `
         SELECT
             "USER".USER_ID,
@@ -21,23 +32,26 @@ const getAllCustomerInfo = async (payload) => {
             "USER"
             JOIN CUSTOMER ON "USER".USER_ID = CUSTOMER.USER_ID 
             LEFT OUTER JOIN USER_CONTACT ON "USER".USER_ID = USER_CONTACT.USER_ID
+            WHERE 
+            IS_DELETED = 'F'
         `;
         
         const result = await execute(sql,{});
         if(result.rows.length==0){
-            console.log(`No customer data found...`);
+            errors.push(`No customer data found...`);
             return null;
         }
         return result.rows;
 
     }catch(err){
-        console.log(`Found ${err.message} while getting customer info...`);
+        errors.push(`Found ${err.message} while getting customer info...`);
         return null;
     }
 } 
 
 const updateStock = async (payload) => {
     try{
+        errors.length = 0;
         const adminId = payload.adminId ;
         const symbol = payload.symbol;
         const field = payload.field;
@@ -47,14 +61,14 @@ const updateStock = async (payload) => {
         const admin = await userController.getUserById(adminId);
 
         if(admin == null || admin.TYPE != 'Admin'){
-            console.log("Not an admin");
+            errors.push("Not an admin");
             return null;
         }
 
         const stock = await getAllStockDataBySymbol(payload);
 
         if(stock == null){
-            console.log("Stock not found");
+            errors.push("Stock not found");
             return null;
         }
 
@@ -62,10 +76,9 @@ const updateStock = async (payload) => {
         if(field == `SYMBOL`){
             const stock = await getAllStockDataBySymbol({symbol:newValue});
             if(stock != null){
-                console.log("Stock symbol already present");
+                errors.push("Stock symbol already present");
                 return null;
             }
-            payload.symbol = symbol;
         }
 
         const sql = `
@@ -82,24 +95,26 @@ const updateStock = async (payload) => {
         await execute(sql, binds);
 
 
-        const newStock = await getAllStockDataBySymbol(payload);
+        const newStock = await getAllStockDataBySymbol({symbol:newValue});
 
         return newStock;
     }catch(err){
-        console.log(`Found ${err.message} while updating stock info...`);
+        errors.push(`Found ${err.message} while updating stock info...`);
         return null;
     }
 }
 
+
 const block = async (set,payload) => {
-    const symbol = payload.symbol;
     try{
-        const result = await getAllStockDataBySymbol(payload);
+        errors.length = 0;
+        const symbol = payload.symbol;
+        const result = await getBlockedStatusBySymbol(payload.symbol);
         if(result == null){
-            console.log(`No stock data found`);
+            errors.push(`No stock data found`);
             return null;
-        }else if(result.BLOCKED == set){
-            console.log(`${symbol} already ${set}`);
+        }else if(result === set){
+            errors.push(`${symbol} already ${set}`);
             return result;
         }
 
@@ -116,12 +131,13 @@ const block = async (set,payload) => {
 
         await execute(sql, binds);
 
-        return await getAllStockDataBySymbol(payload);
+        return await getBlockedStatusBySymbol(payload.symbol);
     }catch(err){
-        console.log(`Found ${err.message} while setting ${symbol} to ${set}...`);
-        throw err;
+        errors.push(`Found ${err.message} while setting ${payload.symbol} to ${set}...`);
+        return await getBlockedStatusBySymbol(payload.symbol);
     }
 }
+
 
 async function getDailyProfit() {
     try {
@@ -147,7 +163,7 @@ async function getDailyProfit() {
 
         return JSON.parse(jsonString);
     } catch (error) {
-        console.error('Error in getDailyProfit:', error);
+        errors.push('Error in getDailyProfit:', error);
         throw error;
     }
 }
@@ -156,24 +172,40 @@ const getAllEmployeeNames = async() =>{
     try{
         const sql = `
         SELECT (FIRST_NAME||' '||LAST_NAME) NAME
-        FROM EMPLOYEE  
+        FROM EMPLOYEE 
+        WHERE IS_DELETED = 'F' 
         `;
 
         const result = await execute(sql,{});
         return result.rows;
 
     } catch (error) {
-        console.error(`While getting employees`);
+        errors.push(`While getting employees`);
         return null;
     }
 }
 
 const getAllEmployeeDetailsByFullname = async(name) => {
     try{
+        errors.length = 0;
         const sql = `
-        SELECT * 
-        FROM EMPLOYEE NATURAL JOIN EMP_CONTACT
-        WHERE FIRST_NAME || ' ' || LAST_NAME  = :name   
+        SELECT 
+        EMPLOYEE.EMPLOYEE_ID,
+            EMPLOYEE.FIRST_NAME,
+            EMPLOYEE.LAST_NAME,
+            EMPLOYEE.EMAIL,
+            EMPLOYEE.SEX,
+            EMPLOYEE.NID,
+            EMPLOYEE.DESIGNATION,
+            EMPLOYEE.ADDRESS,
+            EMPLOYEE.ZIP_CODE,
+            EMPLOYEE.SALARY,
+            EMPLOYEE.HIRE_DATE,
+            EMPLOYEE.DOB,
+            EMPLOYEE.MANAGER_ID,
+            EMP_CONTACT.CONTACT AS CONTACT
+        FROM EMPLOYEE LEFT OUTER JOIN EMP_CONTACT ON EMPLOYEE.EMPLOYEE_ID = EMP_CONTACT.EMPLOYEE_ID
+        WHERE FIRST_NAME || ' ' || LAST_NAME  = :name  AND IS_DELETED = 'F' 
         `;
 
         const bind = {
@@ -184,7 +216,7 @@ const getAllEmployeeDetailsByFullname = async(name) => {
         return result.rows;
 
     } catch (error) {
-        console.error(`While getting details for ${name}`);
+        errors.push(`While getting details for ${name}`);
         return null;
     }
 }
@@ -197,6 +229,9 @@ const getAllUserNameAndType = async () => {
             "TYPE"
         FROM 
             "USER"
+        WHERE IS_DELETED = 'F'
+        ORDER BY
+            USER_ID
         `;
         const result = await execute(sql,{});
         return result.rows;
@@ -205,11 +240,176 @@ const getAllUserNameAndType = async () => {
 
 
     }catch (error) {
-        console.error(`While getting users`);
+        errors.push(`While getting users`);
         return null;
     }
 }
 
+const addAdmin = async (payload) => {
+    try{
+        errors.length = 0;
+        const adderId = payload.adminId;
+        const empName = payload.empName;
+
+        const empDetails = await getAllEmployeeDetailsByFullname(empName);
+        if(empDetails == null){
+            errors.push(`Could not find employee details for ${empName}`);
+            return null;
+        }
+
+        const adder = await userController.getUserById(adderId);
+
+        if(adder == null || adder.TYPE != 'Admin'){
+            errors.push(`Adder not an admin`);
+            return null;
+        }
+
+        const existingAdmin = await userController.getUserByName({name:empName});
+
+        if(existingAdmin != null && existingAdmin.TYPE == 'Admin'){
+            errors.push('Already an admin');
+            return null;
+        }
+        
+        const password = await userController.getPwdHash('bdStockz@dummy');
+
+        const insertPlsql = `
+        BEGIN 
+        INSERT INTO "USER" (NAME,PWD,EMAIL,"TYPE",STREET_NO,STREET_NAME,CITY,COUNTRY,ZIP)
+        values (:name,:password,:email,'Admin',20,'Mirpur','Dhaka','Bangladesh',:zip);
+
+        INSERT INTO ADMIN(ADMIN_ID,ADDER_ID,EMPLOYEE_ID) values(
+            (SELECT USER_ID FROM "USER" WHERE NAME = :name),
+            :adderId,
+            (SELECT EMPLOYEE_ID FROM EMPLOYEE WHERE FIRST_NAME ||' '||LAST_NAME = :name),
+            25000
+        );
+        FOR R IN (
+            SELECT CONTACT
+            FROM EMP_CONTACT WHERE
+            EMPLOYEE_ID = (SELECT EMPLOYEE_ID FROM EMPLOYEE WHERE FIRST_NAME ||' '||LAST_NAME = :name AND IS_DELETED = 'F')
+        )
+        LOOP 
+            INSERT INTO USER_CONTACT(USER_ID,CONTACT) values(
+            (SELECT USER_ID FROM "USER" WHERE NAME = :name AND IS_DELETED = 'F'),
+            R.CONTACT
+            );
+        END LOOP;
+        END;
+        `;
+        // console.log(empDetails);
+
+        const binds = {
+            name: empName,
+            password: password,
+            email : empDetails[0].EMAIL,
+            zip : empDetails[0].ZIP_CODE === null ? 1200 : empDetails[0].ZIP_CODE,
+            adderId : adderId
+        };
+
+        // console.log(binds);
+
+        await execute(insertPlsql,binds);
+
+        const newAdmin = await userController.getUserByName({name:empName});
+
+        return newAdmin;
+
+    }catch (error) {
+        errors.push(`While adding admin got ${error.message}`);
+        return null;
+    }
+};
+
+const deleteUser = async (payload) => {
+    try{
+        errors.length = 0;
+        const userId = payload.userId;
+        const adminId = payload.deleterId;
+        const password = payload.password;
+
+
+        const user = await userController.getUserByID(userId);
+
+        if(user === null){
+            errors.push('User not found');
+            return 0;
+        }
+
+        if(user.TYPE === 'Admin'){
+            errors.push('Cannot delete admin');
+            return 0;	
+        }
+
+        const admin = await userController.getUserByID(adminId);
+
+        if(admin === null || admin.TYPE != 'Admin'){
+            errors.push(`Deleter not an admin`);
+            return 0;
+        }
+
+        const pass = await chkCreds(admin.NAME,password);
+
+        if(pass !== 1337){
+            errors.push(`Incorrect password`);
+            return 0;
+        }
+
+        const sql = `
+        UPDATE "USER"
+        SET IS_DELETED = 'T'
+        WHERE USER_ID = :userId
+        `;
+
+        const binds = {
+            userId: userId
+        }
+
+        await execute(sql,binds);
+
+        return await userController.getUserByID(userId);
+
+    }catch (error) {
+        errors.push(`While deleting admin got ${error.message}`);
+        return 0;
+    }
+}
+
+const deleteOrderPermanent = async (payload) => {
+    try{
+        errors.length = 0;
+        const adminId = payload.adminId;
+        const orderId = payload.orderId;
+
+        const admin = await userController.getUserByID(adminId);
+
+        if(admin === null || admin.TYPE !== 'Admin'){
+            errors.push(`Deletion permission denied`);
+            return 0;
+        }
+
+        const status = 'PENDING';
+
+        const sql = `
+        DELETE FROM "ORDER"
+        WHERE ORDER_ID = :orderId
+        AND STATUS = :status
+        `;
+
+        const binds = {
+            orderId: orderId,
+            status: status
+        };
+    
+        await execute(sql, binds);
+
+        return null;
+        
+    }catch (error) {
+        errors.push(`While deleting order ${orderId}`);
+        return null;
+    }
+}
 
 
 module.exports = {
@@ -219,5 +419,9 @@ module.exports = {
     getDailyProfit,
     getAllEmployeeNames,
     getAllEmployeeDetailsByFullname,
-    getAllUserNameAndType
+    getAllUserNameAndType,
+    addAdmin,
+    deleteUser,
+    deleteOrderPermanent,
+    getErrors
 }

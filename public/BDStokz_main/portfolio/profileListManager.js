@@ -1,10 +1,19 @@
     async function theFunction(){    
         var list = [];
-
+        let url = 'http://localhost:3000/admin/allUsers';
+        const userDataString = sessionStorage.getItem('userData');
+        let userDataset;
+        if (userDataString) {
+            userDataset = JSON.parse(userDataString);
+        }
+        if(userDataset.userType === 'Customer')
+        url = 'http://localhost:3000/broker';
+        else if(userDataset.userType === 'Broker')
+        url = 'http://localhost:3000/broker/customers?id='+userDataset.userId;
         //async function initTheShit(){
             try{
                 console.log("size of list is "+list.size);
-            const response = await fetch('http://localhost:3000/admin/allUsers'); // Change the URL to your backend API endpoint
+            const response = await fetch(url); // Change the URL to your backend API endpoint
             const list2 = await response.json();
             list2.forEach(element => {
                 list.push(element);

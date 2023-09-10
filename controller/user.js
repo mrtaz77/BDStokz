@@ -1,7 +1,8 @@
 const oracledb = require('oracledb');
 const db = require('../config/database.js');
 const validations = require('../util/validation');
-const {getUserTypeByName} = require('./login')
+//const {getUserTypeByName} = require('./login');
+const {getUserTypeByName,chkCreds} = require('./login');
 const fields = require('../util/fields')
 const {getAllStockDataBySymbol} = require('./stock')
 
@@ -21,9 +22,11 @@ const getPwdHash = async (pwd) => {
     // console.log(hash);
     // console.log(hash.outBinds.pwdHash);
     return hash.outBinds.pwdHash;
+    
 }
 
 const getUserByEmail = async (payload) => {
+    errors.length = 0;
     console.log(payload);
     const email = payload.email;
     console.log(`Fetching ${payload.email}...`);
@@ -39,17 +42,19 @@ const getUserByEmail = async (payload) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`User ${email} does not exist`);
+            errors.push(`User ${email} does not exist`);
             return null;
         }
-        console.log(result.rows[0]);
-        return result.rows[0];
+        console.log(result.rows);
+        return result.rows;
     }catch(err){
-        console.error(`Found error: ${err} while searching id ${email}`);
+        errors.push(`Found error: ${err} while searching id ${email}`);
+        return null;
     }
 }
 
 const getUserByName = async (payload) => {
+    errors.length = 0;
     console.log(payload);
     const name = payload.name;
     console.log(`Fetching ${name}...`);
@@ -79,6 +84,7 @@ const getUserByName = async (payload) => {
 
 
 const getUserByContact = async (contact) => {
+    errors.length = 0;
     console.log(`Fetching ${contact}...`);
     const sql = `
     SELECT USER_ID
@@ -92,7 +98,7 @@ const getUserByContact = async (contact) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`Contact ${contact} does not exist`);
+            //errors.push(`Contact ${contact} does not exist`);
             return null;
         }
         return result.rows[0];
@@ -103,12 +109,13 @@ const getUserByContact = async (contact) => {
 }
 
 const getUserByID = async (idP) => {
+    errors.length = 0;
     const id = idP;
     console.log(`Fetching ${idP}...`);
     const sql = `
     SELECT USER_ID,NAME,EMAIL,"TYPE",(STREET_NO||' '||STREET_NAME||', '||CITY||', '||COUNTRY) ADDRESS,ZIP
     FROM "USER"
-    WHERE USER_ID = :id
+    WHERE USER_ID = :id AND IS_DELETED = 'F'
     `;
     const binds = {
         id: id
@@ -117,12 +124,14 @@ const getUserByID = async (idP) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`User ${id} does not exist`);
+
+            errors.push(`User ${id} does not exist`);
             return null;
         }
         return result.rows[0];
     }catch(err){
         console.error(`Found error: ${err} while searching user ${id}`);
+        return null;
     }
 
 }
@@ -219,12 +228,12 @@ const chkAccountOfCustomer = async (accountNo) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`Account No ${accountNo} does not exist`);
+            //errors.push(`Account No ${accountNo} does not exist`);
             return null;
         }
         return result.rows[0];
     }catch(err){
-        console.error(`Found error: ${err} while searching account ${accountNo}`);
+        errors.push(`Found error: ${err} while searching account ${accountNo}`);
     }
 }
 
@@ -244,12 +253,12 @@ const chkLicenseOfBroker = async (licenseNo) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`License No ${licenseNo} does not exist`);
+            errors.push(`License No ${licenseNo} does not exist`);
             return null;
         }
         return result.rows[0];
     }catch(err){
-        console.error(`Found error: ${err} while searching license ${licenseNo}`);
+        errors.push(`Found error: ${err} while searching license ${licenseNo}`);
     }
 }
 
@@ -269,132 +278,118 @@ const chkRegOfCorp = async (corpRegNo) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`CorpReg No ${corpRegNo} does not exist`);
+            errors.push(`CorpReg No ${corpRegNo} does not exist`);
             return null;
         }
         return result.rows[0];
     }catch(err){
-        console.error(`Found error: ${err} while searching license ${corpRegNo}`);
+        errors.push(`Found error: ${err} while searching license ${corpRegNo}`);
     }
 }
-
 
 
 async function createCustomer (payload) {
     console.log(`In create customer ${payload}`);
     try{
-        if(payload.refererId !== null && await getUserByID(payload.refererId) == null){
-            console.log(`Customer ${payload.refererId} not registered`);
-            return;
-        }
-        if(payload.brokerId !== null && await getUserByID(payload.brokerId) == null){
-            console.log(`Broker ${payload.brokerId} not registered`);
-            return;
+        if(payload.refererName !== null){
+            console.log('getting referer');
+            const referer = await getUserByName({name:payload.refererName}) ;
+            if(referer === null){
+                errors.push(`Customer ${payload.refererName} not registered`);
+                return;
+            }
+            if(referer.TYPE !== 'Customer'){
+                errors.push(`Only a customer can refer site to someone`);
+                return;
+            }
         }
 
+
         if(await chkAccountOfCustomer(payload.accountNo) != null){
+            errors.push(`Account already in use`);
             console.log(`Account already in use`);
             return;
         }
         const pwdHash = await getPwdHash(payload.pwd);
 
-        const date = new Date();
-
-        // getting current date
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        console.log(`${day}-${month}-${year}`);
-
-        // This arrangement can be altered based on how we want the date's format to appear.
-        let dateInfo = `TO_DATE('${day}-${month}-${year}','DD-MM-YYYY')`;
-        console.log(dateInfo);
-
-        const userSql=`
-        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP, REG_DATE) values(
-            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip, ${dateInfo}
-        )
+        const insertPlSql = `
+        BEGIN
+            insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY, COUNTRY, ZIP) values (
+                :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip
+            );
+            
+            insert into CUSTOMER (USER_ID, ACCOUNT_NO, REFERER_ID, BROKER_ID) values (
+                (SELECT USER_ID FROM "USER" WHERE NAME = :name), :accountNo, (SELECT USER_ID FROM "USER" WHERE NAME = :refererName), null
+            );
+            
+            -- Loop for inserting contacts
+            FOR i IN 1 .. :contact_count LOOP
+                insert into USER_CONTACT values (
+                    (SELECT USER_ID FROM "USER" WHERE NAME = :name), :contacts(i)
+                );
+            END LOOP;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+        END;
         `;
 
         const userBinds = {
-            name : payload.name,
-            pwd : pwdHash,
-            email : payload.email,
-            type : payload.type,
-            streetNo : payload.streetNo,
-            streetName : payload.streetName,
-            city : payload.city,
-            country : payload.country,
-            zip : payload.zip
-        }
-        
+            name: payload.name,
+            pwd: pwdHash,
+            email: payload.email,
+            type: payload.type,
+            streetNo: payload.streetNo,
+            streetName: payload.streetName,
+            city: payload.city,
+            country: payload.country,
+            zip: payload.zip,
+            accountNo: payload.accountNo,
+            refererName: payload.refererName,
+            contact_count: payload.contact.length,
+            contacts: payload.contact
+        };
 
-        await db.execute(userSql,userBinds);
+        await db.execute(insertPlSql, userBinds);
 
-        const customerSql = `
-            insert into CUSTOMER (USER_ID, ACCOUNT_NO, REFERER_ID, BROKER_ID) values(
-                (SELECT USER_ID FROM "USER" WHERE NAME = :name),:accountNo,:refererId,:broKerId
-            )
-        `;
-        
-        const customerBinds = {
-            name : payload.name,
-            accountNo : payload.accountNo,
-            refererId : payload.refererId,
-            brokerId : payload.brokerId
-        }
-
-        await db.execute(customerSql,customerBinds);
-
-
-        for (const contactElement of payload.contact){
-            const conSql = `
-            insert into USER_CONTACT values (
-                (SELECT USER_ID FROM "USER" WHERE NAME = :name),:contact
-            )
-            `;
-
-            const conBinds = {
-                name : payload.name,
-                contact : contactElement
-            }
-
-            await db.execute(conSql,conBinds);
-        }
         console.log(`After inserting name`);
-        console.log(await getUserByName(payload.name));
+        console.log(await getUserByName(payload));
 
     }catch(err){
+        errors.push(`Failed to create ${payload} for error ${err}`);
         console.log(`Failed to create ${payload} for error ${err}`);
     }
 }
+
 
 async function createBroker (payload) {
     console.log(`Creating ${payload} broker `);
     try{
         if(await chkLicenseOfBroker(payload.licenseNo) != null ){ 
-            console.log(`License ${payload.licenseNo} already exists`);
+            errors.push(`License ${payload.licenseNo} already exists`);
             return;
         }
 
         const pwdHash = await getPwdHash(payload.pwd);
 
-        const date = new Date();
-
-        // getting current date
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        console.log(`${day}-${month}-${year}`);
-
-        // This arrangement can be altered based on how we want the date's format to appear.
-        let dateInfo = `TO_DATE('${day}-${month}-${year}','DD-MM-YYYY')`;
-        console.log(dateInfo);
-
-        const userSql=`
-        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP, REG_DATE) values(
-            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip, ${dateInfo}
-        )
+        const insertplSql=`
+        BEGIN
+        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP) values(
+            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip
+        );
+        insert into BROKER (USER_ID, LICENSE_NO, COMMISSION_PCT, EXPERTISE) values(
+            (SELECT USER_ID FROM "USER" WHERE NAME = :name),:licenseNo,0.01,:expertise
+        );
+        -- Loop for inserting contacts
+        FOR i IN 1 .. :contact_count LOOP
+            insert into USER_CONTACT values (
+                (SELECT USER_ID FROM "USER" WHERE NAME = :name), :contacts(i)
+            );
+        END LOOP;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+        END;
         `;
 
         const userBinds = {
@@ -406,77 +401,55 @@ async function createBroker (payload) {
             streetName : payload.streetName,
             city : payload.city,
             country : payload.country,
-            zip : payload.zip
-        }
-
-        await db.execute(userSql,userBinds);
-        
-        const brokerSql = `
-        insert into BROKER (USER_ID, LICENSE_NO, COMMISSION_PCT, EXPERTISE) values(
-            (SELECT USER_ID FROM "USER" WHERE NAME = :name),:licenseNo,:commissionPCT,:expertise
-        )
-        `;
-
-        const brokerBinds = {
-            name : payload.name,
+            zip : payload.zip,
             licenseNo : payload.licenseNo,
-            commissionPCT : payload.commissionPCT,
-            expertise : payload.expertise
-        }
+            expertise : payload.expertise,
+            contact_count: payload.contact.length,
+            contacts: payload.contact
+        };
 
-        await db.execute(brokerSql,brokerBinds);
+        await db.execute(insertplSql, userBinds);
 
-        for (const contactElement of payload.contact){
-            const conSql = `
-            insert into USER_CONTACT values (
-                (SELECT USER_ID FROM "USER" WHERE NAME = :name),:contactElement
-            )
-            `;
-
-            const conBinds = {
-                name : payload.name,
-                contactElement : contactElement
-            }
-
-            await db.execute(conSql,conBinds);
-        }
+        console.log(`After inserting name`);
+        console.log(await getUserByName(payload));
 
     }catch(err){
-        console.log(`Failed to create ${payload} for error ${err}`);
+        errors.push(`Failed to create ${payload} for error ${err}`);
     }
 }
 
 async function createCorp (payload) {
-    console.log(`Creating ${JSON.stringify(payload)} corporation`);
     try{
         if(await chkRegOfCorp(payload.corpRegNo) !== null){
-            console.log(`Reg no ${payload.corpRegNo} already exists`);
+            errors.push(`Reg no ${payload.corpRegNo} already exists`);
             return;
         }
 
         if(payload.sector == null){
-            console.log(`Corporation sector must be specified`);
+            errors.push(`Corporation sector must be specified`);
             return;
         }
 
         const pwdHash = await getPwdHash(payload.pwd);
 
-        const date = new Date();
-
-        // getting current date
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        console.log(`${day}-${month}-${year}`);
-
-        // This arrangement can be altered based on how we want the date's format to appear.
-        let dateInfo = `TO_DATE('${day}-${month}-${year}','DD-MM-YYYY')`;
-        console.log(dateInfo);
-
-        const userSql=`
-        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP, REG_DATE) values(
-            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip, ${dateInfo}
-        )
+        const insertplSql=`
+        BEGIN
+        insert into "USER" (NAME, PWD, EMAIL, "TYPE", STREET_NO, STREET_NAME, CITY , COUNTRY, ZIP) values(
+            :name, :pwd, :email, :type, :streetNo, :streetName, :city, :country, :zip
+        );
+        insert into CORPORATION (CORP_ID, CORP_REG_NO, SECTOR) values (
+            (SELECT USER_ID FROM "USER" WHERE NAME = :name),:corpRegNo,:sector
+        );
+        -- Loop for inserting contacts
+        FOR i IN 1 .. :contact_count LOOP
+            insert into USER_CONTACT values (
+                (SELECT USER_ID FROM "USER" WHERE NAME = :name), :contacts(i)
+            );
+        END LOOP;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+        END;
         `;
 
         const userBinds = {
@@ -488,47 +461,25 @@ async function createCorp (payload) {
             streetName : payload.streetName,
             city : payload.city,
             country : payload.country,
-            zip : payload.zip
-        }
-
-        await db.execute(userSql,userBinds);
-
-        const corpSql = `
-        insert into CORPORATION (CORP_ID, CORP_REG_NO, SECTOR) values (
-            (SELECT USER_ID FROM "USER" WHERE NAME = :name),:corpRegNo,:sector
-        )
-        `;
-
-        const corpBinds = {
-            name : payload.name,
+            zip : payload.zip,
             corpRegNo : payload.corpRegNo,
-            sector : payload.sector
-        }
+            sector : payload.sector,
+            contact_count: payload.contact.length,
+            contacts: payload.contact
+        };
 
-        await db.execute(corpSql,corpBinds);
+        await db.execute(insertplSql, userBinds);
 
-        for (const contactElement of payload.contact){
-            const conSql = `
-            insert into USER_CONTACT values (
-                (SELECT USER_ID FROM "USER" WHERE NAME = :name),:contactElement
-            )
-            `;
-
-            const conBinds = {
-                name : payload.name,
-                contactElement : contactElement
-            }
-
-            await db.execute(conSql,conBinds);
-        }
-
-
+        console.log(`After inserting name`);
+        console.log(await getUserByName(payload));
     }catch(err){
-        console.log(`Failed to create ${payload} for error ${err}`);
+        errors.push(`Failed to create ${payload} for error ${err}`);
     }
 }
+
 const isPrem = async (id) => {
     try{
+        errors.length = 0;
         let prem;
         console.log(`id: ${id}`);
         const plSql = `
@@ -554,9 +505,10 @@ const isPrem = async (id) => {
     }
 }
 const getProfileByName = async (name) => {
+    errors.length = 0;
     const type = await getUserTypeByName(name);
     if(type == null){
-        console.log(`No such user ${name} found`);
+        errors.push(`No such user ${name} found`);
         return null;
     }
     let sql;
@@ -579,19 +531,22 @@ const getProfileByName = async (name) => {
             break;
         case 'Customer':
             sql = `
-            SELECT 
-                USER_ID,
-                NAME,
-                EMAIL,
-                "TYPE",
-                STREET_NO,STREET_NAME,CITY,COUNTRY,
-                ZIP,
-                ACCOUNT_NO,
-                (SELECT NAME FROM "USER" WHERE USER_ID = REFERER_ID) REFERER,
-                REFER_COUNT,
-                (SELECT NAME FROM "USER" WHERE USER_ID = BROKER_ID) BROKER
-            FROM "USER" NATURAL JOIN CUSTOMER
-            WHERE NAME = :name
+            SELECT
+                U.USER_ID,
+                U.NAME,
+                U.EMAIL,
+                U."TYPE",
+                U.STREET_NO, U.STREET_NAME,U.CITY,U.COUNTRY,
+                U.ZIP,
+                C.ACCOUNT_NO,
+                ( SELECT NAME FROM "USER" WHERE USER_ID = C.REFERER_ID ) REFERER,
+                C.REFER_COUNT,
+                ( SELECT NAME FROM "USER" WHERE USER_ID = C.BROKER_ID ) BROKER 
+            FROM
+                "USER" U
+                LEFT OUTER JOIN CUSTOMER C ON U.USER_ID = C.USER_ID 
+            WHERE
+                U.NAME = :name 
             `;
             break;
         case 'Broker':
@@ -606,7 +561,7 @@ const getProfileByName = async (name) => {
                 LICENSE_NO,
                 COMMISSION_PCT,
                 EXPERTISE,
-                (SELECT COUNT(*) FROM CUSTOMER WHERE BROKER_ID = USER_ID) NUM_OF_CUSTOMERS
+                NVL((SELECT COUNT(*) FROM CUSTOMER WHERE BROKER_ID = USER_ID),0) NUM_OF_CUSTOMERS
             FROM "USER" NATURAL JOIN BROKER
             WHERE NAME = :name
             `;
@@ -642,10 +597,10 @@ const getProfileByName = async (name) => {
     try{
         const result = await db.execute(sql,binds);
         if(result.rows.length==0){
-            console.log(`No such user ${name} found`);
+            errors.push(`No such user ${name} found`);
             return null;
         }
-        console.log(result.rows);
+        //console.log(result.rows);
         return result.rows;
     }catch(err){
         console.error(`Found error: ${err} while searching for user ${name}...`);
@@ -653,6 +608,7 @@ const getProfileByName = async (name) => {
 };
 
 const getContactByName = async (name)=>{
+    errors.length = 0;
     const sql = `
     SELECT CONTACT 
     FROM USER_CONTACT
@@ -666,13 +622,14 @@ const getContactByName = async (name)=>{
     try{
         const result = await db.execute(sql,bind);
         if(result.rows.length==0){
-            console.log(`No such user ${name} found`);
+            errors.push(`No such user ${name} found`);
             return null;
         }
         console.log(result.rows);
         return result.rows;
     }catch(err){
-        console.error(`Found error: ${err} while getting contact for user ${name}...`);
+        errors.push(`Found error: ${err} while getting contact for user ${name}...`);
+        return null;
     }
 }
 
@@ -769,7 +726,8 @@ const updateProfile = async (payload)=>{
                 }
             }
             if(field == `SYMBOL`){
-                const stock = getAllStockDataBySymbol({symbol:newValue});
+                const stock = await getAllStockDataBySymbol({symbol:newValue});
+                console.log('stock: ', stock);
                 if(stock != null){
                     errors.push(`Symbol already in use`);
                 }
@@ -802,7 +760,7 @@ const updateProfile = async (payload)=>{
             newValue: newValue,
             userId : userId 
         }
-        console.log(sql);
+        //console.log(sql);
 
         if(errors.length == 0)await db.execute(sql,binds);
         else{
@@ -834,8 +792,8 @@ const addContact = async (payload)=> {
         }
 
         if(!validations.validateContact(contact)){
-            errors.push(`Contact in valid`);
-            console.log(`Contact in valid`);
+            errors.push(`Contact invalid`);
+            console.log(`Contact invalid`);
             return null;
         }
 
@@ -867,6 +825,50 @@ const addContact = async (payload)=> {
         return null;
     }
 };
+
+
+const deleteAccount = async (payload) => {
+    try{    
+        errors.length = 0;
+        const userId = payload.userId;
+        const pwd = payload.password;
+
+        const user = await getUserByID(userId);
+
+        if(user === null){
+            errors.push(`User ${payload.userId} does not exist`);
+            return 0;
+        }
+
+        const pass = await chkCreds(user.NAME,pwd);
+
+        if(pass !== 1337){
+            console.error(`Incorrect password`);
+            return 0;
+        }
+
+        const sql = `
+        UPDATE "USER"
+        SET IS_DELETED = 'T'
+        WHERE USER_ID = :userId
+        `;
+
+        const binds = {
+            userId: userId
+        }
+
+        await db.execute(sql,binds);
+
+        return await getUserByID(userId);
+
+    }catch(err){
+        errors.push(`Found ${err.message} while deleting account of ${payload.userId}...`);
+        return 0;
+    }
+}
+
+
+
 
 const deleteContact = async (payload) => {
     errors.length = 0;
@@ -930,5 +932,6 @@ module.exports = {
     getContactByName,
     updateProfile,
     addContact,
-    deleteContact
+    deleteContact,
+    deleteAccount
 };

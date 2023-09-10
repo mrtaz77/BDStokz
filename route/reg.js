@@ -4,12 +4,8 @@ const router = express.Router({mergeParams: true});
 const authUtils = require('./authUtil');
 
 router.get('/',(req,res)=>{
-    if(req.user == null){
-        res.redirect('/');
-    }
-    else{
+    if(req.user != null){
         console.log(`${req.user.name} logged`);
-        //res.redirect('/user');
     }
 });
 
@@ -17,7 +13,7 @@ router.post('/',async(req, res)=>{
     console.log(req.body);
     // check if already logged in
     if(req.user == null){
-        let errors = [];
+        //let errors = [];
         console.log(`In reg router: ${req.body}`);
         const result = await userController.createUser(req.body);
         // if(result == null){
@@ -27,7 +23,7 @@ router.post('/',async(req, res)=>{
         //console.log(result.NAME);
         if((result == null)||(result == undefined)){
             const errors = await userController.getErrors();
-            res.status(200).json({ message: 'errors',err:errors});
+            res.status(400).json({ message: 'errors',err:errors});
             console.log(errors);
             console.log(`Error creating new user...`);
             //res.redirect('/');
