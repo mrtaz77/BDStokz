@@ -960,7 +960,43 @@ const deleteAccount = async (payload) => {
     }
 }
 
+const getOwnsInfoByUserId = async (userId) => {
+    try{
+        errors.length = 0;
+
+        const user = await getUserById(userId);
+
+        if(user === null){
+            errors.push(`Not a registered user`);
+            return null;
+        }
+
+
+        const sql = `
+        SELECT 
+            SYMBOL,
+            QUANTITY
+        FROM 
+            OWNS 
+        WHERE USER_ID = :user_id    
+        `;
+
+        const bind = {
+            user_id : userId
+        };
+
+        const owns = await db.execute(sql,bind);
+
+        return owns.rows;
+
+    }catch(err){
+        errors.push(`Found ${err.message} while getting owns of ${payload.userId}...`);
+        return null;
+    }
+}
+
 module.exports = {
+    getOwnsInfoByUserId,
     getPwdHash,
     getUserByEmail,
     getUserByName,
