@@ -43,8 +43,7 @@ router.patch('/updateStock',[
             return res.status(400).json({ message: 'Error updating stock' });
         }
 
-        console.log(`Successfully updated ${req.body.field} of ${req.body.symbol} to ${req.body.newValue}`);
-        res.json(result);
+        res.status(200).json({message: `Successfully updated ${req.body.field} of ${req.body.symbol} to ${req.body.newValue}`,result : result});
 
     }catch (err) {
         console.log(err);
@@ -59,9 +58,9 @@ router.patch('/block/:set',[
     try{
         const result = await adminController.block(req.params.set, req.body);
         if(result == null){
-            console.log(`${req.body.symbol} is not in db`);
+            return res.status(400).json({ message: `${req.body.symbol} is not in db` });
         }else{
-            console.log(`${req.body.symbol} status set successfully`);
+            res.status(200).json({message: `${req.body.symbol} status set successfully`});
         }
     }catch (err) {
         console.log(err);
