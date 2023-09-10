@@ -74,7 +74,7 @@ router.get('/profile/:name', async (req, res) => {
             // User not found
             res.status(404).json({ error: 'User not found' });
         } else {
-            res.json(userProfile);
+            res.status(200).json(userProfile);
         }
     } catch (error) {
         console.error(error);
@@ -110,12 +110,12 @@ router.patch('/updateProfile',[
     try{
         const result = await userController.updateProfile(req.body);
         if (result === null) {
-            console.log(`Error updating ${req.body.field} of user to ${req.body.newValue}`);
-            return res.status(400).json({ message: 'Error updating user' });
+            // console.log(`Error updating ${req.body.field} of user to ${req.body.newValue}`);
+            return res.status(400).json({ message: `Error updating ${req.body.field} of user to ${req.body.newValue}` });
         }
 
         console.log(`Successfully updated ${req.body.field} of user to ${req.body.newValue}`);
-        res.json({ message: 'User info updated successfully' });
+        res.status(200).json({ message: 'User info updated successfully' });
 
     }catch(error) {
         console.error(error);
@@ -136,7 +136,7 @@ router.delete('/delContact', [
         }
 
         console.log(`Successfully deleted ${req.body.contact} of user ${req.body.userId}`);
-        res.json({ message: 'Contact deleted successfully' });
+        res.status(200).json({ message: 'Contact deleted successfully' });
 
     } catch (error) {
         console.error(error);

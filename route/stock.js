@@ -1,5 +1,10 @@
 const router = require('express-promise-router')();
-const {getAllStockSymbol,getAllStockDataBySymbol, getTopLoserGainer,getAnnualAvgPrice} = require('../controller/stock');
+const {
+    getAllStockSymbol
+    ,getAllStockDataBySymbol
+    , getTopLoserGainer
+    ,getAnnualAvgPrice
+} = require('../controller/stock');
 
 router.get('/',async (req, res,next) => {
     try{    const stocks = await getAllStockSymbol(req.query);

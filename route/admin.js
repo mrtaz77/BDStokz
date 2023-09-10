@@ -43,7 +43,7 @@ router.patch('/updateStock',[
             return res.status(400).json({ message: 'Error updating stock' });
         }
 
-        res.status(200).json({message: `Successfully updated ${req.body.field} of ${req.body.symbol} to ${req.body.newValue}`,result : result});
+        return res.status(200).json({message: `Successfully updated ${req.body.field} of ${req.body.symbol} to ${req.body.newValue}`,result : result});
 
     }catch (err) {
         console.log(err);
@@ -52,7 +52,7 @@ router.patch('/updateStock',[
 })
 
 router.patch('/block/:set',[
-    body('symbol').notEmpty().withMessage('userId is required'),
+    body('symbol').notEmpty().withMessage('symbol is required'),
 ],async (req, res,next) => {
     console.log(`Requesting block ${req.body.symbol} and ${req.params.set}`);
     try{
@@ -88,6 +88,7 @@ router.delete('/deleteUser',[
         }
     }catch (error) {
         res.status(500).json({ error: `An error occurred ${error}` }); // Send an appropriate error response
+        next(error);
     }
 });
 
@@ -108,7 +109,7 @@ router.get('/allEmployees',async (req,res,next)=>{
         if(employeeNames == null){
             return res.status(400).json({ message: 'employees not found' });
         }
-        else res.json(employeeNames);
+        return res.json(employeeNames);
     }catch (err) {
         console.log(err);
         next(err);
@@ -138,7 +139,7 @@ router.get('/allUsers',async (_req,res,next)=>{
         if(users == null){
             return res.status(400).json({ message: 'users not found' });
         }
-        else res.json(users);
+        return res.json(users);
     }catch (err) {
         console.log(err);
         next(err);
@@ -151,7 +152,7 @@ router.get('/allOrders',async (_req,res,next)=>{
         if(orders == null){
             return res.status(400).json({ message: 'orders not found' });
         }
-        else res.json(orders);
+        return res.json(orders);
     }catch (err) {
         console.log(err);
         next(err);
@@ -167,11 +168,12 @@ router.post('/addAdmin',[
 
         if (result === null) {
             console.log(`Error updating ${req.body.empName} as admin by ${req.body.adminId}`);
-            return res.status(400).json({ message: 'Error adding admin' });
+            const errors = await adminController.getAdminErrors();
+            return res.status(400).json({ message: 'Error adding admin', errors:errors});
         }
 
         console.log(`Successfully added ${req.body.empName} as admin by ${req.body.adminId}`);
-        res.json(result);
+        res.status(200).json(result);
 
     }catch (err) {
         console.log(err);

@@ -16,10 +16,6 @@ router.post('/',async(req, res)=>{
         let errors = [];
         // console.log(`In reg router: ${req.body}`);
         const result = await userController.createUser(req.body);
-        if(result == null){
-            const errors = await userController.getUserErrors();
-            res.status(400).json({ message: 'errors',err:errors});
-        }
         //console.log(result.NAME);
         if((result == null)||(result == undefined)){
             res.status(400).json({ message: 'error'});

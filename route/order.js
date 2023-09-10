@@ -116,7 +116,10 @@ router.post('/placeOrder', [
         if (result != null) {
             res.status(200).json({ message: 'Order placed successfully', order: result });
         } else {
-            res.status(400).json({ error: `Order was not placed` });
+            const errors = await getOrderErrors();
+            errors.push(`Order was not placed`);
+            res.status(400).json({ message: `Order was not placed`,errors:errors});
+            // res.status(400).json({ error: `Order was not placed` });
         }
     } catch (error) {
         // Handle errors here
@@ -183,7 +186,7 @@ router.patch('/update',[
       // Check for validation errors
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ errors: errors });
         }
 
         // Call your controller function to place the order
