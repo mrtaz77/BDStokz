@@ -1,0 +1,150 @@
+Date : 2023-09-11 06:27:01
+Directory : d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project
+Total : 94 files,  32083 codes, 185 comments, 1181 blanks, all 33449 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| SQL        |         54 |     26,978 |         48 |        459 |     27,485 |
+| JavaScript |         32 |      3,512 |        110 |        692 |      4,314 |
+| JSON       |          2 |      1,520 |          0 |          2 |      1,522 |
+| Python     |          4 |         50 |         26 |         22 |         98 |
+| Ruby       |          1 |         19 |          1 |          6 |         26 |
+| HTTP       |          1 |          4 |          0 |          0 |          4 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                       | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                          |         94 |     32,083 |        185 |      1,181 |     33,449 |
+| . (Files)                                                                                                                  |          5 |      1,564 |          3 |         18 |      1,585 |
+| SQL Dump                                                                                                                   |         59 |     27,047 |         75 |        487 |     27,609 |
+| SQL Dump (Files)                                                                                                           |          6 |        951 |         28 |        239 |      1,218 |
+| SQL Dump\Functions                                                                                                         |          7 |        216 |          2 |         14 |        232 |
+| SQL Dump\PopulateTableUtil                                                                                                 |         33 |     24,589 |         30 |         62 |     24,681 |
+| SQL Dump\PopulateTableUtil\ACTIVITY                                                                                        |          2 |        507 |          0 |          3 |        510 |
+| SQL Dump\PopulateTableUtil\ADMIN                                                                                           |          1 |          7 |          0 |          4 |         11 |
+| SQL Dump\PopulateTableUtil\BACKUP STOCK                                                                                    |          1 |         21 |          0 |          1 |         22 |
+| SQL Dump\PopulateTableUtil\BROKER                                                                                          |          1 |      1,000 |          0 |          1 |      1,001 |
+| SQL Dump\PopulateTableUtil\CORPORATION                                                                                     |          1 |        503 |          0 |          0 |        503 |
+| SQL Dump\PopulateTableUtil\CUSTOMER                                                                                        |          1 |      1,000 |          0 |          1 |      1,001 |
+| SQL Dump\PopulateTableUtil\EMPLOYEE                                                                                        |          4 |        645 |          3 |          7 |        655 |
+| SQL Dump\PopulateTableUtil\EMP_CONTACT                                                                                     |          1 |        320 |          0 |          1 |        321 |
+| SQL Dump\PopulateTableUtil\ORDER                                                                                           |          1 |      2,952 |          0 |          1 |      2,953 |
+| SQL Dump\PopulateTableUtil\PARTICIPATION                                                                                   |          3 |      1,969 |          8 |          7 |      1,984 |
+| SQL Dump\PopulateTableUtil\PORTFOLIO                                                                                       |          3 |      1,961 |          8 |          7 |      1,976 |
+| SQL Dump\PopulateTableUtil\STOCK                                                                                           |          4 |      2,416 |          8 |         10 |      2,434 |
+| SQL Dump\PopulateTableUtil\USER                                                                                            |          8 |      4,529 |          1 |         13 |      4,543 |
+| SQL Dump\PopulateTableUtil\USER_CONTACT                                                                                    |          2 |      6,759 |          2 |          6 |      6,767 |
+| SQL Dump\Procedures                                                                                                        |          4 |        201 |          7 |         26 |        234 |
+| SQL Dump\Triggers                                                                                                          |          7 |      1,060 |          8 |        145 |      1,213 |
+| SQL Dump\Update                                                                                                            |          2 |         30 |          0 |          1 |         31 |
+| config                                                                                                                     |          1 |         63 |          3 |         10 |         76 |
+| controller                                                                                                                 |         11 |      2,414 |         27 |        447 |      2,888 |
+| middleware                                                                                                                 |          2 |         54 |          3 |         11 |         68 |
+| route                                                                                                                      |         13 |        836 |         74 |        195 |      1,105 |
+| util                                                                                                                       |          3 |        105 |          0 |         13 |        118 |
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                                   | language   | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Functions\Format.sql                                     | SQL        |         31 |          0 |          2 |         33 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Functions\SectorOfStock.sql                              | SQL        |          9 |          0 |          0 |          9 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Functions\commissionPct.sql                              | SQL        |         18 |          0 |          1 |         19 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Functions\cred.sql                                       | SQL        |         36 |          0 |          6 |         42 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Functions\format_timestamp_order.sql                     | SQL        |         14 |          1 |          1 |         16 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Functions\orderStock.sql                                 | SQL        |         93 |          1 |          4 |         98 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Functions\timeToEpoch.sql                                | SQL        |         15 |          0 |          0 |         15 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\ACTIVITY\activity1061format.sql        | SQL        |        106 |          0 |          1 |        107 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\ACTIVITY\activity4001format.sql        | SQL        |        401 |          0 |          2 |        403 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\ADMIN\Admin71.sql                      | SQL        |          7 |          0 |          4 |         11 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\BACKUP STOCK\populate.sql              | SQL        |         21 |          0 |          1 |         22 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\BROKER\broker10001.sql                 | SQL        |      1,000 |          0 |          1 |      1,001 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\CORPORATION\corp5031.sql               | SQL        |        503 |          0 |          0 |        503 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\CUSTOMER\customer10001.sql             | SQL        |      1,000 |          0 |          1 |      1,001 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\EMPLOYEE\TEMP_ADDRESS.sql              | SQL        |        214 |          0 |          1 |        215 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\EMPLOYEE\employee2001format.sql        | SQL        |        200 |          0 |          0 |        200 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\EMPLOYEE\employee71Admin.sql           | SQL        |          7 |          2 |          1 |         10 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\EMPLOYEE\hardCodeAddressEmployee.sql   | SQL        |        224 |          1 |          5 |        230 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\EMP_CONTACT\empContact.sql             | SQL        |        320 |          0 |          1 |        321 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\ORDER\order3000.sql                    | SQL        |      2,952 |          0 |          1 |      2,953 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\PARTICIPATION\correction.py            | Python     |         14 |          8 |          5 |         27 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\PARTICIPATION\participation10001.sql   | SQL        |      1,000 |          0 |          1 |      1,001 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\PARTICIPATION\participationCorrect.sql | SQL        |        955 |          0 |          1 |        956 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\PORTFOLIO\correction.py                | Python     |         14 |          8 |          5 |         27 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\PORTFOLIO\portfolio10001.sql           | SQL        |      1,000 |          0 |          1 |      1,001 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\PORTFOLIO\portfolioCorrect.sql         | SQL        |        947 |          0 |          1 |        948 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\STOCK\correction.py                    | Python     |         12 |          8 |          7 |         27 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\STOCK\stock1001.sql                    | SQL        |      1,000 |          0 |          1 |      1,001 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\STOCK\stock1001format.sql              | SQL        |      1,000 |          0 |          1 |      1,001 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\STOCK\stockCorrect.sql                 | SQL        |        404 |          0 |          1 |        405 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\USER\Admin71format.sql                 | SQL        |          7 |          0 |          1 |          8 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\USER\Broker10001format.sql             | SQL        |      1,000 |          0 |          1 |      1,001 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\USER\Corp32.sql                        | SQL        |          3 |          0 |          0 |          3 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\USER\Corp5001format.sql                | SQL        |        500 |          0 |          1 |        501 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\USER\Customer10001format.sql           | SQL        |      1,000 |          0 |          1 |      1,001 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\USER\Customer10002format.sql           | SQL        |      1,000 |          0 |          1 |      1,001 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\USER\Customer10003format.sql           | SQL        |      1,000 |          0 |          2 |      1,002 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\USER\util.rb                           | Ruby       |         19 |          1 |          6 |         26 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\USER_CONTACT\gen.py                    | Python     |         10 |          2 |          5 |         17 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\PopulateTableUtil\USER_CONTACT\user_contact50001.sql     | SQL        |      6,749 |          0 |          1 |      6,750 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Procedures\Daily_profit.sql                              | SQL        |         48 |          6 |          8 |         62 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Procedures\IS_PREM.sql                                   | SQL        |         27 |          1 |          0 |         28 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Procedures\avgYear.sql                                   | SQL        |         52 |          0 |          1 |         53 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Procedures\sell_order_success.sql                        | SQL        |         74 |          0 |         17 |         91 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Triggers\deletionTriggers.sql                            | SQL        |        172 |          0 |         19 |        191 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Triggers\logTriggers.sql                                 | SQL        |        296 |          5 |         61 |        362 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Triggers\moreTriggers.sql                                | SQL        |         97 |          0 |          5 |        102 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Triggers\order_triggers.sql                              | SQL        |        436 |          0 |         55 |        491 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Triggers\referCount.sql                                  | SQL        |         11 |          0 |          0 |         11 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Triggers\regDate.sql                                     | SQL        |          6 |          0 |          0 |          6 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Triggers\stock.sql                                       | SQL        |         42 |          3 |          5 |         50 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Update\adminTable.sql                                    | SQL        |         18 |          0 |          1 |         19 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\Update\orderTableSymbolCorrection.sql                    | SQL        |         12 |          0 |          0 |         12 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\checkSchema.sql                                          | SQL        |         59 |          4 |         15 |         78 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\createTable.sql                                          | SQL        |        295 |         15 |         91 |        401 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\deleteTables.sql                                         | SQL        |         19 |          2 |          2 |         23 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\deletionDML.sql                                          | SQL        |         21 |          0 |          2 |         23 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\logDML.sql                                               | SQL        |        389 |          5 |         83 |        477 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\SQL Dump\orderCorrection.sql                                      | SQL        |        168 |          2 |         46 |        216 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\app.js                                                            | JavaScript |         32 |          2 |         12 |         46 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\config\database.js                                                | JavaScript |         63 |          3 |         10 |         76 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\controller\activity.js                                            | JavaScript |         73 |          0 |         11 |         84 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\controller\admin.js                                               | JavaScript |        376 |          3 |         85 |        464 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\controller\broker.js                                              | JavaScript |         66 |          0 |         13 |         79 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\controller\corporation.js                                         | JavaScript |         70 |          1 |         24 |         95 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\controller\customer.js                                            | JavaScript |         56 |          0 |         12 |         68 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\controller\log.js                                                 | JavaScript |        110 |          0 |         24 |        134 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\controller\login.js                                               | JavaScript |        155 |          2 |         18 |        175 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\controller\order.js                                               | JavaScript |        320 |          9 |         93 |        422 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\controller\participate.js                                         | JavaScript |         55 |          1 |         16 |         72 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\controller\stock.js                                               | JavaScript |        252 |          3 |         22 |        277 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\controller\user.js                                                | JavaScript |        881 |          8 |        129 |      1,018 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\index.js                                                          | JavaScript |          8 |          1 |          4 |         13 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\middleware\auth.js                                                | JavaScript |         36 |          2 |          7 |         45 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\middleware\errHandler.js                                          | JavaScript |         18 |          1 |          4 |         23 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\package-lock.json                                                 | JSON       |      1,491 |          0 |          1 |      1,492 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\package.json                                                      | JSON       |         29 |          0 |          1 |         30 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\activity.js                                                 | JavaScript |         17 |          3 |          8 |         28 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\admin.js                                                    | JavaScript |        189 |          3 |         36 |        228 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\authUtil.js                                                 | JavaScript |         12 |          4 |          5 |         21 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\broker.js                                                   | JavaScript |         33 |          8 |          8 |         49 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\corp.js                                                     | JavaScript |         26 |          0 |          6 |         32 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\customer.js                                                 | JavaScript |          4 |          0 |          1 |          5 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\login.js                                                    | JavaScript |         66 |          6 |         22 |         94 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\logout.js                                                   | JavaScript |         36 |          1 |         10 |         47 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\order.js                                                    | JavaScript |        169 |         36 |         34 |        239 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\participate.js                                              | JavaScript |         29 |          0 |          4 |         33 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\reg.js                                                      | JavaScript |         25 |          6 |          3 |         34 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\stock.js                                                    | JavaScript |         44 |          1 |          6 |         51 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\route\user.js                                                     | JavaScript |        186 |          6 |         52 |        244 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\testClient.http                                                   | HTTP       |          4 |          0 |          0 |          4 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\util\HttpStatus.js                                                | JavaScript |         66 |          0 |          5 |         71 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\util\fields.js                                                    | JavaScript |         12 |          0 |          1 |         13 |
+| d:\OG D drive\Level 2 Term 2\CSE 216\Projects\DB-Project\util\validation.js                                                | JavaScript |         27 |          0 |          7 |         34 |
+| Total                                                                                                                      |            |     32,083 |        185 |      1,181 |     33,449 |
++----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
