@@ -28,6 +28,26 @@ router.get('/log', async (req, res) => {
     }
 });
 
+router.get('/backUpStock', async (req, res) => {
+    try{
+        console.log(req.query);
+
+        const backUpStocks = await adminController.getBackUpStockOwns(req.query);
+
+        if (!backUpStocks || backUpStocks.length === 0) {
+            // If no logs are found, send a 400 response
+            const errors = await adminController.getAdminErrors();
+            return res.status(400).json({ message: 'errors',err:errors});
+        }
+
+        res.status(200).json(backUpStocks);
+
+    }catch(err){
+        console.error('Error:', err);
+        res.status(500).json({ error: 'An error occurred' }); // Send an appropriate error response
+    }
+});
+
 router.patch('/updateStock',[
     body('adminId').notEmpty().withMessage('adminId is required'),
     body('symbol').notEmpty().withMessage('symbol of stock is required'),

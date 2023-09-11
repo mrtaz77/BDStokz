@@ -978,7 +978,8 @@ const getOwnsInfoByUserId = async (userId) => {
             QUANTITY
         FROM 
             OWNS 
-        WHERE USER_ID = :user_id    
+        WHERE USER_ID = :user_id  
+        ORDER BY QUANTITY DESC
         `;
 
         const bind = {

@@ -410,7 +410,46 @@ const deleteOrderPermanent = async (payload) => {
     }
 }
 
+const getBackUpStockOwns = async (payload) => {
+    try{
+        const adminId = payload.adminId;
+        const admin = await userController.getUserById(adminId);
+
+        if(admin === null || admin.TYPE !== 'Admin'){
+            errors.push(`Access denied`);
+            return null;
+        }
+
+        let field = payload.field;
+
+        if(!(field === 'SYMBOL' || field === 'AVAILABLE_LOTS' || field === 'BLOCKED')){
+            field = 'AVAILABLE_LOTS';
+        }
+
+        let order = payload.order;
+
+        if(!(order === `ASC` || order === `DESC`)){
+            order = `DESC`;
+        }
+
+        const sql = `
+        SELECT *
+        FROM "BACKUP STOCK"
+        ORDER BY ${field} ${order}
+        `;
+
+        const backUpStock = await execute(sql,{});
+
+        return backUpStock.rows;
+
+    }catch(err){
+        errors.push(`Found ${err.message} while getting backup stock data...`);
+        return null;
+    }
+} 
+
 module.exports = {
+    getBackUpStockOwns,
     getAllCustomerInfo,
     updateStock,
     block,
