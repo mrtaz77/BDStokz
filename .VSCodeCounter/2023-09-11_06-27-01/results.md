@@ -2,8 +2,6 @@
 
 Date : 2023-09-11 06:27:01
 
-Directory d:\\OG D drive\\Level 2 Term 2\\CSE 216\\Projects\\DB-Project
-
 Total : 94 files,  32083 codes, 185 comments, 1181 blanks, all 33449 lines
 
 Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
