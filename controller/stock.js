@@ -42,7 +42,7 @@ const getAllStockDataBySymbol = async (payload) => {
     const sql = `
     SELECT
         S.SYMBOL,
-        U.NAME AS CORP_NAME,
+        U.NAME CORP_NAME,
         C.SECTOR,
         S.UPDATE_TIME,
         S.VALUE,
@@ -51,12 +51,12 @@ const getAllStockDataBySymbol = async (payload) => {
         S.AVAILABLE_LOTS,
         S.LOT,
         S.BLOCKED,
-        OPEN(S.SYMBOL) AS OPEN,
-        CLOSE(S.SYMBOL) AS CLOSE,
-        HIGH(S.SYMBOL) AS HIGH,
-        LOW(S.SYMBOL) AS LOW,
-        ROUND(AVG(S.LTP - NVL(O.LATEST_PRICE, S.LTP)), 4) AS CHANGE,
-        ROUND(AVG((S.LTP - NVL(O.LATEST_PRICE, S.LTP)) / NVL(O.LATEST_PRICE, S.LTP) * 100), 4) AS "CHANGE%",
+        OPEN(S.SYMBOL) OPEN,
+        CLOSE(S.SYMBOL)  CLOSE,
+        HIGH(S.SYMBOL)  HIGH,
+        LOW(S.SYMBOL) LOW,
+        ROUND(AVG(NVL(S.LTP - O.LATEST_PRICE, 0)), 4) AS CHANGE,
+        ROUND(AVG(NVL((S.LTP - O.LATEST_PRICE) / NVL(O.LATEST_PRICE, S.LTP) * 100, 0)), 4) AS "CHANGE%",
         ROUND(AVG(NVL(
             (
             SELECT SUM(O4.LATEST_QUANTITY) 
@@ -189,7 +189,7 @@ const getTopLoserGainer = async(payload) => {
                 AND TRUNC( O3.TRANSACTION_TIME ) = TRUNC( O1.TRANSACTION_TIME ) 
             ) 
         ) C ON S.SYMBOL = C.SYMBOL 
-        WHERE S.BLOCKED = 'F'
+        WHERE S.BLOCKED = 'F' AND S.LTP > 0
 		GROUP BY 
 			S.SYMBOL, S.LTP , S.CORP_ID
     ORDER BY
