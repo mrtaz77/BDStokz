@@ -15,7 +15,7 @@ router.post('/', async (req, res,next) => {
             // Handle the case where the session token is not found in the cookie.
             return res.status(400).json({ message: 'No session token found' });
         }
-        const decodedToken = jwt.verify(userSessionToken, process.env.JWT_SECRET);
+        const decodedToken = jwt.verify(userSessionToken,"53r37_L3Ak3D");
 
         const name = decodedToken.name;
         const userId = decodedToken.userId;

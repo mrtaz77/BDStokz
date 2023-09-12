@@ -680,12 +680,12 @@ const updateProfile = async (payload)=>{
                 }
             }else if(field == `REFERER_ID`){
                 const result = await getUserByName({name:newValue});
-                if(result == null || result[0].TYPE != 'Customer'){
+                if(result == null ){
                     errors.push(`Invalid referer...`);
                 }
             }else if(field == `BROKER_ID`){
                 const result = await getUserByName({name:newValue});
-                if(result == null || result[0].TYPE != 'Broker'){
+                if(result == null ){
                     errors.push(`Invalid broker...`);
                 }
             }
@@ -698,7 +698,7 @@ const updateProfile = async (payload)=>{
                     WHERE USER_ID = :userId
                     `;
                     break;
-                default:
+                case `BROKER_ID`:
                     sql = `
                     UPDATE CUSTOMER
                     SET ${field} = (SELECT USER_ID FROM "USER" WHERE NAME = :newValue) 

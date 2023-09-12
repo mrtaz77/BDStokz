@@ -110,7 +110,7 @@ const getUserLoginInfoByName = async (name) => {
                 ZIP,
                 CORP_REG_NO,
                 SECTOR
-            FROM "USER" NATURAL JOIN CORPORATION
+            FROM "USER" JOIN CORPORATION ON corp_id = user_id
             WHERE NAME = :name
             AND "USER".IS_DELETED = 'F' 
             `;

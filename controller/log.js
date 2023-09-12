@@ -24,7 +24,7 @@ const getAllAdminLogs = async (userId) => {
             DESCRIPTION,
             FORMAT_TIMESTAMP_ORDER(EVENT_TIME) EVENT_TIME 
         FROM ADMIN_LOG 
-        ORDER BY EVENT_TIME DESC ,ADMIN_LOG_ID DESC
+        ORDER BY ADMIN_LOG_ID DESC
         `;
 
         const result = await execute(sql,{});
@@ -53,7 +53,7 @@ const getUserLogsById = async (userId) => {
         FORMAT_TIMESTAMP_ORDER(EVENT_TIME) EVENT_TIME
         FROM USER_LOG
         WHERE USER_ID = :user_id 
-        ORDER BY EVENT_TIME DESC , USER_LOG_ID DESC
+        ORDER BY  USER_LOG_ID DESC
         `;
 
         const result = await execute(sql,{user_id:userId});

@@ -65,7 +65,7 @@ router.post('/', async (req, res) => {
 
                 return res.json({
                     message: 'Login successful',
-                    userId: req.body.username,
+                    userId: results[0].USER_ID,
                     userType: results[0].TYPE,
                 });
                 //return res.json({ message: 'Login successful' });

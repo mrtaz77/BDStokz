@@ -58,9 +58,9 @@
                     <div class="dropdown-menu dropdown-menu-end dropdown-lg pt-0">
 
                         <h6 class="dropdown-item-text font-15 m-0 py-3 border-bottom d-flex justify-content-between align-items-center">
-                            Notifications <span class="badge bg-soft-primary badge-pill">2</span>
+                            Notifications <span class="badge bg-soft-primary badge-pill" id="badgeOfTheLogTable">2</span>
                         </h6>
-                        <div class="notification-menu" data-simplebar>
+                        <div id="logTableHolder" class="notification-menu" data-simplebar>
                             <!-- item-->
                             <a href="#" class="dropdown-item py-3">
                                     <small class="float-end text-muted ps-2">2 min ago</small>
@@ -133,9 +133,9 @@
                             <!--end-item-->
                         </div>
                         <!-- All-->
-                        <a href="javascript:void(0);" class="dropdown-item text-center text-primary">
+                        <!-- <a href="javascript:void(0);" class="dropdown-item text-center text-primary">
                                 View all <i class="fi-arrow-right"></i>
-                            </a>
+                            </a> -->
                     </div>
                 </li>
 
@@ -377,334 +377,7 @@
                             fillData(text1,text2,att1,att2,att3,url,num);
                         </script>
                         <!--end row-->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="row align-items-center">
-                                            <div class="col">
-                                                <h4 class="card-title">Transaction History</h4>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-auto">
-                                                <ul class="nav nav-tabs tab-nagative-m" role="tablist">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link active" data-bs-toggle="tab" href="#Added" role="tab" aria-selected="true">Added</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" data-bs-toggle="tab" href="#Withdrown" role="tab" aria-selected="false">Withdrown</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!--end col-->
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                    <!--end card-header-->
-                                    <div class="card-body">
-                                        <div class="tab-content" id="Amount_history">
-                                            <div class="tab-pane fade show active" id="Added" role="tabpanel" aria-labelledby="Added-tab">
-                                                <div class="table-responsive dash-social">
-                                                    <table id="datatable" class="table table-bordered">
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th>No</th>
-                                                                <th>Date</th>
-                                                                <th>Time</th>
-                                                                <th>Transaction ID</th>
-                                                                <th>Type</th>
-                                                                <th>Amount</th>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                        </thead>
-
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>01</td>
-                                                                <td>14 Jan 2021</td>
-                                                                <td>12:05PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$521.36</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>02</td>
-                                                                <td>13 Jan 2021</td>
-                                                                <td>10:15AM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>$990.00</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>03</td>
-                                                                <td>11 Jan 2021</td>
-                                                                <td>09:14PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$321.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>04</td>
-                                                                <td>08 Jan 2021</td>
-                                                                <td>12:05PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>$321.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>05</td>
-                                                                <td>06 Jan 2021</td>
-                                                                <td>11:30AM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$458.80</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>06</td>
-                                                                <td>05 Jan 2021</td>
-                                                                <td>05:50PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>125.50</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>07</td>
-                                                                <td>04 Jan 2021</td>
-                                                                <td>08:10PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$365.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>08</td>
-                                                                <td>03 Jan 2021</td>
-                                                                <td>01:30PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>$843.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>09</td>
-                                                                <td>03 Jan 2021</td>
-                                                                <td>12:05PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$335.15</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>10</td>
-                                                                <td>02 Jan 2021</td>
-                                                                <td>03:15PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>$554.50</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>11</td>
-                                                                <td>01 Jan 2021</td>
-                                                                <td>08:10PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$365.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>12</td>
-                                                                <td>01 Jan 2021</td>
-                                                                <td>01:30PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>$843.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <nav aria-label="..." class="float-end">
-                                                    <ul class="pagination pagination-sm mb-0">
-                                                        <li class="page-item disabled">
-                                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                                        </li>
-                                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                                        </li>
-                                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="#">Next</a>
-                                                        </li>
-                                                    </ul>
-                                                    <!--end pagination-->
-                                                </nav>
-                                                <!--end nav-->
-                                            </div>
-                                            <!--end tab-pane-->
-                                            <div class="tab-pane fade" id="Withdrown" role="tabpanel" aria-labelledby="Withdrown-tab">
-                                                <div class="table-responsive dash-social">
-                                                    <table id="datatable" class="table table-bordered">
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th>No</th>
-                                                                <th>Date</th>
-                                                                <th>Time</th>
-                                                                <th>Transaction ID</th>
-                                                                <th>Type</th>
-                                                                <th>Amount</th>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                        </thead>
-
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>01</td>
-                                                                <td>14 Jan 2021</td>
-                                                                <td>12:05PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$521.36</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>02</td>
-                                                                <td>13 Jan 2021</td>
-                                                                <td>10:15AM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>$990.00</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>03</td>
-                                                                <td>11 Jan 2021</td>
-                                                                <td>09:14PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$321.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>04</td>
-                                                                <td>08 Jan 2021</td>
-                                                                <td>12:05PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>$321.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>05</td>
-                                                                <td>06 Jan 2021</td>
-                                                                <td>11:30AM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$458.80</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>06</td>
-                                                                <td>05 Jan 2021</td>
-                                                                <td>05:50PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>125.50</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>07</td>
-                                                                <td>04 Jan 2021</td>
-                                                                <td>08:10PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$365.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>08</td>
-                                                                <td>03 Jan 2021</td>
-                                                                <td>01:30PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>$843.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>09</td>
-                                                                <td>03 Jan 2021</td>
-                                                                <td>12:05PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$335.15</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>10</td>
-                                                                <td>02 Jan 2021</td>
-                                                                <td>03:15PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>$554.50</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>11</td>
-                                                                <td>01 Jan 2021</td>
-                                                                <td>08:10PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-danger">Failed</span></td>
-                                                                <td>$365.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                            <tr>
-                                                                <td>12</td>
-                                                                <td>01 Jan 2021</td>
-                                                                <td>01:30PM</td>
-                                                                <td>c12b001a15f9bd46ef1c6551386c6a2bcda1ab3eae5091fba</td>
-                                                                <td><span class="badge badge-soft-success">Success</span></td>
-                                                                <td>$843.21</td>
-                                                            </tr>
-                                                            <!--end tr-->
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <nav aria-label="..." class="float-end">
-                                                    <ul class="pagination pagination-sm mb-0">
-                                                        <li class="page-item disabled">
-                                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                                        </li>
-                                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                                        </li>
-                                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="#">Next</a>
-                                                        </li>
-                                                    </ul>
-                                                    <!--end pagination-->
-                                                </nav>
-                                                <!--end nav-->
-                                            </div>
-                                            <!--end tab-pane-->
-                                        </div>
-                                        <!--end tab-content-->
-
-                                    </div>
-                                    <!--end card-body-->
-                                </div>
-                                <!--end card-->
-                            </div>
-                            <!--end col-->
-                        </div>
+                        
                         <!--end row-->
                     </div>
                     <!--end col-->
@@ -1118,9 +791,9 @@
                         </div>
                     </form>
                     <div class="mt-3">
-                        <a class="" data-bs-toggle="collapse" href="#SL_Option" aria-expanded="false" aria-controls="collapseExample">
+                        <!-- <a class="" data-bs-toggle="collapse" href="#SL_Option" aria-expanded="false" aria-controls="collapseExample">
                                 Stop Loss <i class="ti ti-arrow-down-circle"></i>
-                            </a>
+                            </a> -->
                         <div class="collapse" id="SL_Option">
                             <form class="row gy-2 gx-3 align-items-center mt-1">
                                 <div class="col-auto">
@@ -1190,9 +863,9 @@
                         </div>
                     </form>
                     <div class="mt-3">
-                        <a class="" data-bs-toggle="collapse" href="#SL_Option" aria-expanded="false" aria-controls="collapseExample">
+                        <!-- <a class="" data-bs-toggle="collapse" href="#SL_Option" aria-expanded="false" aria-controls="collapseExample">
                                 Stop Loss <i class="ti ti-arrow-down-circle"></i>
-                            </a>
+                            </a> -->
                         <div class="collapse" id="SL_Option">
                             <form class="row gy-2 gx-3 align-items-center mt-1">
                                 <div class="col-auto">
@@ -1331,8 +1004,26 @@
     </div>
 <!--end modal-->
     </div>
-    <!--end /div-->
-    <!-- Javascript  -->
+    <div class="modal fade" id="notPremiumWarning" tabindex="-1" aria-labelledby="exampleModalFullscreenLgLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen-lg-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 id="exampleModalFullscreenLgLabel" class="alert-danger">Attention! </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="logDesBody">You are not a premimum user. You have to pay the registration fee.
+                    </p>
+                    <span class="badge bg-soft-secondary" id="regFeeText">Registration Fee</span>
+                    <small class="text-muted ml-2" id="regFee">07 Oct 2020</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <a href="javascript:void(0);" class="btn btn-sm btn-de-primary" data-bs-dismiss="modal" id="activityRegButton">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="assets/plugins/selectr/selectr.min.js"></script>
     <!-- <script src="assets/plugins/apex-chart/apexcharts.min.js"></script> -->

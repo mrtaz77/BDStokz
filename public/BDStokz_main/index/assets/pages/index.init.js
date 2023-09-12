@@ -1,5 +1,13 @@
+var cur_date = new Date();
+var minDate = new Date('29 Jan 2023');
+var oneMnth = new Date();
+var sixMonth = new Date();
+//minDate.setDate(cur_date.getDate()-365);
+oneMnth.setDate(cur_date.getDate()-30);
+sixMonth.setDate(cur_date.getDate()-180);
+
 async function fun(){
-    const response = await fetch('http://localhost:3000/stock/dsex'); // Change the URL to your backend API endpoint
+    const response = await fetch('http://localhost:3000/stock/dsex'); 
     const dataString = await response.json();
 //    let arr = [];
     let arr2 = [];
@@ -7,33 +15,13 @@ async function fun(){
             dataString.forEach(item => {
                 arr2.push([item.x,item.y]);
             });
-//    const parseStringToList = async (inputString) => {
-//     //function parseStringToList(inputString) {
-//         try {
-//             //const stringWithReplacedQuotes = "'" + inputString + "'";
-//             console.log(inputString);
-//             const inputArray = JSON.parse(inputString);
-//             const dataArray = inputArray.forEach(item => {
-//                 const [timestamp, value] = item; 
-//                 console.log(item);// Destructure the array into timestamp and value
-//                 return [timestamp, value]; 
-//             });
-//             return dataArray;
-//         } catch (error) {
-//             console.error('Error converting to ApexChart data:', error);
-//             return [];
-//         }
-//     //}
-// }
-
-   //console.log(arr2);
 var options = {
 
     chart: {
         type: 'area',
         height: 302,
         toolbar: {
-            show: false,
+            show: true,
         },
     },
     dataLabels: {
@@ -45,7 +33,7 @@ var options = {
     }, ],
     xaxis: {
         type: 'datetime',
-        min: new Date('10 May 2023').getTime(),
+        min: minDate.getTime(),
         tickAmount: 6,
         axisBorder: {
             show: true,
@@ -103,8 +91,8 @@ document.querySelector("#one_month").addEventListener('click', function(e) {
     resetCssClasses(e)
     chart.updateOptions({
         xaxis: {
-            min: new Date('10 May 2023').getTime(),
-            max: new Date('9 Jun 2023').getTime(),
+            min: oneMnth.getTime(),
+            max: new Date().getTime(),
         }
     })
 })
@@ -113,8 +101,8 @@ document.querySelector("#six_months").addEventListener('click', function(e) {
     resetCssClasses(e)
     chart.updateOptions({
         xaxis: {
-            min: new Date('10 May 2023').getTime(),
-            max: new Date('10 Jul 2023').getTime(),
+            min: sixMonth.getTime(),
+            max: new Date().getTime(),
         }
     })
 })
@@ -123,8 +111,8 @@ document.querySelector("#one_year").addEventListener('click', function(e) {
     resetCssClasses(e)
     chart.updateOptions({
         xaxis: {
-            min: new Date('27 Feb 2012').getTime(),
-            max: new Date('27 Feb 2013').getTime(),
+            min: minDate.getTime(),
+            max: new Date().getTime(),
         }
     })
 })

@@ -57,7 +57,7 @@
         <div class="brand" style="background-color: rgb(237, 246, 249);">
             <a href="../index/index.html" class="logo">
                 <div style="display: flex; ">
-                    <span style="margin-right: 10px;">
+                    <span>
                         <img src="logo_light_blue_bg.png" alt="logo-small" class="logo-sm" style="height: 60px;">
                     </span>
                     <span>
@@ -550,15 +550,15 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-6">
                             <a href="../index/index.html" class="logo">
-                                    <img src="../images/logo-sm.png" alt="logo" class="me-1" height="30">
+                                    <!-- <img src="../images/logo-sm.png" alt="logo" class="me-1" height="30"> -->
                                     <img src="../images/logo.png" alt="logo" class="">
                                 </a>
                             <ul class="list-unstyled mt-3">
                                 <li>
-                                    <a href="#" class="text-light">718 Pursglove Court Dayton, OH 45402</a>
+                                    <a href="#" class="text-light">Department of CSE, West Palashi ECE building, DHAKA 1205</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="text-light">+012 (345) 678 99</a>
+                                    <a href="#" class="text-light">+088 (017) 677 03113</a>
                                 </li>
                             </ul>
                         </div>
@@ -929,8 +929,26 @@
     </div>
     <!--end modal-->
     </div>
-    <!--end /div-->
-    <!-- Javascript  -->
+    <div class="modal fade" id="notPremiumWarning" tabindex="-1" aria-labelledby="exampleModalFullscreenLgLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen-lg-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 id="exampleModalFullscreenLgLabel" class="alert-danger">Attention! </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="logDesBody">You are not a premimum user. You have to pay the registration fee.
+                    </p>
+                    <span class="badge bg-soft-secondary" id="regFeeText">Registration Fee</span>
+                    <small class="text-muted ml-2" id="regFee">07 Oct 2020</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <a href="javascript:void(0);" class="btn btn-sm btn-de-primary" data-bs-dismiss="modal" id="activityRegButton">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- App js -->
     <script src="assets/js/app.js"></script>

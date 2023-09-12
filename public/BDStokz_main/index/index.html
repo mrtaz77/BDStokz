@@ -59,9 +59,9 @@
                     <div class="dropdown-menu dropdown-menu-end dropdown-lg pt-0">
 
                         <h6 class="dropdown-item-text font-15 m-0 py-3 border-bottom d-flex justify-content-between align-items-center">
-                            Notifications <span class="badge bg-soft-primary badge-pill">2</span>
+                            Notifications <span class="badge bg-soft-primary badge-pill" id="badgeOfTheLogTable">2</span>
                         </h6>
-                        <div class="notification-menu" data-simplebar>
+                        <div id="logTableHolder" class="notification-menu" data-simplebar>
                             <!-- item-->
                             <a href="#" class="dropdown-item py-3">
                                     <small class="float-end text-muted ps-2">2 min ago</small>
@@ -134,9 +134,9 @@
                             <!--end-item-->
                         </div>
                         <!-- All-->
-                        <a href="javascript:void(0);" class="dropdown-item text-center text-primary">
+                        <!-- <a href="javascript:void(0);" class="dropdown-item text-center text-primary">
                                 View all <i class="fi-arrow-right"></i>
-                            </a>
+                            </a> -->
                     </div>
                 </li>
 
@@ -871,9 +871,9 @@
                         </div>
                     </form>
                     <div class="mt-3">
-                        <a class="" data-bs-toggle="collapse" href="#SL_Option" aria-expanded="false" aria-controls="collapseExample">
+                        <!-- <a class="" data-bs-toggle="collapse" href="#SL_Option" aria-expanded="false" aria-controls="collapseExample">
                                 Stop Loss <i class="ti ti-arrow-down-circle"></i>
-                            </a>
+                            </a> --> 
                         <div class="collapse" id="SL_Option">
                             <form class="row gy-2 gx-3 align-items-center mt-1">
                                 <div class="col-auto">
@@ -943,9 +943,9 @@
                         </div>
                     </form>
                     <div class="mt-3">
-                        <a class="" data-bs-toggle="collapse" href="#SL_Option" aria-expanded="false" aria-controls="collapseExample">
+                        <!-- <a class="" data-bs-toggle="collapse" href="#SL_Option" aria-expanded="false" aria-controls="collapseExample">
                                 Stop Loss <i class="ti ti-arrow-down-circle"></i>
-                            </a>
+                            </a> -->
                         <div class="collapse" id="SL_Option">
                             <form class="row gy-2 gx-3 align-items-center mt-1">
                                 <div class="col-auto">
@@ -1019,12 +1019,12 @@
         <!--end modal-dialog-->
     </div>
     <!--end modal-->
-    <div class="modal fade bd-example-modal-sm" id="stockDetail" tabindex="-1" role="dialog" aria-labelledby="stockSymbol" aria-hidden="true">
+    <div class="modal fade" id="stockDetail" tabindex="-1" role="dialog" aria-labelledby="stockSymbol" aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title m-0" id="stockSymbol">Small Modal</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="stockDetailCloseButton"></button>
                 </div>
                 <!--end modal-header-->
                 <div class="modal-body text-center">
@@ -1032,12 +1032,13 @@
                         <div class="action-icons">
                             <ul class="list-inline">
                                 <li class="list-inline-item align-self-center mx-0 bg-success" id="buyButtonStockDetailHolder">
-                                <a href="javascript: void(0);" data-bs-target="#BuyStocks" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="ti ti-letter-b text-white email-action-icons-item" id="buyButtonStockDetail"></i></a>
+                                <a data-bs-target="#BuyStocks" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="ti ti-letter-b text-white email-action-icons-item" id="buyButtonStockDetail" onclick="externalCilck()"></i></a>
                                     
                                 </li>
+                                
                                 <!--end /li-->
                                 <li class="list-inline-item align-self-center mx-0 bg-danger" id="sellButtonStockDetailHolder">
-                                    <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#SellStocks" data-bs-dismiss="modal"><i class="ti ti-letter-s text-white email-action-icons-item" id="sellButtonStockDetail"></i></a>
+                                    <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#SellStocks" data-bs-dismiss="modal"><i class="ti ti-letter-s text-white email-action-icons-item" id="sellButtonStockDetail" onclick="externalCilck()"></i></a>
                                 </li>
                                 <!--end /li-->
                                 <li class="list-inline-item align-self-center mx-0">
@@ -1047,6 +1048,11 @@
                                 <li class="list-inline-item align-self-center mx-0" id="blockStockButtonStockDetailHolder">
                                     <a href="javascript: void(0);"><i class="ti ti-trash email-action-icons-item" id="blockStockButton"></i></a>
                                 </li>
+                                <script>
+                                    function externalCilck (){
+                                        document.getElementById("stockDetailCloseButton").click();
+                                    }
+                                </script>
                                 <!--end /li-->
                             </ul>
                             <!--end /ul-->
@@ -1122,11 +1128,7 @@
         </div>
         <!--end modal-dialog-->
     </div>
-    <!-- <script>
-        function closeStockDetailModal(){
-            $('#stockDetail').modal('toggle');
-        }
-    </script> -->
+
     <div class="modal fade" id="notPremiumWarning" tabindex="-1" aria-labelledby="exampleModalFullscreenLgLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen-lg-down">
             <div class="modal-content">
@@ -1135,9 +1137,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>You are not a premimum user. You have to pay the registration fee.
+                    <p id="logDesBody">You are not a premimum user. You have to pay the registration fee.
                     </p>
-                    <span class="badge bg-soft-secondary">Registration Fee</span>
+                    <span class="badge bg-soft-secondary" id="regFeeText">Registration Fee</span>
                     <small class="text-muted ml-2" id="regFee">07 Oct 2020</small>
                 </div>
                 <div class="modal-footer">
@@ -1149,9 +1151,29 @@
     </div>
     <!--end modal-->
     </div>
-    <!--end /div-->
-    <!-- Javascript  -->
+    <div class="modal fade" id="notPremiumWarning" tabindex="-1" aria-labelledby="exampleModalFullscreenLgLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen-lg-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 id="exampleModalFullscreenLgLabel" class="alert-danger">Attention! </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="logDesBody">You are not a premimum user. You have to pay the registration fee.
+                    </p>
+                    <span class="badge bg-soft-secondary" id="regFeeText">Registration Fee</span>
+                    <small class="text-muted ml-2" id="regFee">07 Oct 2020</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <a href="javascript:void(0);" class="btn btn-sm btn-de-primary" data-bs-dismiss="modal" id="activityRegButton">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
+
+    
     <script src="assets/plugins/selectr/selectr.min.js"></script>
     <script src="assets/plugins/apex-chart/apexcharts.min.js"></script>
     <script src="assets/pages/index.init.js"></script>

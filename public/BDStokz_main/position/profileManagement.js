@@ -53,7 +53,7 @@ document.getElementById('addBrokerButton').addEventListener("click", async funct
     const userData = {
         userId:userDataset.userId,
         field: 'BROKER_ID',
-        newValue:id_global
+        newValue:nameParam
     };
     try {
         const response = await fetch('http://localhost:3000/user/updateProfile', {

@@ -379,7 +379,7 @@ const getOrdersBySymbolAndType = async (payload) => {
         STOP_PRICE
         FROM "ORDER" 
         WHERE SYMBOL = :symbol AND "TYPE" = :type
-        ORDER BY LATEST_UPDATE_TIME DESC
+        ORDER BY ORDER_ID DESC
         `;
 
         const bind = {

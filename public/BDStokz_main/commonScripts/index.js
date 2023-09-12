@@ -49,7 +49,8 @@ async function fetchDataAndPopulateTable() {
     if (userDataString) {
         userDataset = JSON.parse(userDataString);
     }
-  
+
+    showLogTable(userDataset.userId,'logTableHolder');
   
   if(userDataset.userType !== 'Admin'){
     try {
@@ -537,4 +538,56 @@ function showOrderPlacingErrors(flag,errmsgs,id){
     errbox.appendChild(newDiv);
     cnt+=1;
   });
+}
+
+async function showLogTable(uid,content_id){
+  try {
+    const response = await fetch('http://localhost:3000/user/log?userId='+uid); // Change the URL to your backend API endpoint
+    const data = await response.json();
+  
+    if(response.ok){
+      const logs = data.logs;
+      console.log(logs);
+      const holder = getElementAndReplaceWithCloneAbrar(content_id);
+      holder.innerHTML =``;
+      getElementAndReplaceWithCloneAbrar("badgeOfTheLogTable").textContent = logs.size ;
+      logs.forEach(element => {
+        const anchorElem =document.createElement('a');
+        //anchorElem.href = '#';
+        anchorElem.classList.add("dropdown-item");
+        anchorElem.classList.add('py-3');
+        anchorElem.setAttribute('data-bs-toggle', 'modal');
+        anchorElem.setAttribute('data-bs-target', '#notPremiumWarning');
+        anchorElem.innerHTML = `<small class="float-end text-muted ps-2">${element.EVENT_TIME}</small>
+        <div class="media">
+            <div class="avatar-md bg-soft-primary">
+                <i class="ti ti-chart-arcs"></i>
+            </div>
+            <div class="media-body align-self-center ms-2 text-truncate">
+                <h6 class="my-0 fw-normal text-dark">${element.EVENT_TYPE}</h6>
+                <small class="text-muted mb-0">${element.DESCRIPTION}</small>
+            </div><!--end media-body-->
+        </div>`
+        // anchorElem.addEventListener("click", function(){
+        //   getElementAndReplaceWithCloneAbrar("logTitle").textContent = element.EVENT_TYPE;
+        //   getElementAndReplaceWithCloneAbrar("logDescription").innerHTML= element.DESCRIPTION;
+        // })
+        holder.appendChild(anchorElem);
+        anchorElem.addEventListener("click",function(){
+          const head = getElementAndReplaceWithCloneAbrar("exampleModalFullscreenLgLabel");
+          head.textContent = element.EVENT_TYPE;
+          head.classList.remove('alert-danger');
+          getElementAndReplaceWithCloneAbrar("logDesBody").innerHTML= element.DESCRIPTION;
+          getElementAndReplaceWithCloneAbrar("activityRegButton").style.display = "none";
+          getElementAndReplaceWithCloneAbrar("regFee").style.display = "none";
+          getElementAndReplaceWithCloneAbrar("regFeeText").style.display = "none";
+        });
+      });
+    }
+    else{
+      showOrderPlacingErrors(1,data.errors,content_id);
+    }
+  } catch (error) {
+    
+  }
 }
