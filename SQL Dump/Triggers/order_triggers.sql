@@ -198,6 +198,10 @@ BEGIN
                 SELECT FUNDS INTO FUND FROM ADMIN WHERE ADMIN_ID = :NEW.USER_ID;
                 IF FUND < :NEW.LATEST_PRICE * :NEW.LATEST_QUANTITY THEN 
                     :NEW.STATUS := 'FAILURE'; 
+                ELSE 
+                    UPDATE ADMIN 
+                    SET FUNDS = FUNDS - :NEW.LATEST_PRICE * :NEW.LATEST_QUANTITY 
+                    WHERE ADMIN_ID = :NEW.USER_ID;
                 END IF;
             END IF;
         END IF;

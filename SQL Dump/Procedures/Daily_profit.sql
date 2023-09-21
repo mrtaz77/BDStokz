@@ -11,33 +11,24 @@ CREATE OR REPLACE PROCEDURE DAILY_PROFIT(profits OUT VARCHAR2) IS
   -- Cursor to fetch the data
   CURSOR c_sector_profits IS
       SELECT
-        C.SECTOR,
-        SUM( NVL( D.TRANSACTION_FEE, 0 ) ) PROFIT 
-      FROM
-        ( SELECT DISTINCT SECTOR FROM CORPORATION ) C LEFT OUTER
-        JOIN (
-        SELECT
-          SECTOR_OF_STOCK ( O1.SYMBOL ) SECTOR,
-          O1.TRANSACTION_FEE,
-          TRUNC( O1.TRANSACTION_TIME ) 
-        FROM
-          "ORDER" O1 
-        WHERE
-          O1.STATUS = 'SUCCESS' 
-          AND TRUNC( O1.TRANSACTION_TIME ) >= ALL (
-          SELECT
-            TRUNC( O2.TRANSACTION_TIME ) 
-          FROM
-            "ORDER" O2 
-          WHERE
-            SECTOR_OF_STOCK ( O2.SYMBOL ) = SECTOR_OF_STOCK ( O1.SYMBOL ) 
-            AND O2.STATUS = 'SUCCESS' 
-          ) 
-        ) D ON C.SECTOR = D.SECTOR 
-      GROUP BY
-        C.SECTOR 
-      ORDER BY
-        C.SECTOR;
+	C.SECTOR,
+	NVL(P.PROFIT,0) DAILY_PROFIT 
+FROM
+	(SELECT DISTINCT SECTOR FROM CORPORATION) C LEFT OUTER
+	JOIN (
+	SELECT
+		SECTOR_OF_STOCK ( O1.SYMBOL ) SECTOR,
+		SUM(O1.TRANSACTION_FEE) PROFIT
+	FROM
+		"ORDER" O1 
+	WHERE
+		O1.STATUS = 'SUCCESS' 
+		AND TRUNC( O1.TRANSACTION_TIME ) = TRUNC(SYSDATE)
+	GROUP BY 
+		SECTOR_OF_STOCK ( O1.SYMBOL )
+	) P ON C.SECTOR = P.SECTOR 
+ORDER BY
+	C.SECTOR;
 
 
   v_json VARCHAR2(32767) := ''; -- Initialize JSON object
@@ -55,7 +46,7 @@ BEGIN
   END LOOP;
 
   -- Wrap the JSON object
-  v_json :=  '[' || SUBSTR(v_json, 2) || ']';
+  v_json := '{"data": [' || SUBSTR(v_json, 2) || ']}';
 
   -- Set the output parameter
   profits := v_json;
