@@ -51,3 +51,4 @@ BEGIN
   -- Set the output parameter
   profits := v_json;
 END;
+/

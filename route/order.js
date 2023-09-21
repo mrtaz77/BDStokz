@@ -166,7 +166,8 @@ router.put('/sell-order-success', async (req, res) => {
         if (result != null && result == 'SUCCESS') {
             res.status(200).json({ message: 'Sell order successful' });
         } else {
-            res.status(400).json({ error: `Sell order failed` });
+            const errors = getOrderErrors();
+            res.status(400).json({ message: `Sell order failed`,errors:errors });
         }
     } catch (error) {
         // Handle errors here
