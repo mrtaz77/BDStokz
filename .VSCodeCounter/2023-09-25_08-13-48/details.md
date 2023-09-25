@@ -1,10 +1,8 @@
 # Details
 
-Date : 2023-09-11 06:27:01
+Date : 2023-09-25 08:13:48
 
-Directory d:\\OG D drive\\Level 2 Term 2\\CSE 216\\Projects\\DB-Project
-
-Total : 94 files,  32083 codes, 185 comments, 1181 blanks, all 33449 lines
+Total : 96 files,  32101 codes, 190 comments, 1194 blanks, all 33485 lines
 
 [Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
 
@@ -51,24 +49,26 @@ Total : 94 files,  32083 codes, 185 comments, 1181 blanks, all 33449 lines
 | [SQL Dump/PopulateTableUtil/USER/util.rb](/SQL%20Dump/PopulateTableUtil/USER/util.rb) | Ruby | 19 | 1 | 6 | 26 |
 | [SQL Dump/PopulateTableUtil/USER_CONTACT/gen.py](/SQL%20Dump/PopulateTableUtil/USER_CONTACT/gen.py) | Python | 10 | 2 | 5 | 17 |
 | [SQL Dump/PopulateTableUtil/USER_CONTACT/user_contact50001.sql](/SQL%20Dump/PopulateTableUtil/USER_CONTACT/user_contact50001.sql) | SQL | 6,749 | 0 | 1 | 6,750 |
-| [SQL Dump/Procedures/Daily_profit.sql](/SQL%20Dump/Procedures/Daily_profit.sql) | SQL | 48 | 6 | 8 | 62 |
+| [SQL Dump/Procedures/Daily_profit.sql](/SQL%20Dump/Procedures/Daily_profit.sql) | SQL | 40 | 6 | 8 | 54 |
 | [SQL Dump/Procedures/IS_PREM.sql](/SQL%20Dump/Procedures/IS_PREM.sql) | SQL | 27 | 1 | 0 | 28 |
 | [SQL Dump/Procedures/avgYear.sql](/SQL%20Dump/Procedures/avgYear.sql) | SQL | 52 | 0 | 1 | 53 |
 | [SQL Dump/Procedures/sell_order_success.sql](/SQL%20Dump/Procedures/sell_order_success.sql) | SQL | 74 | 0 | 17 | 91 |
 | [SQL Dump/Triggers/deletionTriggers.sql](/SQL%20Dump/Triggers/deletionTriggers.sql) | SQL | 172 | 0 | 19 | 191 |
 | [SQL Dump/Triggers/logTriggers.sql](/SQL%20Dump/Triggers/logTriggers.sql) | SQL | 296 | 5 | 61 | 362 |
 | [SQL Dump/Triggers/moreTriggers.sql](/SQL%20Dump/Triggers/moreTriggers.sql) | SQL | 97 | 0 | 5 | 102 |
-| [SQL Dump/Triggers/order_triggers.sql](/SQL%20Dump/Triggers/order_triggers.sql) | SQL | 436 | 0 | 55 | 491 |
+| [SQL Dump/Triggers/order_triggers.sql](/SQL%20Dump/Triggers/order_triggers.sql) | SQL | 440 | 0 | 55 | 495 |
 | [SQL Dump/Triggers/referCount.sql](/SQL%20Dump/Triggers/referCount.sql) | SQL | 11 | 0 | 0 | 11 |
 | [SQL Dump/Triggers/regDate.sql](/SQL%20Dump/Triggers/regDate.sql) | SQL | 6 | 0 | 0 | 6 |
 | [SQL Dump/Triggers/stock.sql](/SQL%20Dump/Triggers/stock.sql) | SQL | 42 | 3 | 5 | 50 |
 | [SQL Dump/Update/adminTable.sql](/SQL%20Dump/Update/adminTable.sql) | SQL | 18 | 0 | 1 | 19 |
 | [SQL Dump/Update/orderTableSymbolCorrection.sql](/SQL%20Dump/Update/orderTableSymbolCorrection.sql) | SQL | 12 | 0 | 0 | 12 |
 | [SQL Dump/checkSchema.sql](/SQL%20Dump/checkSchema.sql) | SQL | 59 | 4 | 15 | 78 |
-| [SQL Dump/createTable.sql](/SQL%20Dump/createTable.sql) | SQL | 295 | 15 | 91 | 401 |
+| [SQL Dump/createTable.sql](/SQL%20Dump/createTable.sql) | SQL | 297 | 15 | 92 | 404 |
+| [SQL Dump/ddlForIndex.sql](/SQL%20Dump/ddlForIndex.sql) | SQL | 11 | 5 | 9 | 25 |
 | [SQL Dump/deleteTables.sql](/SQL%20Dump/deleteTables.sql) | SQL | 19 | 2 | 2 | 23 |
 | [SQL Dump/deletionDML.sql](/SQL%20Dump/deletionDML.sql) | SQL | 21 | 0 | 2 | 23 |
-| [SQL Dump/logDML.sql](/SQL%20Dump/logDML.sql) | SQL | 389 | 5 | 83 | 477 |
+| [SQL Dump/index.sql](/SQL%20Dump/index.sql) | SQL | 8 | 0 | 3 | 11 |
+| [SQL Dump/logDDL.sql](/SQL%20Dump/logDDL.sql) | SQL | 389 | 5 | 83 | 477 |
 | [SQL Dump/orderCorrection.sql](/SQL%20Dump/orderCorrection.sql) | SQL | 168 | 2 | 46 | 216 |
 | [app.js](/app.js) | JavaScript | 32 | 2 | 12 | 46 |
 | [config/database.js](/config/database.js) | JavaScript | 63 | 3 | 10 | 76 |
@@ -96,7 +96,7 @@ Total : 94 files,  32083 codes, 185 comments, 1181 blanks, all 33449 lines
 | [route/customer.js](/route/customer.js) | JavaScript | 4 | 0 | 1 | 5 |
 | [route/login.js](/route/login.js) | JavaScript | 66 | 6 | 22 | 94 |
 | [route/logout.js](/route/logout.js) | JavaScript | 36 | 1 | 10 | 47 |
-| [route/order.js](/route/order.js) | JavaScript | 169 | 36 | 34 | 239 |
+| [route/order.js](/route/order.js) | JavaScript | 170 | 36 | 34 | 240 |
 | [route/participate.js](/route/participate.js) | JavaScript | 29 | 0 | 4 | 33 |
 | [route/reg.js](/route/reg.js) | JavaScript | 25 | 6 | 3 | 34 |
 | [route/stock.js](/route/stock.js) | JavaScript | 44 | 1 | 6 | 51 |

@@ -1,8 +1,6 @@
 # Diff Summary
 
-Date : 2023-09-11 06:27:01
-
-Directory d:\\OG D drive\\Level 2 Term 2\\CSE 216\\Projects\\DB-Project
+Date : 2023-09-25 08:13:48
 
 Total : 0 files,  0 codes, 0 comments, 0 blanks, all 0 lines
 
