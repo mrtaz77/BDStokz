@@ -34,8 +34,6 @@ END;
 
 
 ## PWD_HASH
-- Input : the string of the password. 
-- Output : A 128 length string in capital hexadecimal.
 - The string is first encoded using base64 encoding and then it is hashed using sha - 512 algorithm.
 
 ```sql
@@ -61,13 +59,6 @@ END;
 ```
 
 ## CHK_CREDS_NAME
-- Input : Username and password.
-- Output : Validation.
-- The fuction returns 1337 if credentials are correct. 
-- Else it returns -404.
-- Applicable only for active users.
-
-
 ```sql
 CREATE OR REPLACE FUNCTION CHK_CREDS_NAME(USER_NAME IN VARCHAR2,USER_PWD IN VARCHAR2)RETURN NUMBER IS 
 	CHK_PWD VARCHAR2(128);
@@ -94,11 +85,9 @@ END;
 ```
 
 ## BROKER_COMMISSION_PCT
-- Input : Broker Id 
-- Output :  Commission percentage of the broker.
 - The range of commission percentage lies between 0.01 and 4.
-- For every 100000 shares (latest_quantity) transaction done via successful orders of the customers of the broker, the percentage will increase by 1.
-- The broker and customers under calculation must have active accounts in the website.
+- For every 100000 shares (latest_quantity) transaction done via successful orders of the customers of the broker, the percentage increases by 1.
+- The broker and customers under jurisdiction must have active accounts in the website.
 
 ```sql
 CREATE OR REPLACE FUNCTION broker_commission_pct (BID IN NUMBER) RETURN NUMBER IS 
