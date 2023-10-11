@@ -1,5 +1,5 @@
 # Funcions 
-### [PWD_HASH](#Function-for-hashing-password-1)
+### [Function for hashing password](##Function-for-hashing-password-1)
 ### [CHK_CREDS_NAME](#Function-for-verifying-credentials-1)
 
 ## Function for hashing password
