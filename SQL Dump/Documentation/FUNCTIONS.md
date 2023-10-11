@@ -1,8 +1,37 @@
 # Funcions 
-### [PWD_HASH](#pwd_hash-1)
-### [CHK_CREDS_NAME](#chk_creds_name-1)
-### [BROKER_COMMISSION_PCT](#broker_commission_pct-1)
-### [FORMAT_TIMESTAMP_ORDER](#format_timestamp_order-1)
+#### [PWD_HASH](#pwd_hash-1)
+#### [CHK_CREDS_NAME](#chk_creds_name-1)
+#### [BROKER_COMMISSION_PCT](#broker_commission_pct-1)
+#### [FORMAT_TIMESTAMP_ORDER](#format_timestamp_order-1)
+#### [DURATION_FORMAT](#duration_format-1)
+
+## DURATION_FORMAT
+- Input : Duration in minutes . Ex : 45 , 75
+- Output : Formatted duration . Ex : 45 min , 1 hr 15 min
+```sql 
+CREATE OR REPLACE FUNCTION DURATION_FORMAT(T IN NUMBER)RETURN VARCHAR2 IS 
+TIME VARCHAR2(20);
+H NUMBER;
+M NUMBER;
+BEGIN
+	TIME := ''; 
+	H := TRUNC(T/60);
+	M := (T-TRUNC(T/60)*60);
+	IF H > 0 THEN 
+		TIME := TIME || H || ' hr ';
+	END IF;
+	IF M > 0 THEN 
+		TIME := TIME || M || ' min';
+	END IF;
+	RETURN TIME;
+EXCEPTION
+	WHEN OTHERS THEN 
+		RETURN '';
+END;
+/
+```
+
+
 
 ## PWD_HASH
 - Input : the string of the password. 
