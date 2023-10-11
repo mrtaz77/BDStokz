@@ -1,4 +1,8 @@
-## Function for hashing password.
+# Funcions 
+### [PWD_HASH](#Function-for-hashing-password-1)
+### [CHK_CREDS_NAME](#Function-for-verifying-credentials-1)
+
+## Function for hashing password
 - Input : the string of the password. 
 - Output : A 128 length string in capital hexadecimal.
 - The string is first encoded using base64 encoding and then it is hashed using sha - 512 algorithm.
@@ -25,11 +29,11 @@ END;
 /
 ```
 
-## Function for verifying credentials.
-- Input : Username and password .
-- Output : Validation .
+## Function for verifying credentials
+- Input : Username and password.
+- Output : Validation.
 - The fuction returns 1337 if credentials are correct. 
-- Else it returns -404
+- Else it returns -404.
 - Applicable only for active users.
 
 ### Prerequisites 
@@ -99,4 +103,30 @@ WHEN OTHERS THEN
 END;
 /
 ```
+
+## Function for formatting timestamp.
+- Input : Timestamp(sql datatype) Ex : 2023-09-21 14:58:32.138000
+- Output : Formatted string . Ex : 21-SEP-2023 02:58:32 PM.
+
+```sql
+CREATE OR REPLACE FUNCTION format_timestamp_order(
+    inputTimestamp TIMESTAMP
+) RETURN VARCHAR2
+IS
+    formattedTimestamp VARCHAR2(100);
+BEGIN
+    -- Format the timestamp as a human-readable string
+    SELECT TO_CHAR(inputTimestamp, 'DD-MON-YYYY HH:MI:SS AM', 'NLS_DATE_LANGUAGE=ENGLISH')
+    INTO formattedTimestamp
+    FROM DUAL;
+
+    RETURN formattedTimestamp;
+EXCEPTION 
+	WHEN OTHERS THEN 
+		RETURN '';
+END;
+/
+```
+
+
 
