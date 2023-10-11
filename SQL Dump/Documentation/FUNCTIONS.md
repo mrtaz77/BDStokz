@@ -1,8 +1,10 @@
 # Funcions 
-### [Function for hashing password](##Function-for-hashing-password-1)
-### [CHK_CREDS_NAME](#Function-for-verifying-credentials-1)
+### [PWD_HASH](#pwd_hash-1)
+### [CHK_CREDS_NAME](#chk_creds_name-1)
+### [BROKER_COMMISSION_PCT](#broker_commission_pct-1)
+### [FORMAT_TIMESTAMP_ORDER](#format_timestamp_order-1)
 
-## Function for hashing password
+## PWD_HASH
 - Input : the string of the password. 
 - Output : A 128 length string in capital hexadecimal.
 - The string is first encoded using base64 encoding and then it is hashed using sha - 512 algorithm.
@@ -29,7 +31,7 @@ END;
 /
 ```
 
-## Function for verifying credentials
+## CHK_CREDS_NAME
 - Input : Username and password.
 - Output : Validation.
 - The fuction returns 1337 if credentials are correct. 
@@ -66,7 +68,7 @@ END;
 /
 ```
 
-## Function for calculating commission percentage of  a broker. 
+## BROKER_COMMISSION_PCT
 - Input : Broker Id 
 - Output :  Commission percentage of the broker.
 - The range of commission percentage lies between 0.01 and 4.
@@ -79,8 +81,6 @@ END;
 | ORDER | STATUS, SUCCESS , USER_ID |
 | CUSTOMER | USER_ID , IS_DELETED , BROKER_ID |
 | BROKER | USER_ID , IS_DELETED |
-
-
 
 ```sql
 CREATE OR REPLACE FUNCTION broker_commission_pct (BID IN NUMBER) RETURN NUMBER IS 
@@ -104,7 +104,7 @@ END;
 /
 ```
 
-## Function for formatting timestamp.
+## FORMAT_TIMESTAMP_ORDER
 - Input : Timestamp(sql datatype) Ex : 2023-09-21 14:58:32.138000
 - Output : Formatted string . Ex : 21-SEP-2023 02:58:32 PM.
 
