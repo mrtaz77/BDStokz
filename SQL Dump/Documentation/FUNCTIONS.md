@@ -67,10 +67,6 @@ END;
 - Else it returns -404.
 - Applicable only for active users.
 
-### Prerequisites 
-| Tables | Fields |
-| :---:   | :---: |
-| USER | NAME , IS_DELETED , PWD |
 
 ```sql
 CREATE OR REPLACE FUNCTION CHK_CREDS_NAME(USER_NAME IN VARCHAR2,USER_PWD IN VARCHAR2)RETURN NUMBER IS 
@@ -103,13 +99,6 @@ END;
 - The range of commission percentage lies between 0.01 and 4.
 - For every 100000 shares (latest_quantity) transaction done via successful orders of the customers of the broker, the percentage will increase by 1.
 - The broker and customers under calculation must have active accounts in the website.
-
-### Prerequisites 
-| Tables | Fields |
-| :---:   | :---: |
-| ORDER | STATUS, SUCCESS , USER_ID |
-| CUSTOMER | USER_ID , IS_DELETED , BROKER_ID |
-| BROKER | USER_ID , IS_DELETED |
 
 ```sql
 CREATE OR REPLACE FUNCTION broker_commission_pct (BID IN NUMBER) RETURN NUMBER IS 
