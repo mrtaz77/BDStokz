@@ -1,4 +1,4 @@
-# Funcions 
+# Functions 
 #### [PWD_HASH](#pwd_hash-1)
 #### [CHK_CREDS_NAME](#chk_creds_name-1)
 #### [BROKER_COMMISSION_PCT](#broker_commission_pct-1)
