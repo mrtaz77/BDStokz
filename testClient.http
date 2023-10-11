@@ -1,4 +1,0 @@
-GET http://localhost:3000/stock/NETFL
-POST http://localhost:3000/login 
-GET http://localhost:3000/stock/order/gain 
-GET http://localhost:3000/stock/order/lose
