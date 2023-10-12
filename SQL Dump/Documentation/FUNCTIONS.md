@@ -4,6 +4,61 @@
 #### [BROKER_COMMISSION_PCT](#broker_commission_pct-1)
 #### [FORMAT_TIMESTAMP_ORDER](#format_timestamp_order-1)
 #### [DURATION_FORMAT](#duration_format-1)
+#### [TIME_FORMAT](#time_format-1)
+#### [SECTOR_OF_STOCK](#sector_of_stock-1)
+#### [TIME_TO_EPOCH](#time_to_epoch-1)
+
+## TIME_TO_EPOCH
+```sql
+CREATE OR REPLACE FUNCTION TIME_TO_EPOCH(TM IN TIMESTAMP)RETURN VARCHAR2 IS 
+EP DECIMAL(20,4);
+ANS VARCHAR2(50);
+BEGIN 
+	EP := 0;
+	SELECT
+		ROUND( ( CAST( SYS_EXTRACT_UTC( TM ) AS DATE ) - TO_DATE( '1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS' ) ) * 86400, 4 ) INTO EP 
+	FROM
+		DUAL;
+	ANS := EP;
+		RETURN ANS;
+EXCEPTION
+	WHEN OTHERS THEN 
+		RETURN '';
+END;
+/
+```
+
+#### [SECTOR_OF_STOCK]
+```sql 
+CREATE OR REPLACE FUNCTION SECTOR_OF_STOCK(SYM IN VARCHAR2)RETURN VARCHAR2 IS
+SEC VARCHAR2(40);
+BEGIN
+SELECT SECTOR INTO SEC FROM CORPORATION NATURAL JOIN STOCK WHERE SYMBOL = SYM;
+RETURN SEC;
+EXCEPTION
+	WHEN OTHERS THEN RETURN '';
+END;
+/
+```
+
+## TIME_FORMAT 
+- Input : Timestamp . Ex : 2023-09-21 14:58:32.138000
+- Output : Format string . Ex : 2 : 58 PM
+```sql 
+CREATE OR REPLACE FUNCTION TIME_FORMAT(ts TIMESTAMP) RETURN VARCHAR2 IS
+    formatted_time VARCHAR2(15);
+BEGIN
+    IF EXTRACT(HOUR FROM ts) >= 9 THEN
+        formatted_time := TO_CHAR(ts, 'HH:MI AM');
+    ELSE
+        formatted_time := TO_CHAR(ts, 'HH:MI PM');
+    END IF;
+    
+    RETURN formatted_time;
+END;
+/
+```
+
 
 ## DURATION_FORMAT
 - Input : Duration in minutes . Ex : 45 , 75
