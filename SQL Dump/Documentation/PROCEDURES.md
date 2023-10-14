@@ -1,6 +1,254 @@
 # Procedures 
 
 #### [IS_PREM](#is_prem-1)
+#### [DAILY_PROFIT](#daily_profit-1)
+#### [AVG_PRICE_ACROSS_YEAR](#avg_price_across_year-1)
+#### [SELL_ORDER_SUCCESS](#sell_order_success-1)
+
+## SELL_ORDER_SUCCESS
+```sql
+CREATE OR REPLACE PROCEDURE sell_order_success(
+    OID IN NUMBER
+    ,BUYER_ID IN VARCHAR2
+)IS 
+ORDER_SYM VARCHAR2(30);
+LATEST_QUANTITY NUMBER(10,2);
+LATEST_PRICE NUMBER(10,2);
+SELLER_ID NUMBER(10,2);
+TYP VARCHAR2(30);
+SYM VARCHAR2(40);
+COUNT_SYM NUMBER;
+USID NUMBER;
+FLAG NUMBER;
+FUND NUMBER(10,2);
+NUM_LOT NUMBER(10,2);
+NUM_LOT_SOLD NUMBER(10,2);
+BUYER_NAME VARCHAR2(40);
+SELLER_NAME VARCHAR(40);
+BEGIN
+    SELECT SYMBOL INTO ORDER_SYM FROM "ORDER" WHERE ORDER_ID = OID;
+    SELECT USER_ID INTO SELLER_ID FROM "ORDER" WHERE ORDER_ID = OID;
+    SELECT LATEST_PRICE INTO LATEST_PRICE FROM "ORDER" WHERE ORDER_ID = OID;
+    SELECT LATEST_QUANTITY INTO LATEST_QUANTITY FROM "ORDER" WHERE ORDER_ID = OID;
+		SELECT NAME INTO BUYER_NAME FROM "USER" WHERE USER_ID = BUYER_ID;
+		SELECT NAME INTO SELLER_NAME FROM "USER" WHERE USER_ID = SELLER_ID;
+		
+    IF BUYER_ID = SELLER_ID THEN 
+        RAISE_APPLICATION_ERROR(-20008,'Buyer and seller must be different');
+    END IF;
+
+
+    SELECT "TYPE" INTO TYP FROM "USER" WHERE USER_ID = BUYER_ID;
+    IF TYP = 'Customer' THEN 
+        SELECT COUNT(*) INTO COUNT_SYM 
+        FROM OWNS WHERE SYMBOL = ORDER_SYM AND USER_ID = BUYER_ID;
+                    
+        IF COUNT_SYM = 0 THEN 
+            INSERT INTO OWNS VALUES(BUYER_ID,ORDER_SYM,LATEST_QUANTITY);
+        ELSE 
+            UPDATE OWNS
+            SET QUANTITY = QUANTITY + LATEST_QUANTITY
+            WHERE USER_ID = BUYER_ID AND SYMBOL = ORDER_SYM;
+        END IF;
+
+        SELECT COUNT(*) INTO FLAG 
+        FROM PORTFOLIO WHERE SECTOR = SECTOR_OF_STOCK(ORDER_SYM) AND USER_ID = BUYER_ID;
+        
+        IF FLAG = 0 THEN
+            INSERT INTO PORTFOLIO VALUES (BUYER_ID,SECTOR_OF_STOCK(ORDER_SYM),LATEST_PRICE*LATEST_QUANTITY,0);
+        ELSE 
+            UPDATE PORTFOLIO
+            SET BUY_AMOUNT = BUY_AMOUNT + LATEST_PRICE*LATEST_QUANTITY
+            WHERE USER_ID = BUYER_ID AND SECTOR = SECTOR_OF_STOCK(ORDER_SYM);
+        END IF;
+    ELSIF TYP = 'Admin' THEN 
+        FUND := 0;
+        SELECT FUNDS INTO FUND FROM ADMIN WHERE ADMIN_ID = BUYER_ID;
+
+        IF FUND < LATEST_PRICE*LATEST_QUANTITY THEN 
+            RAISE_APPLICATION_ERROR(-20007,'Insufficient funds');
+        END IF;
+
+        UPDATE ADMIN
+        SET FUNDS = FUNDS - LATEST_PRICE*LATEST_QUANTITY
+        WHERE ADMIN_ID = BUYER_ID;
+
+
+		SELECT COUNT(*) INTO COUNT_SYM 
+        FROM "BACKUP STOCK"
+        WHERE SYMBOL = ORDER_SYM;
+				
+		SELECT LOT INTO NUM_LOT FROM STOCK WHERE SYMBOL = ORDER_SYM ;
+
+        IF COUNT_SYM = 0 THEN
+            INSERT INTO "BACKUP STOCK" VALUES (ORDER_SYM,LATEST_QUANTITY/NUM_LOT,'F');
+        ELSE 
+            UPDATE "BACKUP STOCK" 
+            SET AVAILABLE_LOTS = AVAILABLE_LOTS + (LATEST_QUANTITY/NUM_LOT)
+            WHERE SYMBOL = ORDER_SYM;
+        END IF;
+    END IF;
+
+    UPDATE "ORDER"
+    SET STATUS = 'SUCCESS'
+    WHERE ORDER_ID = OID;
+		
+		SELECT LOT INTO NUM_LOT FROM STOCK WHERE SYMBOL = ORDER_SYM ;
+		NUM_LOT_SOLD := ROUND(LATEST_QUANTITY/NUM_LOT,2);
+		
+		
+		INSERT INTO USER_LOG(USER_ID,EVENT_TYPE,DESCRIPTION) VALUES (BUYER_ID,'PURCHASE','You purchased '||NUM_LOT_SOLD||' number of lots of '||ORDER_SYM||' at price '||LATEST_PRICE||' from '||SELLER_NAME);
+	
+	INSERT INTO ADMIN_LOG(EVENT_TYPE,DESCRIPTION) VALUES ('PURCHASE',BUYER_NAME||' purchased '||NUM_LOT_SOLD||' number of lots of '||ORDER_SYM||' at price '||LATEST_PRICE||' from '||SELLER_NAME);
+		INSERT INTO USER_LOG(USER_ID,EVENT_TYPE,DESCRIPTION) VALUES (SELLER_ID,'PURCHASE',BUYER_NAME||' purchased '||NUM_LOT_SOLD||' number of lots of '||ORDER_SYM||' at price '||LATEST_PRICE||' from you');
+		
+EXCEPTION
+WHEN OTHERS THEN 
+	DBMS_OUTPUT.PUT_LINE('SOME ERROR OCCURED');
+	ROLLBACK;
+END;
+/
+```
+
+
+## AVG_PRICE_ACROSS_YEAR
+- Avg of latest price of orders per day 
+```sql
+CREATE OR REPLACE PROCEDURE AVG_PRICE_ACROSS_YEAR(LISTAVP OUT CLOB) IS 
+  END_DATE DATE := TRUNC(SYSDATE)-365;
+  CURR_DATE DATE := TRUNC(SYSDATE);
+  JSON_DATA CLOB := '['; -- Use CLOB for JSON data
+BEGIN
+  FOR R IN (
+    SELECT
+      TRUNC(TRANSACTION_TIME) DAT,
+      ROUND( AVG( LATEST_PRICE ), 4 ) AVG_PRICE 
+    FROM
+      "ORDER" 
+    WHERE
+      STATUS = 'SUCCESS' 
+      AND TRUNC( SYSDATE ) - TRUNC( TRANSACTION_TIME ) <= 365
+    GROUP BY
+      TRUNC(TRANSACTION_TIME)
+    ORDER BY
+      TRUNC(TRANSACTION_TIME) DESC
+  )
+  LOOP 
+    -- Loop to fill in missing dates with zero values
+    WHILE CURR_DATE > R.DAT
+    LOOP 
+      JSON_DATA := JSON_DATA || '{"x":'|| TIME_TO_EPOCH(trunc(CURR_DATE))*1000 || ',"y":'||0||'}';
+      IF CURR_DATE <> END_DATE THEN 
+        JSON_DATA := JSON_DATA ||',';
+      END IF;
+      CURR_DATE := CURR_DATE - 1;
+    END LOOP;
+    
+    -- Append JSON data for the current date
+    JSON_DATA := JSON_DATA || '{"x":'|| TIME_TO_EPOCH(trunc(R.DAT))*1000 || ',"y":'||R.AVG_PRICE||'}';
+    
+    -- Append a comma if not the last date
+    IF CURR_DATE <> END_DATE THEN 
+      JSON_DATA := JSON_DATA ||',';
+    END IF;
+    
+    CURR_DATE := CURR_DATE - 1;
+  END LOOP;
+  
+  -- Loop to fill in remaining missing dates with zero values
+  WHILE CURR_DATE >= END_DATE
+  LOOP 
+    JSON_DATA := JSON_DATA ||'{"x":'|| TIME_TO_EPOCH(trunc(CURR_DATE))*1000 || ',"y":'||0||'}';
+    IF CURR_DATE <> END_DATE THEN 
+      JSON_DATA := JSON_DATA || ',';
+    END IF;
+    CURR_DATE := CURR_DATE - 1;
+  END LOOP;
+  
+  -- Complete the JSON array
+  JSON_DATA := JSON_DATA || ']';
+  
+  -- Assign the JSON data to the output CLOB
+  LISTAVP := JSON_DATA;
+END;
+/
+```
+
+For testing purposes , run the following plsql block :
+```sql 
+DECLARE
+	ANS VARCHAR2(32767);
+BEGIN 
+	AVG_PRICE_ACROSS_YEAR(ANS);
+	DBMS_OUTPUT.PUT_LINE(ANS);
+END;
+/
+```
+Sample output
+```json 
+[{"x":1694628000000,"y":363.1},{"x":1694541600000,"y":442.5},{"x":1694455200000,"y":455.6667},{"x":1694368800000,"y":506},{"x":1694282400000,"y":435.9459},{"x":1694196000000,"y":471.1905},{"x":1694109600000,"y":488.7097},{"x":1694023200000,"y":492.6531},{"x":1693936800000,"y":726.4891},{"x":1693850400000,"y":410.2941},{"x":1693764000000,"y":427.9167},{"x":1693677600000,"y":460.303},{"x":1693591200000,"y":425.3846},{"x":1693504800000,"y":457.3333},{"x":1693418400000,"y":479.1892},{"x":1693332000000,"y":481.2121},{"x":1693245600000,"y":421.0345},...]
+```
+
+
+
+## DAILY_PROFIT 
+- Calculates sector wise profit for today across successful transactions
+```sql
+CREATE OR REPLACE PROCEDURE DAILY_PROFIT(profits OUT VARCHAR2) IS
+  -- Declare a collection to hold the result records
+  TYPE profit_record_type IS RECORD (
+    sector VARCHAR2(255),
+    profit DECIMAL(10, 2)
+  );
+
+  TYPE profit_list_type IS TABLE OF profit_record_type;
+  v_sector_profits profit_list_type;
+
+  -- Cursor to fetch the data
+  CURSOR c_sector_profits IS
+      SELECT
+	C.SECTOR,
+	NVL(P.PROFIT,0) DAILY_PROFIT 
+FROM
+	(SELECT DISTINCT SECTOR FROM CORPORATION) C LEFT OUTER
+	JOIN (
+	SELECT
+		SECTOR_OF_STOCK ( O1.SYMBOL ) SECTOR,
+		SUM(O1.TRANSACTION_FEE) PROFIT
+	FROM
+		"ORDER" O1 
+	WHERE
+		O1.STATUS = 'SUCCESS' 
+		AND TRUNC( O1.TRANSACTION_TIME ) = TRUNC(SYSDATE)
+	GROUP BY 
+		SECTOR_OF_STOCK ( O1.SYMBOL )
+	) P ON C.SECTOR = P.SECTOR 
+ORDER BY
+	C.SECTOR;
+
+
+  v_json VARCHAR2(32767) := ''; -- Initialize JSON object
+
+BEGIN
+  -- Open the cursor and fetch data into the collection
+  OPEN c_sector_profits;
+  FETCH c_sector_profits BULK COLLECT INTO v_sector_profits;
+  CLOSE c_sector_profits;
+
+  FOR i IN v_sector_profits.FIRST .. v_sector_profits.LAST LOOP
+    -- Append each record as a JSON object
+    v_json := v_json || ', {"sector": "' || v_sector_profits(i).sector ||
+                           '", "profit": ' || v_sector_profits(i).profit || '}';
+  END LOOP;
+
+  -- Wrap the JSON object
+  v_json := '{"data": [' || SUBSTR(v_json, 2) || ']}';
+
+  -- Set the output parameter
+  profits := v_json;
+END;
+/
+```
 
 
 ## IS_PREM
