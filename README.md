@@ -133,7 +133,7 @@ User list -->
 
 ## Contact Us
 
-Have questions or need assistance? We're here to help. Feel free to contact our support team at [support@bdstokz.com](mailto:support@bdstokz.com).
+Have questions or need assistance? We're here to help. Feel free to contact our support team at [jahinabrar5@gmail.com](mailto:jahinabrar5@gmail.com).
 
 ## Contributing
 
