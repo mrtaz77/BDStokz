@@ -25,7 +25,7 @@ const getAllOrders = async () => {
         FORMAT_TIMESTAMP_ORDER(TRANSACTION_TIME) TRANSACTION_TIME,
         STOP_PRICE
         FROM "ORDER" 
-        ORDER BY LATEST_UPDATE_TIME DESC
+        ORDER BY ORDER_ID DESC
         `;
 
         const bind = {
@@ -60,7 +60,7 @@ const getUserOrdersByType = async (payload) => {
             STOP_PRICE
             FROM "ORDER"  
             WHERE USER_ID = :userId AND "TYPE" = :type
-            ORDER BY LATEST_UPDATE_TIME DESC
+            ORDER BY ORDER_ID DESC
         `;
 
         const binds = {
@@ -98,7 +98,7 @@ const getAllOrdersByType = async (payload) => {
             STOP_PRICE
             FROM "ORDER" 
             WHERE "TYPE" = :type
-            ORDER BY LATEST_UPDATE_TIME DESC
+            ORDER BY ORDER_ID DESC
             --FETCH FIRST :n ROWS ONLY
         `;
 
@@ -134,7 +134,7 @@ const getOrderDetailsById = async (orderId) => {
             STOP_PRICE
             FROM "ORDER"  
             WHERE ORDER_ID = :orderId
-            ORDER BY LATEST_UPDATE_TIME DESC
+            ORDER BY ORDER_ID DESC
         `;
 
         const binds = {
@@ -352,7 +352,7 @@ const getOrdersBySymbolAndType = async (payload) => {
         STOP_PRICE
         FROM "ORDER" 
         WHERE SYMBOL = :symbol AND "TYPE" = :type
-        ORDER BY LATEST_UPDATE_TIME DESC
+        ORDER BY ORDER_ID DESC
         `;
 
         const bind = {

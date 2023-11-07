@@ -1,5 +1,6 @@
 const router = require('express-promise-router')();
 const brokerController = require('../controller/broker');
+const { body } = require('express-validator');
 
 router.get('/customers', async (req, res) => {
     try {

@@ -116,7 +116,7 @@ router.get('/dailyProfit',async (req,res,next) => {
     try{    
         const dailyProfit = await adminController.getDailyProfit();
         // console.log(dailyProfit);
-        res.json(dailyProfit);
+        return res.status(200).json(dailyProfit);
     }catch (err) {
         console.log(err);
         next(err);
@@ -146,7 +146,7 @@ router.get('/empDetails/:name',async (req,res,next)=>{
         if(empDetails == null){
             return res.status(400).json({ message: 'employee not found' });
         }
-        else res.status(200).json(empDetails);
+        return res.status(200).json(empDetails);
     }catch (err) {
         console.log(err);
         next(err);
@@ -222,7 +222,25 @@ router.delete('/deleteOrder',[
 
 });
 
+router.get('/log', async (req, res) => {
+    try{
+        console.log(req.query);
+        const {adminId} = req.query;
 
+        const logs = await getAllAdminLogs(adminId);
 
+        if (!logs || logs.length === 0) {
+            // If no logs are found, send a 400 response
+            const errors = await getLogErrors();
+            return res.status(400).json({ message: 'errors',err:errors});
+        }
+
+        res.status(200).json({message: 'Obtained logs',logs: logs});
+
+    }catch(err){
+        console.error('Error:', err);
+        res.status(500).json({ error: 'An error occurred' }); // Send an appropriate error response
+    }
+});
 
 module.exports = router;

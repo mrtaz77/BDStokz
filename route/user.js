@@ -1,13 +1,12 @@
 const router = require('express-promise-router')();
 const custController =  require('../controller/customer');
 const userController = require('../controller/user');
-
 const { body } = require('express-validator');
+
 const {
     getUserLogsById,
     getLogErrors,
 } = require('../controller/log');
-
 
 router.get('/',(req, res) => {
     const type = req.params.TYPE;
@@ -27,7 +26,7 @@ router.get('/portfolio',async (req, res,next) => {
         if(result == null){
             console.log(`${userId} has no portfolio`);
         }
-        else res.json(result);
+        else res.json({data:result});
 
     }catch(err){
         console.log(`Found ${err.message} in while getting portfolio..`);
@@ -38,6 +37,7 @@ router.get('/portfolio',async (req, res,next) => {
 router.get('/isPremium', async (req, res) => {
     try{
         const userId = req.query.userId; // Use req.query to get query parameters
+        console.log(userId);
 
         if (!userId) {
             return res.status(400).json({ message: 'userId is required' });
@@ -109,9 +109,10 @@ router.patch('/updateProfile',[
 ], async(req, res, next) => {
     try{
         const result = await userController.updateProfile(req.body);
+        const error = await userController.getUserErrors();
         if (result === null) {
-            // console.log(`Error updating ${req.body.field} of user to ${req.body.newValue}`);
-            return res.status(400).json({ message: `Error updating ${req.body.field} of user to ${req.body.newValue}` });
+            console.log(`Error updating ${req.body.field} of user to ${req.body.newValue}`);
+            return res.status(400).json({ message: 'Error updating user', errors:error});
         }
 
         console.log(`Successfully updated ${req.body.field} of user to ${req.body.newValue}`);
@@ -131,8 +132,9 @@ router.delete('/delContact', [
         const result = await userController.deleteContact(req.body);
 
         if (result !== null) {
+            const errs = await userController.getUserErrors();
             console.log(`Error deleting ${req.body.contact} of user ${req.body.userId}`);
-            return res.status(400).json({ message: 'Error deleting contact' });
+            return res.status(400).json({ message: 'Error deleting contact', errors:errs});
         }
 
         console.log(`Successfully deleted ${req.body.contact} of user ${req.body.userId}`);
@@ -144,7 +146,6 @@ router.delete('/delContact', [
     }
 });
 
-
 router.post('/addContact',[
     body('userId').notEmpty().withMessage('userId is required'),
     body('contact').notEmpty().withMessage('contact to be deleted is required')
@@ -153,19 +154,21 @@ router.post('/addContact',[
         const result = await userController.addContact(req.body);
 
         if (result === null) {
+            const errrs = await userController.getUserErrors();
+            // console.log("got this errors...........");
+            // console.log(errrs);
             console.log(`Error updating ${req.body.contact} of user ${req.body.userId}`);
-            return res.status(400).json({ message: 'Error updating user' });
+            return res.status(400).json({ message: 'Error updating user', errors:errrs});
         }
 
         console.log(`Successfully updated ${req.body.contact} of user ${req.body.userId}`);
-        res.json({ message: 'User info updated successfully' });
+        res.status(200).json({ message: 'User info updated successfully' });
 
     }catch(error) {
         console.error(error);
         next(error);
     }
 });
-
 router.delete('/deleteAccount',[
     body('userId').notEmpty().withMessage('userId is required'),
     body('password').notEmpty().withMessage('password is required')
@@ -190,7 +193,6 @@ router.delete('/deleteAccount',[
         next(error);
     }
 });
-
 
 
 router.get('/log', async (req, res) => {

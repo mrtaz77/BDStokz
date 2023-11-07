@@ -11,11 +11,11 @@ const loginUser = async (res,payload) => {
         maxAge: 9000000, 
         httpOnly: true
     }
-
-    // console.log(token);
     res.cookie('userSessionToken', token, options);
 }
 
 module.exports = {
     loginUser
 };
+
+//process.env.JWT_SECRET

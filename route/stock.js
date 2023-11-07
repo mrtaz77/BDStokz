@@ -1,9 +1,9 @@
 const router = require('express-promise-router')();
 const {
-    getAllStockSymbol
-    ,getAllStockDataBySymbol
-    , getTopLoserGainer
-    ,getAnnualAvgPrice
+    getAllStockSymbol,
+    getAllStockDataBySymbol, 
+    getTopLoserGainer,
+    getAnnualAvgPrice
 } = require('../controller/stock');
 
 router.get('/',async (req, res,next) => {
