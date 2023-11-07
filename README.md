@@ -129,13 +129,6 @@ GRANT UNLIMITED TABLESPACE TO c##BDStokz;
 8. User Profile
    ![userProfile](someAssets/userProfile.png)
 
-<<<<<<< HEAD
-=======
-  
-  * You can also watch the following tutorial for detailed explanation 
-  
-   [![Watch the video](https://img.youtube.com/vi/fMdfDnGX9S8/hqdefault.jpg)](https://www.youtube.com/watch?v=fMdfDnGX9S8)
->>>>>>> 5e528659bb25badb799b36beb7357b9c70d58076
 
 
 ## Contact Us
