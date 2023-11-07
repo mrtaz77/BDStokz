@@ -14,6 +14,8 @@ BDStokz is a comprehensive stock trading website created as a college project. I
 
 
 **Youtube demo:**
+
+
 [![Watch the video](https://img.youtube.com/vi/bnvE-kUc1pE/hqdefault.jpg)](https://www.youtube.com/watch?v=bnvE-kUc1pE)
 
 
