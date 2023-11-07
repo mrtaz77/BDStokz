@@ -1,12 +1,21 @@
+___
+![BDStokz_wall](someAssets/remove_bg.png)
+___
+
+
 # BDStokz - Your Ultimate Stock Trading Platform
 
 Welcome to BDStokz, a cutting-edge stock trading platform designed to provide an immersive and efficient trading experience. BDStokz is your one-stop solution for all your stock trading needs, offering a wide range of features to help you make informed decisions and maximize your investment potential.
 
-![BDStokz_wall](someAssets/BDStokz_wall.png)
 
 ## About BDStokz
 
 BDStokz is a comprehensive stock trading website created as a college project. It allows users to buy and sell stocks, search for specific stock information, monitor the current market situation, and gain insights into the top gainers and losers. With a user-friendly interface and a plethora of tools at your disposal, BDStokz empowers both novice and experienced traders to thrive in the stock market.
+
+
+**Youtube demo:**
+[![Watch the video](https://img.youtube.com/vi/bnvE-kUc1pE/hqdefault.jpg)](https://www.youtube.com/watch?v=bnvE-kUc1pE)
+
 
 ## Key Features
 
@@ -118,10 +127,6 @@ GRANT UNLIMITED TABLESPACE TO c##BDStokz;
 8. User Profile
    ![userProfile](someAssets/userProfile.png)
 
-  
-  * You can also watch the following tutorial for detailed explanation 
-  
-    https://user-images.githubusercontent.com/mrtaz77/BDStokz/someAssets/projectDemo.mp4
 
 
 ## Contact Us
