@@ -121,7 +121,7 @@ GRANT UNLIMITED TABLESPACE TO c##BDStokz;
   
   * You can also watch the following tutorial for detailed explanation 
   
-   [![Watch the video](https://img.youtube.com/vi/)](https://www.youtube.com/watch?v=fMdfDnGX9S8)
+   [![Watch the video](https://img.youtube.com/vi/fMdfDnGX9S8/hqdefault.jpg)](https://www.youtube.com/watch?v=fMdfDnGX9S8)
 
 
 ## Contact Us
