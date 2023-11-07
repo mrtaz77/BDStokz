@@ -143,3 +143,6 @@ We welcome contributions from the open-source community. If you'd like to contri
 ## Disclaimer
 
 BDStokz is a college project and not intended for actual stock trading. Use it for educational and experimental purposes only.
+
+⭐ <a class="github-button" href="https://github.com/<username>/<repository>/stargazers" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star <repository> on GitHub">Star Our Repository</a>
+
