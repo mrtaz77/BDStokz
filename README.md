@@ -58,7 +58,8 @@ GRANT UNLIMITED TABLESPACE TO c##BDStokz;
 
 ### Dummy Data Generation (Optional) ###
 
-not written yet :)
+1. Go to the directory ```BDStokz/SQL Dump/Master Dump```
+2. Run the query file ``` dummyData.sql ```
 
 ### Explore the Platform ###
 
@@ -91,44 +92,36 @@ not written yet :)
 
 5. Start trading
 
-<!-- login page
-dashBoard without notification and watchlist expanded
-dashBoard with notification (admin/non admin  doesn't matter)
-Buy  Orders and sell orders [ Join them in a single photo]
-Buy Succes and Sell success [Join them in a single photo]
-Admin's total profit pane [no portfolio]
-User profile [ with the good looking details expnded ]
-User list -->
 
 ## UI Demonstration
 1. Login page
-   ![loginPage](someAssets/choco.jpg)
+   ![loginPage](someAssets/login_final.png)
 
 2. User Dashboard
-   ![userDashboard](someAssets/choco.jpg)
+   ![userDashboard](someAssets/dasboard.png)
 
 3. Notifications for a user
-   ![notifications](someAssets/choco.jpg)
+   ![notifications](someAssets/notification.png)
 
 4. Order List
-   ![orderList](someAssets/choco.jpg)
+   ![orderList](someAssets/orderList.png)
 
 5. Succesful placement of order
-   ![succesfulPlacement](someAssets/choco.jpg)
+   ![succesfulPlacement](someAssets/successfulOrder.png)
 
 6. Profit Montoring
-   ![profitMontoring](someAssets/choco.jpg)
+   ![profitMontoring](someAssets/profitList.png)
 
 7. Userlist
-   ![userList](someAssets/choco.jpg)
+   ![userList](someAssets/userList.png)
 
 8. User Profile
-   ![userProfile](someAssets/choco.jpg)
+   ![userProfile](someAssets/userProfile.png)
 
   
   * You can also watch the following tutorial for detailed explanation 
   
-  ![projectDemo](someAssets/projectDemo.mp4)
+  ![projectDemo](https://youtu.be/fMdfDnGX9S8?si=JeOPIkM3hb6e156Q)
 
 
 ## Contact Us
