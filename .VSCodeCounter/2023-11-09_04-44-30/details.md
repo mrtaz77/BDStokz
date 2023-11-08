@@ -1,15 +1,15 @@
-# Diff Details
+# Details
 
-Date : 2023-11-09 04:40:17
+Date : 2023-11-09 04:44:30
 
-Total : 208 files,  693507 codes, 5098 comments, 108838 blanks, all 807443 lines
+Total : 208 files,  693508 codes, 5098 comments, 108839 blanks, all 807445 lines
 
-[Summary](results.md) / [Details](details.md) / [Diff Summary](diff.md) / Diff Details
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
 
 ## Files
 | filename | language | code | comment | blank | total |
 | :--- | :--- | ---: | ---: | ---: | ---: |
-| [README.md](/README.md) | Markdown | 101 | 0 | 68 | 169 |
+| [README.md](/README.md) | Markdown | 102 | 0 | 69 | 171 |
 | [SQL Dump/Documentation/FUNCTIONS.md](/SQL%20Dump/Documentation/FUNCTIONS.md) | Markdown | 267 | 0 | 34 | 301 |
 | [SQL Dump/Documentation/INDEX.md](/SQL%20Dump/Documentation/INDEX.md) | Markdown | 25 | 0 | 10 | 35 |
 | [SQL Dump/Documentation/PROCEDURES.md](/SQL%20Dump/Documentation/PROCEDURES.md) | Markdown | 242 | 0 | 42 | 284 |
@@ -218,4 +218,4 @@ Total : 208 files,  693507 codes, 5098 comments, 108838 blanks, all 807443 lines
 | [util/fields.js](/util/fields.js) | JavaScript | 12 | 0 | 1 | 13 |
 | [util/validation.js](/util/validation.js) | JavaScript | 27 | 0 | 7 | 34 |
 
-[Summary](results.md) / [Details](details.md) / [Diff Summary](diff.md) / Diff Details
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

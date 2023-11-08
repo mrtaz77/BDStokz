@@ -10,6 +10,8 @@ Welcome to BDStokz, a cutting-edge stock trading platform designed to provide an
 
 ## About BDStokz
 
+Project [ERD](/Project_ERD_A1_10.pdf) 
+
 BDStokz is a comprehensive stock trading website created as a college project. It allows users to buy and sell stocks, search for specific stock information, monitor the current market situation, and gain insights into the top gainers and losers. With a user-friendly interface and a plethora of tools at your disposal, BDStokz empowers both novice and experienced traders to thrive in the stock market.
 
 
@@ -50,7 +52,7 @@ Clone the repository using following commmand
 git clone https://github.com/mrtaz77/BdStockz.git
 ```
 
- ### Initialize the Database ###
+ ### Initialize the Database 
 
 1. Connect to the system schema with system username and password using any database management tool
 
@@ -65,7 +67,7 @@ GRANT UNLIMITED TABLESPACE TO c##BDStokz;
 
 4. Run the [megaDump.sql](/SQL%20Dump/megaDump.sql)
 
-### Setting up the environment variables ###
+### Setting up the environment variables
 
 Create a new file `.env` in the root directory. And the file should have the followings
 
@@ -91,7 +93,7 @@ If you find any error after creating `.env` check whether `dotenv` npm package i
 ```bash
 npm install dotenv
 ```
-### Initializing the Platform ###
+### Initializing the Platform
 
 
 1. Install the dependencies by running the following command
@@ -106,21 +108,12 @@ npm install dotenv
     node index.js
    ```
 
-3. Open any browser and go to this link 
-   ```
-   http://localhost:3000/BdStokz_main/login/login.html
-   ```
+3. Open any browser and go to this link [login](http://localhost:3000/BdStokz_main/login/login.html)
 
 4. Sign up for a BDStokz account to access all our features or you can use the following dummy credentials
-   
-   ```JSON
-   {
-    "username": "em09",
-    "password": "stockpulse09"
-   }
-   ```
+   listed [here](/passwords.md)
 
-5. Start trading
+5. Start trading!!!
 
 
 ## UI Demonstration
@@ -153,11 +146,6 @@ npm install dotenv
 ## Contact Us
 
 Have questions or need assistance? We're here to help. Feel free to contact our support team at [jahinabrar5@gmail.com](mailto:jahinabrar5@gmail.com).
-
-## Contributing
-
-We welcome contributions from the open-source community. If you'd like to contribute to BDStokz, please read our [contribution guidelines](CONTRIBUTING.md) for more information.
-
 
 ## Disclaimer
 
