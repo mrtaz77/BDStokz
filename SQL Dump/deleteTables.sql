@@ -1,5 +1,9 @@
 -- deleting existing table data 
 
+DROP SEQUENCE userLog_id_seq;
+DELETE  FROM USER_LOG;
+DROP SEQUENCE adminLog_id_seq;
+DELETE  FROM ADMIN_LOG;
 DELETE  FROM OWNS;
 DELETE  FROM "ORDER";
 DROP SEQUENCE order_id_seq;
@@ -19,5 +23,3 @@ DROP SEQUENCE user_id_seq;
 DELETE FROM EMP_CONTACT;
 DELETE  FROM EMPLOYEE;
 DROP SEQUENCE employee_id_seq;
-
--- 

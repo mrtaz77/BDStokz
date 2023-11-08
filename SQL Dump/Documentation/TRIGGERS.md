@@ -5,15 +5,18 @@
 |[ACTIVITY](#activity)| 1 |
 |[ADMIN](#admin)|1|
 |[BACKUP STOCK](#backup_stock)|1|
-|[BROKER](#broker)|1|
-|[CUSTOMER](#customer)|1|
-|[ORDER](#order)|3|
+|[BROKER](#broker)|2|
+|[CORPORATION](#corporation)|2|
+|[CUSTOMER](#customer)|4|
+|[EMPLOYEE](#employee)|1|
+|[ORDER](#order)|20|
 |[OWNS](#owns)|1|
 |[PARTICIPATION](#participation)|1|
 |[PORTFOLIO](#portfolio)|1|
-|[STOCK](#stock)|2|
-|[USER](#user)|4|
+|[STOCK](#stock)|7|
+|[USER](#user)|9|
 |[USER_CONTACT](#user-contact)|1|
+|TOTAL|52|
 
 
 
@@ -93,6 +96,57 @@
     /
     ```
 
+2. set_null_broker_id
+    ```sql
+    CREATE OR REPLACE TRIGGER 
+    set_null_broker_id
+    AFTER UPDATE OF IS_DELETED 
+    ON BROKER
+    FOR EACH ROW
+    BEGIN
+        IF :NEW.IS_DELETED = 'T' THEN 
+            UPDATE CUSTOMER
+            SET BROKER_ID = null 
+            WHERE BROKER_ID = :NEW.USER_ID;
+        END IF;
+    END;
+    /
+    ```
+
+### Corporation 
+1. delete_upcoming_activity_on_deleting_corp
+    ```sql
+    CREATE OR REPLACE TRIGGER delete_upcoming_activity_on_deleting_corp
+    AFTER UPDATE OF IS_DELETED 
+    ON CORPORATION
+    FOR EACH ROW 
+    BEGIN 
+        IF :NEW.IS_DELETED = 'T' THEN 
+            DELETE FROM ACTIVITY
+            WHERE CORP_ID = :NEW.CORP_ID AND START_TIME >= CURRENT_TIMESTAMP;
+        END IF;
+    END;
+    / 
+    ```
+
+2. block_stock_on_deleting_corp
+    ```sql
+    CREATE OR REPLACE TRIGGER block_stock_on_deleting_corp 
+    AFTER UPDATE OF IS_DELETED 
+    ON CORPORATION
+    FOR EACH ROW 
+    BEGIN 
+        IF :NEW.IS_DELETED = 'T' THEN 
+                UPDATE STOCK 
+                SET BLOCKED = 'T'
+                WHERE CORP_ID = :NEW.CORP_ID;
+        END IF;
+    END;
+    /
+    ```
+
+
+
 ### Customer
 1. customer_details_update_log
     ```sql
@@ -125,6 +179,73 @@
         END IF;
     END;
     /
+    ```
+
+2. referCountUpdate 
+    ```sql
+    CREATE OR REPLACE TRIGGER referCountUpdate 
+    BEFORE INSERT 
+    ON CUSTOMER
+    FOR EACH ROW 
+    DECLARE
+    BEGIN
+        UPDATE CUSTOMER
+        SET REFER_COUNT = REFER_COUNT + 1
+        WHERE USER_ID = :NEW.REFERER_ID;
+    END;
+    /
+    ```
+
+3. delete_portfolio_on_deleting_customer 
+    ```sql
+    CREATE OR REPLACE TRIGGER delete_portfolio_on_deleting_customer 
+    AFTER UPDATE OF IS_DELETED 
+    ON CUSTOMER
+    FOR EACH ROW
+    BEGIN 
+        IF :NEW.IS_DELETED = 'T' THEN 
+            DELETE FROM PORTFOLIO 
+            WHERE USER_ID = :NEW.USER_ID;
+        END IF;
+    END;
+    /
+    ```
+
+4. set_null_referer_id
+    ```sql
+    CREATE OR REPLACE TRIGGER 
+    set_null_referer_id
+    AFTER UPDATE OF IS_DELETED 
+    ON CUSTOMER
+    FOR EACH ROW
+    BEGIN
+        IF :NEW.IS_DELETED = 'T' THEN 
+            UPDATE CUSTOMER
+            SET REFERER_ID = null 
+            WHERE REFERER_ID = :NEW.USER_ID;
+        END IF;
+    END;
+    /
+    ```
+
+### Employee
+1. delete_emp_contact
+    ```sql
+    CREATE OR REPLACE TRIGGER delete_emp_contact
+    AFTER UPDATE OF IS_DELETED 
+    ON EMPLOYEE
+    FOR EACH ROW
+    DECLARE
+    COUNT_CONTACT NUMBER;
+    BEGIN
+        IF :NEW.IS_DELETED = 'T' THEN  
+            SELECT COUNT(*) INTO COUNT_CONTACT FROM EMP_CONTACT WHERE EMPLOYEE_ID = :NEW.EMPLOYEE_ID;
+            IF COUNT_CONTACT > 0 THEN 
+                DELETE FROM EMP_CONTACT WHERE EMPLOYEE_ID = :NEW.EMPLOYEE_ID; 
+            END IF;
+        END IF;
+    END;
+    / 
     ```
 
 ### Order
@@ -202,6 +323,436 @@
         
         INSERT INTO ADMIN_LOG(EVENT_TYPE,DESCRIPTION) VALUES ('UPDATE PRICE OF ORDER',:new.user_id||' changed latest price from '||:OLD.LATEST_PRICE||' to '||:new.LATEST_PRICE||' of order '||:new.ORDER_ID);
     END IF;
+    END;
+    /
+    ```
+
+
+4. place_order_user_check
+    ```sql
+    CREATE OR REPLACE TRIGGER place_order_user_check
+    BEFORE INSERT
+    ON "ORDER"
+    FOR EACH ROW 
+    DECLARE 
+    TYP VARCHAR2(20);
+    NUM NUMBER;
+    BEGIN
+        SELECT COUNT(*) INTO NUM FROM 
+        (SELECT "TYPE" FROM "USER" WHERE USER_ID = :NEW.USER_ID);
+        IF NUM = 0 THEN 
+            RAISE_APPLICATION_ERROR(-20000,'User Not Found');
+        ELSE 
+            SELECT "TYPE" INTO TYP FROM "USER" WHERE USER_ID = :NEW.USER_ID;
+            IF TYP NOT IN ('Admin','Customer') THEN 
+                RAISE_APPLICATION_ERROR(-20001,'User not permitted');
+            END IF;
+        END IF;
+    END;
+    /
+    ```
+
+5. place_order_symbol_check
+    ```sql
+    CREATE OR REPLACE TRIGGER place_order_symbol_check
+    BEFORE INSERT
+    ON "ORDER"
+    FOR EACH ROW 
+    DECLARE 
+    COUNT_SYM NUMBER;
+    BEGIN
+        SELECT COUNT(*) INTO COUNT_SYM FROM 
+        (SELECT SYMBOL FROM STOCK WHERE SYMBOL = :NEW.SYMBOL AND BLOCKED = 'F');  
+        IF COUNT_SYM = 0 THEN  
+            RAISE_APPLICATION_ERROR(-20002,'Invalid stock');
+        END IF;
+    END;
+    /
+    ```
+
+6. buy_order_amount_check 
+    ```sql
+    CREATE OR REPLACE TRIGGER buy_order_amount_check 
+    BEFORE INSERT OR UPDATE OF LATEST_QUANTITY
+    ON "ORDER"
+    FOR EACH ROW 
+    DECLARE 
+    NUM_SHARES NUMBER;
+    ALLOWED_SHARES NUMBER;
+    BEGIN
+        IF :NEW."TYPE" = 'BUY' THEN
+            SELECT LOT INTO NUM_SHARES FROM STOCK WHERE SYMBOL = :NEW.SYMBOL;
+            SELECT LOT*AVAILABLE_LOTS INTO ALLOWED_SHARES FROM STOCK WHERE SYMBOL = :NEW.SYMBOL;
+            IF :NEW.LATEST_QUANTITY*NUM_SHARES > ALLOWED_SHARES OR :NEW.LATEST_QUANTITY*NUM_SHARES <= 0 THEN 
+                RAISE_APPLICATION_ERROR(-20003,'Invalid amount of stock');
+            END IF;
+                :NEW.LATEST_QUANTITY := :NEW.LATEST_QUANTITY*NUM_SHARES;
+        END IF;
+    END;
+    /
+    ```
+
+7. sell_order_amount_check
+    ```sql
+    CREATE OR REPLACE TRIGGER sell_order_amount_check 
+    BEFORE INSERT OR UPDATE OF LATEST_QUANTITY
+    ON "ORDER"
+    FOR EACH ROW 
+    DECLARE 
+    TYP VARCHAR2(20);
+    FLAG NUMBER;
+    NUM_SHARES NUMBER;
+    AVAILABLE_SHARE_LOTS NUMBER;
+    AVAILABLE_SHARES NUMBER;
+    BEGIN
+        SELECT LOT INTO NUM_SHARES FROM STOCK WHERE SYMBOL = :NEW.SYMBOL;
+        IF :NEW."TYPE" = 'SELL' THEN
+            SELECT "TYPE" INTO TYP FROM "USER" WHERE USER_ID = :NEW.USER_ID;
+            IF TYP = 'Admin' THEN
+                SELECT COUNT(SYMBOL) INTO FLAG 
+                FROM "BACKUP STOCK"
+                WHERE SYMBOL = :NEW.SYMBOL;
+
+                IF FLAG = 0 THEN 
+                    RAISE_APPLICATION_ERROR(-20003,'Invalid amount of stock');
+                ELSE 
+                    SELECT AVAILABLE_LOTS INTO AVAILABLE_SHARE_LOTS 
+                    FROM "BACKUP STOCK"
+                    WHERE SYMBOL = :NEW.SYMBOL;
+                    IF :NEW.LATEST_QUANTITY > AVAILABLE_SHARE_LOTS OR :NEW.LATEST_QUANTITY*NUM_SHARES <= 0 THEN 
+                        RAISE_APPLICATION_ERROR(-20003,'Invalid amount of stock');
+                    END IF;
+                END IF;
+            ELSIF TYP = 'Customer' THEN
+                SELECT COUNT(*) INTO FLAG 
+                FROM OWNS 
+                WHERE 
+                USER_ID = :NEW.USER_ID AND 
+                SYMBOL = :NEW.SYMBOL;
+
+                IF FLAG = 0 THEN 
+                    RAISE_APPLICATION_ERROR(-20003,'Invalid amount of stock');
+                END IF;
+
+                SELECT 
+                    QUANTITY INTO AVAILABLE_SHARES 
+                FROM OWNS 
+                WHERE 
+                    USER_ID = :NEW.USER_ID AND 
+                    SYMBOL = :NEW.SYMBOL;
+                IF :NEW.LATEST_QUANTITY * NUM_SHARES > AVAILABLE_SHARES  OR :NEW.LATEST_QUANTITY*NUM_SHARES <= 0 THEN 
+                    RAISE_APPLICATION_ERROR(-20003,'Invalid amount of stock');
+                END IF;
+            ELSE 
+                RAISE_APPLICATION_ERROR(-20001,'User not permitted');
+            END IF;
+            :NEW.LATEST_QUANTITY := :NEW.LATEST_QUANTITY*NUM_SHARES;
+        END IF;
+    END;
+    /
+    ```
+
+8. latest_update_time_set
+    ```sql
+    CREATE OR REPLACE TRIGGER latest_update_time_set
+    BEFORE INSERT OR UPDATE
+    ON "ORDER"
+    FOR EACH ROW 
+    BEGIN
+        :NEW.LATEST_UPDATE_TIME := CURRENT_TIMESTAMP;
+    END;
+    /
+    ```
+
+9. transaction_fee_set 
+    ```sql
+    CREATE OR REPLACE TRIGGER transaction_fee_set 
+    BEFORE INSERT OR UPDATE
+    ON "ORDER"
+    FOR EACH ROW
+    DECLARE 
+    TYP VARCHAR2(20);
+    BEGIN
+        IF :NEW.STATUS = 'FAILURE' THEN
+            :NEW.TRANSACTION_FEE := 0;
+        ELSE 
+            SELECT "TYPE" INTO TYP FROM "USER" WHERE USER_ID = :NEW.USER_ID;
+            IF TYP = 'Admin' THEN 
+                :NEW.TRANSACTION_FEE := 0;
+            ELSIF TYP = 'Customer' THEN  
+                :NEW.TRANSACTION_FEE := ROUND(:NEW.LATEST_PRICE * :NEW.LATEST_QUANTITY * 2 / 100,2);
+            END IF;
+        END IF;
+    END; 
+    /
+    ```
+
+10. transaction_time_set
+    ```sql
+    CREATE OR REPLACE TRIGGER transaction_time_set
+    BEFORE UPDATE
+    ON "ORDER"
+    FOR EACH ROW
+    BEGIN
+        IF :NEW.STATUS IN ('SUCCESS') THEN 
+            :NEW.TRANSACTION_TIME := CURRENT_TIMESTAMP;
+        ELSE 
+            :NEW.TRANSACTION_TIME := NULL;
+        END IF;
+    END;
+    /
+    ```
+
+11. sell_order_status_check
+    ```sql
+    CREATE OR REPLACE TRIGGER sell_order_status_check 
+    BEFORE UPDATE 
+    ON "ORDER"
+    FOR EACH ROW
+    BEGIN
+        IF :NEW.STATUS = 'FAILURE' AND :NEW."TYPE" = 'SELL' THEN 
+            RAISE_APPLICATION_ERROR(-20004,'Sell order can never fail');
+        END IF;
+    END;
+    /
+    ```
+
+
+12. buy_order_success_admin_funds_check
+    ```sql
+    CREATE OR REPLACE TRIGGER buy_order_success_admin_funds_check 
+    BEFORE UPDATE OF "STATUS"
+    ON "ORDER"
+    FOR EACH ROW 
+    DECLARE 
+    TYP VARCHAR2(20);
+    FUND NUMBER(20,2);
+    FLAG NUMBER;
+    BEGIN 
+        IF :NEW.STATUS = 'SUCCESS' THEN 
+            SELECT "TYPE" INTO TYP FROM "USER" WHERE USER_ID = :NEW.USER_ID;
+            IF TYP = 'Admin' THEN 
+                SELECT COUNT(FUNDS) INTO FLAG 
+                FROM ADMIN WHERE ADMIN_ID = :NEW.USER_ID;
+
+                IF FLAG = 0 THEN 
+                    :NEW.STATUS := 'FAILURE'; 
+                ELSE 
+                    SELECT FUNDS INTO FUND FROM ADMIN WHERE ADMIN_ID = :NEW.USER_ID;
+                    IF FUND < :NEW.LATEST_PRICE * :NEW.LATEST_QUANTITY THEN 
+                        :NEW.STATUS := 'FAILURE'; 
+                    END IF;
+                END IF;
+            END IF;
+        END IF;
+    END;
+    /
+    ```
+
+13. buy_order_success_update_owns_or_backup_stock
+    ```sql
+    CREATE OR REPLACE TRIGGER buy_order_success_update_owns_or_backup_stock
+    AFTER UPDATE OF STATUS
+    ON "ORDER"
+    FOR EACH ROW
+    DECLARE 
+    TYP VARCHAR2(20);
+    COUNT_SYM NUMBER;
+    FLAG NUMBER;
+    BEGIN 
+        IF :NEW.STATUS = 'SUCCESS' AND :NEW."TYPE" = 'BUY' THEN 
+            SELECT "TYPE" INTO TYP FROM "USER" WHERE USER_ID = :NEW.USER_ID;
+            IF TYP = 'Admin' THEN
+                SELECT COUNT(SYMBOL) INTO COUNT_SYM 
+                FROM "BACKUP STOCK"
+                WHERE SYMBOL = :NEW.SYMBOL;
+                IF COUNT_SYM = 0 THEN
+                    INSERT INTO "BACKUP STOCK" VALUES (:NEW.SYMBOL,:NEW.LATEST_QUANTITY/(SELECT LOT FROM STOCK WHERE SYMBOL = :NEW.SYMBOL),'F');
+                ELSE 
+                    UPDATE "BACKUP STOCK" 
+                    SET AVAILABLE_LOTS = AVAILABLE_LOTS + :NEW.LATEST_QUANTITY/(SELECT LOT FROM STOCK WHERE SYMBOL = :NEW.SYMBOL)
+                    WHERE SYMBOL = :NEW.SYMBOL;
+                END IF;
+            ELSIF TYP = 'Customer' THEN 
+                SELECT COUNT(*) INTO FLAG FROM OWNS WHERE SYMBOL = :NEW.SYMBOL AND USER_ID = :NEW.USER_ID;
+                            
+                IF FLAG = 0 THEN 
+                    INSERT INTO OWNS VALUES(:NEW.USER_ID,:NEW.SYMBOL,:NEW.LATEST_QUANTITY);
+                ELSE 
+                    UPDATE OWNS
+                    SET QUANTITY = QUANTITY + :NEW.LATEST_QUANTITY
+                    WHERE USER_ID = :NEW.USER_ID AND SYMBOL = :NEW.SYMBOL;
+                END IF;
+            END IF;
+            END IF;
+    END;
+    /
+    ```
+
+14. buy_order_success_update_available_lots_from_stock
+    ```sql
+    CREATE OR REPLACE TRIGGER buy_order_success_update_available_lots_from_stock
+    AFTER UPDATE OF STATUS
+    ON "ORDER"
+    FOR EACH ROW
+    BEGIN
+        IF :NEW.STATUS = 'SUCCESS' AND :NEW."TYPE" = 'BUY' THEN 
+            UPDATE STOCK
+            SET AVAILABLE_LOTS = AVAILABLE_LOTS - :NEW.LATEST_QUANTITY/(SELECT LOT FROM STOCK WHERE SYMBOL = :NEW.SYMBOL)
+            WHERE SYMBOL = :NEW.SYMBOL;
+        END IF;
+    END;
+    /
+    ```
+
+15. buy_order_success_update_customer_portfolio 
+    ```sql
+    CREATE OR REPLACE TRIGGER buy_order_success_update_customer_portfolio 
+    AFTER UPDATE OF STATUS
+    ON "ORDER"
+    FOR EACH ROW
+    DECLARE 
+    FLAG NUMBER;
+    USID NUMBER;
+    USER_TYPE VARCHAR2(30);
+    BEGIN
+        SELECT "TYPE" INTO USER_TYPE FROM "USER" WHERE USER_ID = :NEW.USER_ID;
+        IF :NEW.STATUS = 'SUCCESS' AND :NEW."TYPE" = 'BUY' AND USER_TYPE = 'Customer' THEN 
+                    SELECT COUNT(*) INTO FLAG 
+            FROM PORTFOLIO WHERE SECTOR = SECTOR_OF_STOCK(:NEW.SYMBOL) AND USER_ID = :NEW.USER_ID;
+            
+            IF FLAG = 0 THEN
+                INSERT INTO PORTFOLIO VALUES (:NEW.USER_ID,SECTOR_OF_STOCK(:NEW.SYMBOL),:NEW.LATEST_PRICE*:NEW.LATEST_QUANTITY,0);
+            ELSE 
+                UPDATE PORTFOLIO
+                SET BUY_AMOUNT = BUY_AMOUNT + :NEW.LATEST_PRICE*:NEW.LATEST_QUANTITY
+                WHERE USER_ID = :NEW.USER_ID AND SECTOR = SECTOR_OF_STOCK(:NEW.SYMBOL);
+            END IF;
+        END IF;
+    END;
+    /
+    ```
+
+16. sell_order_success_update_owns_or_backup_stock
+    ```sql
+    CREATE OR REPLACE TRIGGER sell_order_success_update_owns_or_backup_stock
+    AFTER UPDATE OF STATUS
+    ON "ORDER"
+    FOR EACH ROW
+    DECLARE 
+    TYP VARCHAR2(20);
+    SYM VARCHAR2(40);
+    USID NUMBER;
+    BEGIN 
+        IF :NEW.STATUS = 'SUCCESS' AND :NEW."TYPE" = 'SELL' THEN 
+            SELECT "TYPE" INTO TYP FROM "USER" WHERE USER_ID = :NEW.USER_ID;
+            IF TYP = 'Admin' THEN
+                UPDATE "BACKUP STOCK" 
+                SET AVAILABLE_LOTS = AVAILABLE_LOTS - :NEW.LATEST_QUANTITY/(SELECT LOT FROM STOCK WHERE SYMBOL = :NEW.SYMBOL)
+                WHERE SYMBOL = :NEW.SYMBOL;
+            ELSIF TYP = 'Customer' THEN 
+                UPDATE OWNS
+                SET QUANTITY = QUANTITY - :NEW.LATEST_QUANTITY
+                WHERE USER_ID = :NEW.USER_ID AND SYMBOL = :NEW.SYMBOL;
+            END IF;
+        END IF;
+    END;
+    /
+    ```
+
+
+17. order_success_update_stock_ltp 
+    ```sql
+    CREATE OR REPLACE TRIGGER order_success_update_stock_ltp 
+    AFTER UPDATE OF STATUS
+    ON "ORDER"
+    FOR EACH ROW
+    BEGIN
+        IF :NEW.STATUS = 'SUCCESS' THEN
+            UPDATE STOCK 
+            SET LTP = :NEW.LATEST_PRICE
+            WHERE SYMBOL = :NEW.SYMBOL;
+        END IF;
+    END;
+    /
+    ```
+
+18. sell_order_success_update_customer_portfolio 
+    ```sql
+    CREATE OR REPLACE TRIGGER sell_order_success_update_customer_portfolio 
+    AFTER UPDATE OF STATUS
+    ON "ORDER"
+    FOR EACH ROW
+    DECLARE 
+    FLAG NUMBER;
+    USID NUMBER;
+    USER_TYPE VARCHAR2(30);
+    BEGIN 
+        SELECT "TYPE" INTO USER_TYPE FROM "USER" WHERE USER_ID = :NEW.USER_ID;
+        IF :NEW.STATUS = 'SUCCESS' AND :NEW."TYPE" = 'SELL' AND USER_TYPE = 'Customer' THEN 
+                    SELECT COUNT(*) INTO FLAG 
+            FROM PORTFOLIO WHERE SECTOR = SECTOR_OF_STOCK(:NEW.SYMBOL) AND USER_ID = :NEW.USER_ID;
+            
+            IF FLAG = 0 THEN
+                INSERT INTO PORTFOLIO VALUES (:NEW.USER_ID,SECTOR_OF_STOCK(:NEW.SYMBOL),0,:NEW.LATEST_PRICE*:NEW.LATEST_QUANTITY);
+            ELSE 
+                UPDATE PORTFOLIO
+                SET SELL_AMOUNT = SELL_AMOUNT + :NEW.LATEST_PRICE*:NEW.LATEST_QUANTITY
+                WHERE USER_ID = :NEW.USER_ID AND SECTOR = SECTOR_OF_STOCK(:NEW.SYMBOL);
+            END IF;
+        END IF;
+    END;
+    /
+    ```
+
+19. update_broker_commission_pct
+    ```sql
+    CREATE OR REPLACE TRIGGER update_broker_commission_pct
+    AFTER UPDATE OF STATUS
+    ON "ORDER"
+    FOR EACH ROW 
+    DECLARE 
+    NEW_COM_PCT NUMBER(5,2);
+    OLD_COM_PCT NUMBER(5,2);
+    BID NUMBER;
+    USER_TYPE VARCHAR2(30);
+    BEGIN 
+        SELECT "TYPE" INTO USER_TYPE FROM "USER" WHERE USER_ID = :NEW.USER_ID;
+        IF :NEW.STATUS = 'SUCCESS' AND USER_TYPE = 'Customer' THEN
+            SELECT COUNT(BROKER_ID) INTO BID FROM CUSTOMER WHERE USER_ID = :NEW.USER_ID;
+            IF BID <> 0 THEN
+                SELECT BROKER_ID INTO BID FROM CUSTOMER WHERE USER_ID = :NEW.USER_ID;
+                NEW_COM_PCT := BROKER_COMMISSION_PCT(BID);
+                SELECT NVL(COMMISSION_PCT,0) INTO OLD_COM_PCT FROM BROKER WHERE USER_ID = BID;
+                IF OLD_COM_PCT < NEW_COM_PCT THEN
+                    UPDATE BROKER 
+                    SET COMMISSION_PCT = NEW_COM_PCT
+                    WHERE USER_ID = BID;
+                END IF;
+            END IF;
+        END IF;
+    END;
+    /
+    ```
+
+20. buy_order_admin_funds_check
+    ```sql
+    CREATE OR REPLACE TRIGGER buy_order_admin_funds_check
+    BEFORE INSERT OR UPDATE OF LATEST_QUANTITY,LATEST_PRICE
+    ON "ORDER"
+    FOR EACH ROW 
+    DECLARE 
+    TYP VARCHAR2(30);
+    FUND NUMBER(10,2);
+    BEGIN
+        FUND := 0;
+        SELECT "TYPE" INTO TYP FROM "USER" WHERE USER_ID = :NEW.USER_ID;
+        IF TYP = 'Admin' THEN 
+            SELECT FUNDS INTO FUND FROM ADMIN WHERE ADMIN_ID = :NEW.USER_ID;
+            IF :NEW.LATEST_PRICE * :NEW.LATEST_QUANTITY > FUND THEN 
+                RAISE_APPLICATION_ERROR(-20006,'Insufficient funds for transaction');
+            END IF;
+        END IF;
     END;
     /
     ```
@@ -395,6 +946,123 @@
     ```
 
 
+3. update_stock_time
+    ```sql
+    CREATE OR REPLACE TRIGGER update_stock_time
+    BEFORE UPDATE ON STOCK
+    FOR EACH ROW
+    BEGIN
+        :NEW.UPDATE_TIME := CURRENT_TIMESTAMP;
+    END;
+    /
+    ```
+
+4. update_corresponding_symbols
+    ```sql
+    CREATE OR REPLACE TRIGGER update_corresponding_symbols
+    AFTER UPDATE OF SYMBOL ON STOCK
+    FOR EACH ROW
+    BEGIN
+        -- Update symbol in BACKUP_STOCK
+        UPDATE "BACKUP STOCK"
+        SET SYMBOL = :new.SYMBOL
+        WHERE SYMBOL = :old.SYMBOL;
+        
+        -- Update symbol in ORDER
+        UPDATE "ORDER"
+        SET SYMBOL = :new.SYMBOL
+        WHERE SYMBOL = :old.SYMBOL;
+        
+        -- Update symbol in OWNS
+        UPDATE OWNS
+        SET SYMBOL = :new.SYMBOL
+        WHERE SYMBOL = :old.SYMBOL;
+    END;
+    /
+    ```
+
+5. insert_corp_into_owns
+    ```sql
+    CREATE OR REPLACE TRIGGER insert_corp_into_owns
+    AFTER INSERT 
+    ON STOCK 
+    FOR EACH ROW 
+    BEGIN
+    IF :NEW.AVAILABLE_LOTS IS NOT NULL AND :NEW.LOT IS NOT NULL THEN 
+        INSERT INTO OWNS VALUES(:NEW.CORP_ID,:NEW.SYMBOL,:NEW.AVAILABLE_LOTS*:NEW.LOT);
+    END IF;
+    END;
+    / 
+    ```
+
+6. update_quantity_of_stock
+    ```sql
+    CREATE OR REPLACE TRIGGER update_quantity_of_stock
+    AFTER UPDATE OF AVAILABLE_LOTS,LOT 
+    ON STOCK 
+    FOR EACH ROW
+    BEGIN 
+    UPDATE OWNS 
+    SET QUANTITY = :NEW.AVAILABLE_LOTS*:NEW.LOT 
+    WHERE USER_ID = :NEW.CORP_ID AND SYMBOL = :NEW.SYMBOL;
+    END;
+    /
+    ```
+
+7. update_blocked_flag
+    ```sql
+    CREATE OR REPLACE TRIGGER update_blocked_flag
+    AFTER UPDATE OF BLOCKED ON stock
+    FOR EACH ROW
+    DECLARE 
+    COUNT_SYM NUMBER;
+    BEGIN
+            SELECT COUNT(SYMBOL) INTO COUNT_SYM FROM "BACKUP STOCK" WHERE SYMBOL = :NEW.SYMBOL;
+            IF COUNT_SYM = 0 THEN 
+                UPDATE "BACKUP STOCK"
+                SET blocked = :NEW.BLOCKED
+                WHERE SYMBOL = :new.SYMBOL;
+            END IF;
+    END;
+    /
+    ```
+
+
+
+
+
+8. delete_order_on_blocking_stock
+    ```sql
+    CREATE OR REPLACE TRIGGER delete_order_on_blocking_stock
+    AFTER UPDATE OF BLOCKED 
+    ON STOCK 
+    FOR EACH ROW 
+    BEGIN 
+        IF :NEW.BLOCKED = 'T' THEN 
+            DELETE FROM "ORDER" 
+            WHERE SYMBOL = :NEW.SYMBOL AND STATUS = 'PENDING';
+        END IF;
+    END;
+    /
+    ```
+
+9. delete_owns_on_deleting_user 
+    ```sql
+    CREATE OR REPLACE TRIGGER delete_owns_on_deleting_user 
+    AFTER UPDATE OF IS_DELETED 
+    ON "USER"
+    FOR EACH ROW 
+    BEGIN 
+        IF :NEW.IS_DELETED = 'T' THEN 
+                DELETE FROM OWNS 
+                WHERE USER_ID = :NEW.USER_ID;
+        END IF;
+    END;
+    /
+    ```
+
+
+
 ### User
 1. reg_user
     ```sql
@@ -524,6 +1192,81 @@
     /
     ```
 
+
+5. INSERT_REG_DATE
+    ```sql
+    CREATE 
+        OR REPLACE TRIGGER INSERT_REG_DATE BEFORE INSERT ON "USER" FOR EACH ROW
+    BEGIN
+            : NEW.REG_DATE := SYSDATE;
+    END;
+    /
+    ```
+
+6. update_deleted_flag
+    ```sql
+    CREATE OR REPLACE TRIGGER update_deleted_flag
+    AFTER UPDATE OF IS_DELETED 
+    ON "USER"
+    FOR EACH ROW
+    BEGIN
+        IF :old."TYPE" = 'Customer' THEN
+            UPDATE customer
+            SET IS_DELETED = :NEW.IS_DELETED
+            WHERE user_id = :new.user_id;
+        ELSIF :old."TYPE" = 'Corp' THEN
+            UPDATE corporation
+            SET IS_DELETED = :NEW.IS_DELETED
+            WHERE corp_id = :new.user_id;
+        ELSIF :old."TYPE" = 'Broker' THEN
+            UPDATE broker
+            SET IS_DELETED = :NEW.IS_DELETED
+            WHERE user_id = :new.user_id;
+        ELSIF :old."TYPE" = 'Admin' THEN
+            UPDATE admin
+            SET IS_DELETED = :NEW.IS_DELETED
+            WHERE admin_id = :new.user_id;
+        END IF;
+    END;
+    / 
+    ```
+
+
+
+7. delete_user_contact
+    ```sql
+    CREATE OR REPLACE TRIGGER delete_user_contact
+    AFTER UPDATE OF IS_DELETED 
+    ON "USER"
+    FOR EACH ROW
+    DECLARE
+    COUNT_CONTACT NUMBER;
+    BEGIN
+        IF :NEW.IS_DELETED = 'T' THEN  
+            SELECT COUNT(*) INTO COUNT_CONTACT FROM USER_CONTACT WHERE USER_ID = :NEW.USER_ID;
+            IF COUNT_CONTACT > 0 THEN 
+                DELETE FROM USER_CONTACT WHERE USER_ID = :NEW.USER_ID; 
+            END IF;
+        END IF;
+    END;
+    / 
+    ```
+
+
+8. delete_order_on_deleting_user
+    ```sql
+    CREATE OR REPLACE TRIGGER delete_order_on_deleting_user
+    AFTER UPDATE OF IS_DELETED 
+    ON "USER"
+    FOR EACH ROW 
+    BEGIN 
+        IF :NEW.IS_DELETED = 'T' THEN 
+            DELETE FROM "ORDER" 
+            WHERE USER_ID = :NEW.USER_ID AND STATUS = 'PENDING';
+        END IF;
+    END;
+    /
+    ```
 
 ### User_contact
 1. mod_contact
