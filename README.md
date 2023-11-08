@@ -63,14 +63,7 @@ GRANT UNLIMITED TABLESPACE TO c##BDStokz;
 ```
 3. Reconnect to the newly created schema with the above credentials
 
-4. Now go to the directory
-   ```BDStokz/SQL Dump/Master Dump```
-5. Run the query file ``` initDump.sql ```
-
-### Dummy Data Generation (Optional) ###
-
-1. Go to the directory ```BDStokz/SQL Dump/Master Dump```
-2. Run the query file ``` dummyData.sql ```
+4. Run the [megaDump.sql](/SQL%20Dump/megaDump.sql)
 
 ### Setting up the environment variables ###
 
