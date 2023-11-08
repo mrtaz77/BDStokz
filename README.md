@@ -72,7 +72,33 @@ GRANT UNLIMITED TABLESPACE TO c##BDStokz;
 1. Go to the directory ```BDStokz/SQL Dump/Master Dump```
 2. Run the query file ``` dummyData.sql ```
 
-### Explore the Platform ###
+### Setting up the environment variables ###
+
+Create a new file `.env` in the root directory. And the file should have the followings
+
+```bash
+DB_USER= YOUR_DB_USER 
+DB_PASS= YOUR_DB_PASS
+DB_CONNECT_STRING=localhost/orcl
+PORT=YOUR_FABOURITE_PORT
+JWT_SECRET=YOUR_DIRTY_SECRET
+```
+
+If you followed the above then the `.env` should look like this
+```bash
+PORT = 3000
+DB_USER = "C##STOCKDB"
+DB_PASS = 13579 
+DB_CONNECT_STRING = localhost/orcl 
+JWT_SECRET = 4nyth1N9 
+```
+
+If you find any error after creating `.env` check whether `dotenv` npm package is installed or not.If it is not installed then 
+
+```bash
+npm install dotenv
+```
+### Initializing the Platform ###
 
 
 1. Install the dependencies by running the following command
@@ -144,6 +170,6 @@ We welcome contributions from the open-source community. If you'd like to contri
 
 BDStokz is a college project and not intended for actual stock trading. Use it for educational and experimental purposes only.
 
-⭐ <a class="github-button" href="https://github.com/mrtaz77/BDStokz" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star BDStokz on GitHub">Star Our Repository</a>
+⭐ <a class="github-button" href="https://github.com/mrtaz77/BDStokz" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star mrtaz77/BDStokz on GitHub">Star Our Repository</a>
 
 
