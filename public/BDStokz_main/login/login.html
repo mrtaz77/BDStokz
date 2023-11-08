@@ -1,0 +1,960 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>BDStokz - Admin & Dashboard Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <script src="jwt-decode.js"></script>
+    <script>
+        function getCookie(name) {
+            const cookies = document.cookie.split(';');
+            for (const cookie of cookies) {
+                const [cookieName, cookieValue] = cookie.trim().split('=');
+                if (cookieName === name) {
+                    console.log("cookie found");
+                return decodeURIComponent(cookieValue);
+                }
+            }
+            console.log("cookie not found");
+            return null; // Cookie not found
+        }
+        // Check if the session token cookie is present
+        const sessionToken = getCookie('userSessionToken');
+
+        if (sessionToken) {
+        // Decode the JWT token
+        const tokenPayload = jwt_decode(sessionToken);
+
+        // Access user-specific data from the token payload
+        const username = tokenPayload.name;
+        const userType = tokenPayload.usrtype;
+        window.location.href = 'http://localhost:8080/index/index.html?name=' + username+'&usertype='+userType; 
+        }
+    </script>
+
+    <link href="assets/plugins/selectr/selectr.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body id="body" data-layout="horizontal">
+
+    <!-- Top Bar Start -->
+    <div class="topbar" style="background-color: rgb(237, 246, 249);">
+        <!-- LOGO -->
+        <div class="brand" style="background-color: rgb(237, 246, 249);">
+            <a href="../index/index.html" class="logo">
+                <div style="display: flex; ">
+                    <span>
+                        <img src="logo_light_blue_bg.png" alt="logo-small" class="logo-sm" style="height: 60px;">
+                    </span>
+                    <span>
+                        <img src="logo_big_text.png" alt="logo-large" class="logo-lg logo-dark" style="height: 60px;">
+                    </span>
+                </div>
+            </a>
+        </div>        
+        <!--end logo-->
+        <!-- Navbar -->
+        
+        <!-- end navbar-->
+    </div>
+    
+    <!-- Top Bar End -->
+
+
+<!--national data div starts here........-->
+    
+    <!--end national-data-->
+
+    <div class="page-wrapper">
+
+        <!-- Page Content-->
+        <div class="page-content-tab">
+            <!-- end page title end breadcrumb -->
+            <section class="section ipo-hero pt-0">
+                <div class="container col-xxl-8 px-4">
+                    <div class="row flex-lg-row-reverse align-items-center">
+                        <div class="col-10 col-sm-8 col-lg-6 ms-auto">
+                            <img src="../images/ipo/1.gif" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="400" loading="lazy">
+                        </div>
+                        <div class="col-lg-6">
+                            <h1 class="font-46 fw-normal lh-sm mb-4">Start Your Investment Journey With <span class="text-primary">BD</span>Stokz</h1>
+                            <p class="font-16 text-muted mb-4">BDStokz is the only platform that combines NSE and NASDAQ to make developing and earning easy. Your next step in stocks starts here.
+                            </p>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#BuyStocks">
+                                    <button type="button" class="btn btn-primary px-4 py-2 me-md-2">Log In</button>
+                                </a>
+                                <a href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#exampleModalScrollable">
+                                    <button type="button" class="btn btn-soft-primary px-4 py-2">Register</button>
+                                </a>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end container-->
+            </section>
+            <!--end section-->
+            <!-- Hero End -->
+            <div class="position-relative">
+                <div class="shape overflow-hidden text-light">
+                    <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+                        </svg>
+                </div>
+            </div>
+            <!-- HOME END-->
+            <section class="section bg-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 align-self-center text-end border-end pe-4">
+                            <h5 class="font-18">Next Month Four Big Company's IPO</h5>
+                            <p class="mb-0 text-muted">First IPO starbucks</p>
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-8">
+                            <div>
+                                <div class="ipo_logo d-inline-block">
+                                    <img src="../images/ipo/ipo-1.png" alt="" class="" height="50">
+                                </div>
+                                <div class="ipo_logo d-inline-block">
+                                    <img src="../images/ipo/ipo-2.png" alt="" class="" height="50">
+                                </div>
+                                <div class="ipo_logo d-inline-block">
+                                    <img src="../images/ipo/ipo-3.png" alt="" class="" height="50">
+                                </div>
+                                <div class="ipo_logo d-inline-block">
+                                    <img src="../images/ipo/boa.png" alt="" class="" height="30">
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end container-->
+            </section>
+            <!--end section-->
+            <section class="section ">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card shadow-none border-0">
+                                <div class="card-body">
+                                    <div class="d-inline-block">
+                                        <div class="ipo_logo d-flex align-items-center justify-content-center">
+                                            <i class="ti ti-brand-open-source font-36"></i>
+                                        </div>
+                                    </div>
+                                    <h3>Instant Account Opening Process</h3>
+                                    <p class="text-muted font-15">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                                    </p>
+                                    <a href="" class="text-primary fw-semibold font-15">Learn More <i class="ti ti-arrow-narrow-right"></i></a>
+                                </div>
+                                <!--end card body-->
+                            </div>
+                            <!--end card-->
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-4">
+                            <div class="card shadow-none border-0">
+                                <div class="card-body">
+                                    <div class="d-inline-block">
+                                        <div class="ipo_logo d-flex align-items-center justify-content-center">
+                                            <i class="ti ti-apps font-36"></i>
+                                        </div>
+                                    </div>
+                                    <h3>One app for all</h3>
+                                    <p class="text-muted font-15">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                                    </p>
+                                    <a href="" class="text-primary fw-semibold font-15">Learn More <i class="ti ti-arrow-narrow-right"></i></a>
+                                </div>
+                                <!--end card body-->
+                            </div>
+                            <!--end card-->
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-4">
+                            <div class="card shadow-none border-0">
+                                <div class="card-body">
+                                    <div class="d-inline-block">
+                                        <div class="ipo_logo d-flex align-items-center justify-content-center">
+                                            <i class="ti ti-devices font-36"></i>
+                                        </div>
+                                    </div>
+                                    <h3>Trade from anywhere</h3>
+                                    <p class="text-muted font-15">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                                    </p>
+                                    <div class="d-inline-block">
+                                        <a href="#" class="btn-app-store mr-3 mb-2 mb-lg-0">
+                                            <div class="row no-gutters">
+                                                <div class="col-auto align-self-center mr-2">
+                                                    <img src="../images/ipo/apple.png" alt="" class="" height="26">
+                                                </div>
+                                                <div class="col align-self-center">
+                                                    <span class="btn-title-sm d-block">Available on the</span>
+                                                    <span class="btn-title">App Store</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="btn-app-store">
+                                            <div class="row no-gutters">
+                                                <div class="col-auto align-self-center mr-2">
+                                                    <img src="../images/ipo/play-store.png" alt="" class="" height="26">
+                                                </div>
+                                                <div class="col align-self-center">
+                                                    <span class="btn-title-sm d-block">Get in on</span>
+                                                    <span class="btn-title">Play Store</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--end card body-->
+                            </div>
+                            <!--end card-->
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!-- container -->
+            </section>
+            <!--end section-->
+            <section class="section pt-0">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-5 mx-auto text-center">
+                            <img src="../images/small/percentage.svg" alt="" class="mb-3" height="120">
+                            <h3 class="mb-5" style="line-height: 1.5;">We have the world's largest selection of courses will you like to learn.</h3>
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header mt-0" id="flush-headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            <div class="media">
+                                                <div class="d-flex align-itemes-center">
+                                                    <span class="text-success font-18">$</span><p class="text-success fw-bold lh-sm me-3 my-0 align-self-center" style="font-size: 60px;">0</p>
+                                                </div>
+                                                <div class="media-body align-self-center ml-3">
+                                                    <h5 class="font-weight-semibold my-1 font-16">Free equity delivery</h5>
+                                                    <p class="text-muted mb-0 font-14">All equity delivery investments (NASDAQ, NYSE), are absolutely free — $ 0 brokerage.</p>
+                                                </div>
+                                            </div><!--end media-->
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>BDStokz charges</th>
+                                                            <th>Equity delivery</th>
+                                                            <th>Equity intraday</th>
+                                                            <th>Equity futures</th>
+                                                            <th>Equity options</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="charges-heads">Brokerage</td>
+                                                            <td>Zero Brokerage</td>
+                                                            <td>0.03% or $. 20/executed order whichever is lower</td>
+                                                            <td>0.03% or $. 20/executed order whichever is lower</td>
+                                                            <td>Flat $. 20 per executed order</td>
+                                                        </tr>
+                                                        <tr class="grey-back">
+                                                            <td class="charges-heads">STT/CTT</td>
+                                                            <td>0.1% on buy &amp; sell</td>
+                                                            <td>0.025% on the sell side</td>
+                                                            <td>0.01% on sell side</td>
+                                                            <td>0.05% on sell side (on premium)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="charges-heads">Transaction charges</td>
+                                                            <td>NASDAQ: 0.00345%<br>NYSE: 0.00345%</td>
+                                                            <td>NASDAQ: 0.00345%<br>NYSE: 0.00345%</td>
+                                                            <td>NASDAQ: 0.002%</td>
+                                                            <td>NASDAQ: 0.053% (on premium)</td>
+                                                        </tr>
+                                                        <tr class="grey-back">
+                                                            <td class="charges-heads">GST</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="charges-heads">SEBI charges</td>
+                                                            <td>$10 / crore</td>
+                                                            <td>$10 / crore</td>
+                                                            <td>$10 / crore</td>
+                                                            <td>$10 / crore</td>
+                                                        </tr>
+                                                        <tr class="grey-back">
+                                                            <td class="charges-heads">Stamp charges</td>
+                                                            <td>0.015% or $1500 / crore</td>
+                                                            <td>0.003% or $300 / crore</td>
+                                                            <td>0.002% or $200 / crore</td>
+                                                            <td>0.003% or $300 / crore</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header mt-0" id="flush-headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                            <div class="media">
+                                                <div class="d-flex align-itemes-center">
+                                                    <span class="text-success font-18">$</span><p class="text-success fw-bold lh-sm me-3 my-0 align-self-center" style="font-size: 60px;">8</p>
+                                                </div>
+                                                <div class="media-body align-self-center ml-3">
+                                                    <h5 class="font-weight-semibold my-1 font-16">Option & Future</h5>
+                                                    <p class="text-muted mb-0 font-14">All equity delivery investments (NASDAQ, NYSE), are absolutely free — $ 0 brokerage.</p>
+                                                </div>
+                                            </div><!--end media-->
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>BDStokz charges</th>
+                                                            <th>Equity delivery</th>
+                                                            <th>Equity intraday</th>
+                                                            <th>Equity futures</th>
+                                                            <th>Equity options</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="charges-heads">Brokerage</td>
+                                                            <td>Zero Brokerage</td>
+                                                            <td>0.03% or $. 20/executed order whichever is lower</td>
+                                                            <td>0.03% or $. 20/executed order whichever is lower</td>
+                                                            <td>Flat $. 20 per executed order</td>
+                                                        </tr>
+                                                        <tr class="grey-back">
+                                                            <td class="charges-heads">STT/CTT</td>
+                                                            <td>0.1% on buy &amp; sell</td>
+                                                            <td>0.025% on the sell side</td>
+                                                            <td>0.01% on sell side</td>
+                                                            <td>0.05% on sell side (on premium)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="charges-heads">Transaction charges</td>
+                                                            <td>NASDAQ: 0.00345%<br>NYSE: 0.00345%</td>
+                                                            <td>NASDAQ: 0.00345%<br>NYSE: 0.00345%</td>
+                                                            <td>NASDAQ: 0.002%</td>
+                                                            <td>NASDAQ: 0.053% (on premium)</td>
+                                                        </tr>
+                                                        <tr class="grey-back">
+                                                            <td class="charges-heads">GST</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="charges-heads">SEBI charges</td>
+                                                            <td>$10 / crore</td>
+                                                            <td>$10 / crore</td>
+                                                            <td>$10 / crore</td>
+                                                            <td>$10 / crore</td>
+                                                        </tr>
+                                                        <tr class="grey-back">
+                                                            <td class="charges-heads">Stamp charges</td>
+                                                            <td>0.015% or $1500 / crore</td>
+                                                            <td>0.003% or $300 / crore</td>
+                                                            <td>0.002% or $200 / crore</td>
+                                                            <td>0.003% or $300 / crore</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header mt-0" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                                <div class="media">
+                                                    <div class="d-flex align-itemes-center">
+                                                        <span class="text-success font-18">$</span><p class="text-success fw-bold lh-sm me-3 my-0 align-self-center" style="font-size: 60px;">8</p>
+                                                    </div>
+                                                    <div class="media-body align-self-center ml-3">
+                                                        <h5 class="font-weight-semibold my-1 font-16">Derivative</h5>
+                                                        <p class="text-muted mb-0 font-14">All equity delivery investments (NASDAQ, NYSE), are absolutely free — $ 0 brokerage.</p>
+                                                    </div>
+                                                </div><!--end media-->
+                                            </button>
+                                    </h2>
+                                    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>BDStokz charges</th>
+                                                            <th>Equity delivery</th>
+                                                            <th>Equity intraday</th>
+                                                            <th>Equity futures</th>
+                                                            <th>Equity options</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="charges-heads">Brokerage</td>
+                                                            <td>Zero Brokerage</td>
+                                                            <td>0.03% or $. 20/executed order whichever is lower</td>
+                                                            <td>0.03% or $. 20/executed order whichever is lower</td>
+                                                            <td>Flat $. 20 per executed order</td>
+                                                        </tr>
+                                                        <tr class="grey-back">
+                                                            <td class="charges-heads">STT/CTT</td>
+                                                            <td>0.1% on buy &amp; sell</td>
+                                                            <td>0.025% on the sell side</td>
+                                                            <td>0.01% on sell side</td>
+                                                            <td>0.05% on sell side (on premium)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="charges-heads">Transaction charges</td>
+                                                            <td>NASDAQ: 0.00345%<br>NYSE: 0.00345%</td>
+                                                            <td>NASDAQ: 0.00345%<br>NYSE: 0.00345%</td>
+                                                            <td>NASDAQ: 0.002%</td>
+                                                            <td>NASDAQ: 0.053% (on premium)</td>
+                                                        </tr>
+                                                        <tr class="grey-back">
+                                                            <td class="charges-heads">GST</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                            <td>18% on (brokerage + transaction charges)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="charges-heads">SEBI charges</td>
+                                                            <td>$10 / crore</td>
+                                                            <td>$10 / crore</td>
+                                                            <td>$10 / crore</td>
+                                                            <td>$10 / crore</td>
+                                                        </tr>
+                                                        <tr class="grey-back">
+                                                            <td class="charges-heads">Stamp charges</td>
+                                                            <td>0.015% or $1500 / crore</td>
+                                                            <td>0.003% or $300 / crore</td>
+                                                            <td>0.002% or $200 / crore</td>
+                                                            <td>0.003% or $300 / crore</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end container-->
+            </section>
+            <!--end section-->
+            <section class="section bg-light">
+                <div class="container">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-4">
+                            <img src="../images/small/2.png" alt="" class="img-fluid d-block mx-auto mb-5 mb-lg-0">
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-6 align-self-center">
+                            <div class="media mb-3">
+                                <div class="d-inline-block">
+                                    <div class="ipo_logo d-flex align-items-center justify-content-center">
+                                        <b class="font-28">7M</b>
+                                    </div>
+                                </div>
+                                <div class="media-body align-self-center ml-3">
+                                    <h5 class="fw-semibold mt-0 font-16">Registered Clients</h5>
+                                    <p class="text-muted mb-0 font-14">The BDStokz app is the best stocks market app to track Stocks and stay on top of the global stock markets.</p>
+                                </div>
+                            </div>
+                            <!--end media-->
+                            <div class="media mb-3">
+                                <div class="d-inline-block">
+                                    <div class="ipo_logo d-flex align-items-center justify-content-center">
+                                        <b class="font-28">21+</b>
+                                    </div>
+                                </div>
+                                <div class="media-body align-self-center ml-3">
+                                    <h5 class="fw-semibold mt-0 font-16">Years of Trust</h5>
+                                    <p class="text-muted mb-0 font-14">The BDStokz app is the best stocks market app to track Stocks and stay on top of the global stock markets.</p>
+                                </div>
+                            </div>
+                            <!--end media-->
+                            <div class="media mb-3">
+                                <div class="d-inline-block">
+                                    <div class="ipo_logo d-flex align-items-center justify-content-center">
+                                        <b class="font-28">10+</b>
+                                    </div>
+                                </div>
+                                <div class="media-body align-self-center ml-3">
+                                    <h5 class="fw-semibold mt-0 font-16">App Downloads</h5>
+                                    <p class="text-muted mb-0 font-14">The BDStokz app is the best stocks market app to track Stocks and stay on top of the global stock markets.</p>
+                                </div>
+                            </div>
+                            <!--end media-->
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end container-->
+            </section>
+            <div class="position-relative">
+                <div class="shape overflow-hidden text-dark">
+                    <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+                        </svg>
+                </div>
+            </div>
+            <footer class="section bg-dark mb-3">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <a href="../index/index.html" class="logo">
+                                    <!-- <img src="../images/logo-sm.png" alt="logo" class="me-1" height="30"> -->
+                                    <img src="../images/logo.png" alt="logo" class="">
+                                </a>
+                            <ul class="list-unstyled mt-3">
+                                <li>
+                                    <a href="#" class="text-light">Department of CSE, West Palashi ECE building, DHAKA 1205</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-light">+088 (017) 677 03113</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <h6 class="card-title text-light mb-3 font-16  border-bottom d-inline-block">Main</h6>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="../index/index.html" class="text-light">Dashboard</a>
+                                </li>
+                                <li>
+                                    <a href="../position/position.html" class="text-light">Positions</a>
+                                </li>
+                                <li>
+                                    <a href="../market/market.html" class="text-light">Market</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <h6 class="card-title mb-3 text-light font-16 border-bottom d-inline-block">General</h6>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="../ipo/ipo.html" class="text-light">IPO</a>
+                                </li>
+                                <li>
+                                    <a href="../explore/explore.html" class="text-light">Explore</a>
+                                </li>
+                                <li>
+                                    <a href="../investment/investment.html" class="text-light">Investment</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <h6 class="card-title text-light mb-3 font-16  border-bottom d-inline-block">App Download</h6>
+                            <p class="mb-xl-20">Our app is available in Android and iOS versions.</p>
+                            <div class="d-inline-block">
+                                <a href="#" class="btn-app-store mr-3 mb-2 mb-lg-0">
+                                    <div class="row no-gutters">
+                                        <div class="col-auto align-self-center mr-2">
+                                            <img src="../images/ipo/apple.png" alt="" class="" height="26">
+                                        </div>
+                                        <div class="col align-self-center">
+                                            <span class="btn-title-sm d-block">Available on the</span>
+                                            <span class="btn-title">App Store</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="btn-app-store">
+                                    <div class="row no-gutters">
+                                        <div class="col-auto align-self-center mr-2">
+                                            <img src="../images/ipo/play-store.png" alt="" class="" height="26">
+                                        </div>
+                                        <div class="col align-self-center">
+                                            <span class="btn-title-sm d-block">Get in on</span>
+                                            <span class="btn-title">Play Store</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+
+            <!--Start Rightbar-->
+            <!--Start Rightbar/offcanvas-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="Appearance" aria-labelledby="AppearanceLabel">
+
+                <div class="offcanvas-body">
+                    <button type="button" class="btn-close text-reset p-0 m-0 align-self-center float-end" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    <div class="media">
+                        <div class="ipo_logo d-inline-block" style="height: 70px; width: 90px; line-height: 68px;">
+                            <img src="../images/ipo/ipo-1.png" alt="" class="" height="36">
+                        </div>
+                        <div class="media-body align-self-center ms-2">
+                            <h5 class="fw-semibold mt-0 font-16 mb-1">Registered Clients</h5>
+                            <p class="text-success mb-0 font-12">Application Successful</p>
+                        </div>
+                    </div>
+                    <!--end media-->
+                    <hr class="hr-dashed">
+                    <ul class="list-group mb-3">
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Applic. No
+                            <span class="font-12 fw-semibold">236568546</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Amount to be Blocked
+                            <span class="font-12 fw-semibold">$250.00</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Bid
+                            <span class="font-12 fw-semibold">01</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Market Lot
+                            <span class="font-12 fw-semibold">40 Shares</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Price
+                            <span class="font-12 fw-semibold">$25.00</span>
+                        </li>
+                    </ul>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            IPO Open Date
+                            <span class="font-12 fw-semibold">14/09/2021</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Allotment Date
+                            <span class="font-12 fw-semibold">18/09/2021</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Refunds
+                            <span class="font-12 fw-semibold">19/09/2021</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Credit Demat Ac.
+                            <span class="font-12 fw-semibold">20/09/2021</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            IPO Listing Date
+                            <span class="font-12 fw-semibold">21/09/2021</span>
+                        </li>
+                    </ul>
+                    <p class="p-2 bg-soft-info rounded font-15 fw-semibold">Upcoming IPOs 2021</p>
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col" class="text-end">Size</th>
+                                <th scope="col" class="text-end">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="../../ipo/ipo.html" class="text-dark">Apple <span class="text-muted font-10">NASDAQ</span></a></td>
+                                <td class="text-end">2542cr.</td>
+                                <td class="text-end">12 Nov.2021</td>
+                            </tr>
+                            <tr>
+                                <td><a href="../../ipo/ipo.html">Panasonic</a></td>
+                                <td class="text-end">1302cr.</td>
+                                <td class="text-end">18 Nov.2021</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--end offcanvas-body-->
+
+            </div>
+            <!--end Rightbar/offcanvas-->
+            <!--end Rightbar-->
+
+            <!--Start Footer-->
+            <!-- Footer Start -->
+            <footer class="footer text-center text-sm-start">
+                &copy;
+                <script>
+                    document.write(new Date().getFullYear())
+                </script> BDStokz <span class="text-muted d-none d-sm-inline-block float-end">Crafted by <i
+                            class="mdi mdi-heart text-danger"></i> Abrar Jahin & Tazwar</span>
+            </footer>
+            <!-- end Footer -->
+            <!--end footer-->
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page-wrapper -->
+    <div class="modal fade" id="BuyStocks" tabindex="-1" aria-labelledby="BuyStocksLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <h6 class="modal-title m-0 mb-n1" id="BuyStocksLabel" style="align-self: center;">Login</h6>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <form>
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                          <input type="email" id="loginusername" class="form-control" />
+                          <label class="form-label" for="form2Example1">Username</label>
+                        </div>
+                      
+                        <!-- Password input -->
+                        <div class="form-outline mb-4">
+                          <input type="password" id="loginpass" class="form-control" />
+                          <label class="form-label" for="form2Example2">Password</label>
+                        </div>
+                      
+                        <div class="alert alert-danger" id="wrongCredLogin" style="display: none;">
+                            <strong>OOPS!</strong> You may have provided wrong credentials.
+                            <button type="button" class="btn-close" id="errmsgloginclose"></button>
+                        </div>
+
+                        <!-- Submit button -->
+                        <!-- <button type="button" class="btn btn-primary btn-block mb-4">Sign in</button> -->
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <button type="button" class="btn btn-primary btn-block mb-4" id="signinbutton">Sign in</button>
+                          </div>
+                          
+                      </form>
+                </div>
+                <!--end modal-body-->
+
+            </div>
+            <!--end modal-content-->
+        </div>
+        <!--end modal-dialog-->
+    </div>
+    <!--end modal-->
+
+    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title m-0" id="exampleModalScrollableTitle">Registration Form</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="formCross"></button>
+                </div>
+                <!--end modal-header-->
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="row">
+                            <div id="regFormholder">
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-end">Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" placeholder="Artisanal kale" id="Name-reg">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="example-email-input" class="col-sm-2 col-form-label text-end">Email</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="email" placeholder="kale@example.com" id="Email-reg">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="example-tel-input" class="col-sm-2 col-form-label text-end">Contact</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="tel" placeholder="+(880)-1XX-XXXXXXX" id="Contact-reg">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="example-password-input" class="col-sm-2 col-form-label text-end">Password</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="password" text="hunter2" id="Password-reg">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-end">Street</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" placeholder="Park street" id="Street-reg">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="example-number-input" class="col-sm-2 col-form-label text-end">St No.</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="number" placeholder="42" id="St No.-reg">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-end">City</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" placeholder="London" id="City-reg">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-end">Country</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" placeholder="England" id="Country-reg">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label text-end">Zip</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" value="506-202" id="Zip-reg">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label class="col-sm-2 col-form-label text-end">You are a</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" aria-label="You are a " id="UserType-reg">
+                                                <option value="Customer">Customer</option>
+                                                <option value="Broker">Broker</option>
+                                                <option value="Corp">Corporation</option>
+                                              </select>
+                                    </div>
+                                </div>
+                                    <div class="mb-3 row" id="brokerLicenseSec" style="display: none;">
+                                        <label for="example-text-input" class="col-sm-2 col-form-label text-end">License No</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" placeholder="XXXXX" type="text" id="brokerLicense">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row" id="brokerExpertise" style="display: none;">
+                                        <label class="col-sm-2 col-form-label text-end">Expert in</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" aria-label="Expert in" id="brokerExpertiseinput">
+                                            <option selected value="Technology">Technology</option>
+                                            <option value="Healthcare">Healthcare</option>
+                                            <option value="Financial">Financial</option>
+                                            <option value="Consumer Goods">Consumer Goods</option>
+                                            <option value="Energy">Energy</option>
+                                            <option value="Retail">Retail</option>
+                                            <option value="Utilities">Utilities</option>
+                                            <option value="Real Estate">Real Estate</option>
+                                            <option value="Telecommunication">Telecommunication</option>
+                                            <option value="Transportation">Transportation</option>
+                                              </select>
+                                    </div>
+                                    </div>
+                                    <div class="mb-3 row" id="custAccountNo">
+                                        <label for="example-text-input" class="col-sm-2 col-form-label text-end">Ac No</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" type="text" placeholder="XXXXXXX" id="custAcNoinput">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row" style="display: none;" id="corpRegNo">
+                                        <label for="example-text-input" class="col-sm-2 col-form-label text-end">Reg No</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" placeholder="XXXXXXX" type="text" id="corpRegNoinput">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row" id="refererUserName">
+                                        <label for="example-text-input" class="col-sm-2 col-form-label text-end">Refered By Someone?</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" placeholder="give the username" type="text" id="refererUserNameinput">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row" style="display: none;" id="corpSector">
+                                        <label class="col-sm-2 col-form-label text-end">Sector</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" aria-label="Expert in" id="corpSectorinput">
+                                            <option selected value="Technology">Technology</option>
+                                            <option value="Healthcare">Healthcare</option>
+                                            <option value="Financial">Financial</option>
+                                            <option value="Consumer Goods">Consumer Goods</option>
+                                            <option value="Energy">Energy</option>
+                                            <option value="Retail">Retail</option>
+                                            <option value="Utilities">Utilities</option>
+                                            <option value="Real Estate">Real Estate</option>
+                                            <option value="Telecommunication">Telecommunication</option>
+                                            <option value="Transportation">Transportation</option>
+                                            </select>
+                                    </div>  
+                                </div>
+                                <div class="alert alert-success alert-dismissible fade show" id="regSuccess" style="display: none;">
+                                    <strong>Success!</strong> You have been registered successfully.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+                <!--end modal-body-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal" id="formClose">Close</button>
+                    <button type="button" class="btn btn-de-primary btn-sm" id="registerButton">Save changes</button>
+                </div>
+                <!--end modal-footer-->
+            </div>
+            <!--end modal-content-->
+        </div>
+        <!--end modal-dialog-->
+    </div>
+    <!--end modal-->
+    </div>
+    <div class="modal fade" id="notPremiumWarning" tabindex="-1" aria-labelledby="exampleModalFullscreenLgLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen-lg-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 id="exampleModalFullscreenLgLabel" class="alert-danger">Attention! </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="logDesBody">You are not a premimum user. You have to pay the registration fee.
+                    </p>
+                    <span class="badge bg-soft-secondary" id="regFeeText">Registration Fee</span>
+                    <small class="text-muted ml-2" id="regFee">07 Oct 2020</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <a href="javascript:void(0);" class="btn btn-sm btn-de-primary" data-bs-dismiss="modal" id="activityRegButton">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App js -->
+    <script src="assets/js/app.js"></script>
+    <script src="homepagescript.js"></script>
+    <script src="../commonScripts/index.js"></script>
+</body>
+<!--end body-->
+
+</html>
