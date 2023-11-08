@@ -19,3 +19,4 @@ Aangul Kata Jaglu kK6//mmcG&hvKJ
 
 
 All passwords are first base64 encoded and then encrypted using SHA-512.
+For passwd of any other user, go to [USERS](/SQL%20Dump/PopulateTableUtil/USER/)
