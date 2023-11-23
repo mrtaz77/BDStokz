@@ -12,4 +12,9 @@
 |Broker|Aangul Kata Jaglu|kK6//mmcG&hvKJ|
 
 All passwords are first base64 encoded and then encrypted using SHA-512.
-For passwd of any other user, go to [USERS](/SQL%20Dump/PopulateTableUtil/USER/) , search in the pwd column.There will be a `base64` string.Decode it from base64 and you will get the password of that user.
+
+If you wish , you can change the password of all users simply by running the following script 
+```sql
+UPDATE "USER"
+SET PWD = PWD_HASH('your_password');
+```
